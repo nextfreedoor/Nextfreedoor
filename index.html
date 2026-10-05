@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Next Free Door - Buy, sell & trade with neighbors</title>
+    <meta name="description" content="Buy, sell, trade and give away with your neighbors. The free alternative for neighborhood classifieds.">
+    
+    <meta property="og:title" content="Next Free Door - Free local buy, sell & trade">
+    <meta property="og:description" content="The free alternative for neighborhood classifieds.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.nextfreedoor.com/">
+
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-hover: #1d4ed8;
+            --bg: #f8fafc;
+            --card-bg: #ffffff;
+            --text: #0f172a;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            line-height: 1.5;
+            padding-bottom: 60px;
+        }
+
+        header {
+            background: var(--card-bg);
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 12px 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--text);
+            text-decoration: none;
+        }
+
+        .logo-emoji {
+            font-size: 1.6rem;
+            line-height: 1;
+        }
+
+        .user-nav {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .btn {
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-weight: 500;
+            font-size: 0.9rem;
+            cursor: pointer;
+            border: none;
+            transition: background-color 0.2s;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-hover);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--text-muted);
+            border: 1px solid var(--border);
+        }
+
+        main {
+            max-width: 1000px;
+            margin: 24px auto;
+            padding: 0 16px;
+        }
+
+        .feed-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .post-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .post-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            background: #f1f5f9;
+        }
+
+        .post-content {
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+
+        .post-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .post-price {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 8px;
+        }
+
+        .post-meta {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-top: auto;
+        }
+
+        .create-post-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 24px;
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.875rem;
+            font-weight: 500;
+            margin-bottom: 6px;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-size: 0.95rem;
+        }
+
+        .form-control:disabled {
+            background-color: #f1f5f9;
+            cursor: not-allowed;
+        }
+
+        .type-selector {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+
+        .type-option {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="header-container">
+            <a href="#" class="logo">
+                <span class="logo-emoji">🚪</span>
+                <span>Next Free Door</span>
+            </a>
+            <div class="user-nav">
+                <button id="auth-btn" class="btn btn-primary" onclick="toggleAuth()">Sign In</button>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <!-- Create Post Section -->
+        <section id="create-section" class="create-post-card">
+            <h2 style="margin-bottom: 16px; font-size: 1.25rem;">Post an Item</h2>
+            <form id="post-form" onsubmit="handlePostSubmit(event)">
+                
+                <div class="type-selector">
+                    <label class="type-option">
+                        <input type="radio" name="postType" value="giveaway" checked onchange="handleTypeChange()">
+                        <span>Free Giveaway</span>
+                    </label>
+                    <label class="type-option">
+                        <input type="radio" name="postType" value="sell" onchange="handleTypeChange()">
+                        <span>For Sale</span>
+                    </label>
+                    <label class="type-option">
+                        <input type="radio" name="postType" value="trade" onchange="handleTypeChange()">
+                        <span>Trade</span>
+                    </label>
+                </div>
+
+                <div class="form-group">
+                    <label for="post-title">Title</label>
+                    <input type="text" id="post-title" class="form-control" placeholder="What are you offering?" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="post-price">Price ($)</label>
+                    <input type="number" id="post-price" class="form-control" value="0" disabled min="0" step="0.01">
+                </div>
+
+                <div class="form-group">
+                    <label for="post-desc">Description</label>
+                    <textarea id="post-desc" class="form-control" rows="3" placeholder="Add details like condition, pickup location, etc."></textarea>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Publish Post</button>
+            </form>
+        </section>
+
+        <!-- Feed Section -->
+        <section>
+            <h2 style="margin-bottom: 16px; font-size: 1.25rem;">Recent Listings</h2>
+            <div id="feed-grid" class="feed-grid">
+                <!-- Posts will render dynamically here -->
+            </div>
+        </section>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+        // Supabase Initialization placeholder
+        const SUPABASE_URL = 'YOUR_SUPABASE_URL';
+        const SUPABASE_ANON_KEY = 'YOUR_SUPABASE_KEY';
+        // const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        // Auto-disable price field for giveaways
+        function handleTypeChange() {
+            const selectedType = document.querySelector('input[name="postType"]:checked').value;
+            const priceInput = document.getElementById('post-price');
+            
+            if (selectedType === 'giveaway') {
+                priceInput.value = '0';
+                priceInput.disabled = true;
+            } else {
+                priceInput.disabled = false;
+                if (priceInput.value === '0') priceInput.value = '';
+            }
+        }
+
+        function handlePostSubmit(e) {
+            e.preventDefault();
+            const title = document.getElementById('post-title').value;
+            const type = document.querySelector('input[name="postType"]:checked').value;
+            const price = document.getElementById('post-price').value;
+            const desc = document.getElementById('post-desc').value;
+
+            alert(`Listing Created!\nTitle: ${title}\nType: ${type}\nPrice: $${price}`);
+            
+            // Scroll to top or reset form
+            document.getElementById('post-form').reset();
+            handleTypeChange();
+        }
+
+        function toggleAuth() {
+            const btn = document.getElementById('auth-btn');
+            if (btn.innerText === 'Sign In') {
+                btn.innerText = 'Sign Out';
+                btn.classList.replace('btn-primary', 'btn-secondary');
+            } else {
+                btn.innerText = 'Sign In';
+                btn.classList.replace('btn-secondary', 'btn-primary');
+            }
+        }
+    </script>
+</body>
+</html>
