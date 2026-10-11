@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NextFreeDoor.com – Treasure Valley Marketplace</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <style>
+    :root {
+      --dark: #0A2A2A;
+      --darker: #061818;
+      --teal: #0D3B3B;
+      --gold: #FFD700;
+      --gold-light: #FFE55C;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: system-ui, -apple-system, sans-serif;
+      background: linear-gradient(180deg, var(--darker) 0%, var(--dark) 50%, var(--teal) 100%);
+      color: #fff;
+      min-height: 100vh;
+      line-height: 1.5;
+    }
+    a { color: var(--gold); text-decoration: none; }
+    header {
+      background: rgba(6,24,24,0.95);
+      border-bottom: 1px solid rgba(255,215,0,0.2);
+      padding: 12px 16px;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 700;
+      font-size: 1.15rem;
+    }
+    .logo span { color: var(--gold); }
+    .logo svg { width: 36px; height: 36px; }
+    .btn {
+      background: var(--gold);
+      color: var(--darker);
+      border: none;
+      padding: 10px 18px;
+      border-radius: 999px;
+      font-weight: 700;
+      font-size: 0.9rem;
+      cursor: pointer;
+    }
+    .btn:hover { background: var(--gold-light); }
+    .btn-outline {
+      background: transparent;
+      border: 2px solid rgba(255,215,0,0.5);
+      color: var(--gold);
+    }
+    main { max-width: 720px; margin: 0 auto; padding: 20px 16px 60px; }
+    .hero {
+      text-align: center;
+      padding: 32px 0 24px;
+    }
+    .hero svg { width: 80px; height: 80px; margin-bottom: 12px; filter: drop-shadow(0 0 16px rgba(255,215,0,0.5)); }
+    .hero h1 { font-size: 1.8rem; margin-bottom: 4px; }
+    .hero h1 span { color: var(--gold); }
+    .hero .tagline { font-style: italic; color: rgba(255,255,255,0.8); margin-bottom: 4px; }
+    .hero .free { color: var(--gold); font-weight: 600; margin-bottom: 20px; }
+    .hero-btns { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
+    .cities {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      justify-content: center;
+      margin: 16px 0 28px;
+      font-size: 0.8rem;
+      color: rgba(255,255,255,0.6);
+    }
+    .cities span {
+      background: rgba(255,255,255,0.06);
+      padding: 3px 10px;
+      border-radius: 999px;
+    }
+    .tabs {
+      display: flex;
+      gap: 6px;
+      overflow-x: auto;
+      padding-bottom: 8px;
+      margin-bottom: 16px;
+    }
+    .tab {
+      flex-shrink: 0;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.1);
+      color: rgba(255,255,255,0.8);
+      padding: 8px 14px;
+      border-radius: 999px;
+      font-size: 0.85rem;
+      cursor: pointer;
+    }
+    .tab.active {
+      background: var(--gold);
+      color: var(--darker);
+      font-weight: 700;
+      border-color: var(--gold);
+    }
+    .listing {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 12px;
+      padding: 14px;
+      margin-bottom: 12px;
+    }
+    .listing h3 { font-size: 1.05rem; margin-bottom: 4px; }
+    .listing .meta { font-size: 0.8rem; color: rgba(255,255,255,0.5); margin-bottom: 6px; }
+    .listing .price {
+      display: inline-block;
+      background: var(--gold);
+      color: var(--darker);
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 999px;
+      margin-bottom: 6px;
+    }
+    .listing .price.free { background: #10b981; color: #fff; }
+    .empty {
+      text-align: center;
+      padding: 40px 16px;
+      color: rgba(255,255,255,0.45);
+      border: 1px dashed rgba(255,255,255,0.15);
+      border-radius: 12px;
+    }
+    .form-section {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,215,0,0.25);
+      border-radius: 16px;
+      padding: 20px;
+      margin-top: 28px;
+    }
+    .form-section h2 { font-size: 1.2rem; margin-bottom: 14px; color: var(--gold); }
+    label { display: block; font-size: 0.85rem; color: var(--gold); margin: 12px 0 4px; }
+    input, select, textarea {
+      width: 100%;
+      background: rgba(255,255,255,0.07);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 8px;
+      padding: 10px 12px;
+      color: #fff;
+      font-size: 1rem;
+    }
+    input:focus, select:focus, textarea:focus {
+      outline: none;
+      border-color: var(--gold);
+    }
+    textarea { resize: vertical; min-height: 80px; }
+    .form-section .btn { width: 100%; margin-top: 16px; padding: 14px; font-size: 1rem; }
+    .msg { margin-top: 10px; font-size: 0.9rem; text-align: center; }
+    .msg.ok { color: #10b981; }
+    .msg.err { color: #f87171; }
+    footer {
+      text-align: center;
+      padding: 28px 16px;
+      border-top: 1px solid rgba(255,215,0,0.15);
+      font-size: 0.85rem;
+      color: rgba(255,255,255,0.5);
+    }
+    footer a.kofi {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(255,215,0,0.1);
+      border: 1px solid rgba(255,215,0,0.4);
+      color: var(--gold);
+      padding: 8px 16px;
+      border-radius: 999px;
+      margin: 12px 0;
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo">
+      <svg viewBox="0 0 64 64" fill="none">
+        <path d="M8 36 L32 12 L56 36 V56 H8 Z" stroke="white" stroke-width="3" stroke-linejoin="round"/>
+        <rect x="26" y="28" width="12" height="28" rx="1" fill="#FFD700"/>
+        <rect x="34" y="38" width="3" height="3" fill="#0A2A2A"/>
+      </svg>
+      Next<span>Free</span>Door<span>.com</span>
+    </div>
+    <button class="btn" onclick="document.getElementById('post').scrollIntoView({behavior:'smooth'})">Post</button>
+  </header>
+
+  <main>
+    <section class="hero">
+      <svg viewBox="0 0 64 64" fill="none">
+        <path d="M8 36 L32 12 L56 36 V56 H8 Z" stroke="white" stroke-width="2.5" stroke-linejoin="round"/>
+        <rect x="26" y="28" width="12" height="28" rx="1" fill="#FFD700"/>
+        <rect x="34" y="38" width="3" height="3" fill="#0A2A2A"/>
+      </svg>
+      <h1>Next<span>Free</span>Door<span>.com</span></h1>
+      <p class="tagline">Your neighborhood. Your marketplace.</p>
+      <p class="free">100% free for the Treasure Valley</p>
+      <div class="hero-btns">
+        <button class="btn" onclick="document.getElementById('post').scrollIntoView({behavior:'smooth'})">Post Something</button>
+        <button class="btn btn-outline" onclick="showTab('free')">Browse Free Stuff</button>
+      </div>
+    </section>
+
+    <div class="cities">
+      <span>Boise</span><span>Meridian</span><span>Nampa</span><span>Caldwell</span>
+      <span>Eagle</span><span>Kuna</span><span>Garden City</span><span>Star</span>
+    </div>
+
+    <div class="tabs">
+      <button class="tab active" data-cat="free" onclick="showTab('free')">Free Stuff</button>
+      <button class="tab" data-cat="buy_sell" onclick="showTab('buy_sell')">Buy / Sell</button>
+      <button class="tab" data-cat="jobs" onclick="showTab('jobs')">Jobs & Gigs</button>
+      <button class="tab" data-cat="community" onclick="showTab('community')">Community</button>
+    </div>
+
+    <div id="listings">
+      <div class="empty">Loading listings…</div>
+    </div>
+
+    <section class="form-section" id="post">
+      <h2>Post an Item</h2>
+      <form id="postForm">
+        <label>Category</label>
+        <select id="category" required>
+          <option value="free">Free Stuff</option>
+          <option value="buy_sell">Buy / Sell</option>
+          <option value="trade">Trade</option>
+          <option value="jobs">Jobs & Side Gigs</option>
+          <option value="community">Community</option>
+        </select>
+
+        <label>Title *</label>
+        <input id="title" required placeholder="e.g. Free couch – good condition" />
+
+        <label>Description</label>
+        <textarea id="description" placeholder="Details, condition, pickup times…"></textarea>
+
+        <label>Price (leave blank if free)</label>
+        <input id="price" type="number" min="0" step="1" placeholder="0" />
+
+        <label>City *</label>
+        <select id="city" required>
+          <option>Boise</option>
+          <option>Meridian</option>
+          <option>Nampa</option>
+          <option>Caldwell</option>
+          <option>Eagle</option>
+          <option>Kuna</option>
+          <option>Garden City</option>
+          <option>Star</option>
+          <option>Middleton</option>
+          <option>Other Treasure Valley</option>
+        </select>
+
+        <label>Neighborhood (optional)</label>
+        <input id="neighborhood" placeholder="e.g. North End" />
+
+        <button type="submit" class="btn">Post to NextFreeDoor</button>
+        <p class="msg" id="formMsg"></p>
+      </form>
+    </section>
+  </main>
+
+  <footer>
+    <p>Next<span style="color:var(--gold)">Free</span>Door.com · Treasure Valley, Idaho</p>
+    <a class="kofi" href="https://ko-fi.com/nextfreedoor" target="_blank" rel="noopener">
+      ❤️ Support on Ko-fi
+    </a>
+    <p style="margin-top:8px;font-size:0.75rem;">Businesses help keep it FREE</p>
+  </footer>
+
+  <script>
+    const SUPABASE_URL = "https://bpzuqzpgwdkjjmrvbhhn.supabase.co";
+    const SUPABASE_KEY = "sb_publishable_ziyoCanqii0UYfcila0UiA_aT4wfdrj";
+
+    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+    let currentCat = "free";
+
+    function showTab(cat) {
+      currentCat = cat;
+      document.querySelectorAll(".tab").forEach(t => {
+        t.classList.toggle("active", t.dataset.cat === cat);
+      });
+      loadListings();
+    }
+
+    async function loadListings() {
+      const box = document.getElementById("listings");
+      box.innerHTML = '<div class="empty">Loading…</div>';
+
+      const { data, error } = await supabase
+        .from("listings")
+        .select("*")
+        .eq("category", currentCat)
+        .eq("status", "active")
+        .order("created_at", { ascending: false })
+        .limit(40);
+
+      if (error) {
+        box.innerHTML = `<div class="empty">Error loading: ${error.message}</div>`;
+        return;
+      }
+
+      if (!data || data.length === 0) {
+        box.innerHTML = `<div class="empty">No listings yet in this category.<br>Be the first to post!</div>`;
+        return;
+      }
+
+      box.innerHTML = data.map(item => {
+        const isFree = item.price === null || item.price === 0;
+        const priceTag = isFree
+          ? '<span class="price free">FREE</span>'
+          : `<span class="price">$${item.price}</span>`;
+        const when = timeAgo(item.created_at);
+        return `
+          <div class="listing">
+            ${priceTag}
+            <h3>${escapeHtml(item.title)}</h3>
+            <div class="meta">\( {escapeHtml(item.city)} \){item.neighborhood ? " · " + escapeHtml(item.neighborhood) : ""} · ${when}</div>
+            \( {item.description ? `<p style="font-size:0.9rem;color:rgba(255,255,255,0.75)"> \){escapeHtml(item.description)}</p>` : ""}
+          </div>`;
+      }).join("");
+    }
+
+    function timeAgo(dateStr) {
+      const diff = Date.now() - new Date(dateStr).getTime();
+      const mins = Math.floor(diff / 60000);
+      if (mins < 60) return mins + "m ago";
+      const hrs = Math.floor(mins / 60);
+      if (hrs < 24) return hrs + "h ago";
+      return Math.floor(hrs / 24) + "d ago";
+    }
+
+    function escapeHtml(str) {
+      if (!str) return "";
+      return str.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
+    }
+
+    document.getElementById("postForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const msg = document.getElementById("formMsg");
+      msg.textContent = "Posting…";
+      msg.className = "msg";
+
+      const priceVal = document.getElementById("price").value;
+      const { error } = await supabase.from("listings").insert({
+        title: document.getElementById("title").value.trim(),
+        description: document.getElementById("description").value.trim() || null,
+        category: document.getElementById("category").value,
+        price: priceVal === "" ? null : Number(priceVal),
+        city: document.getElementById("city").value,
+        neighborhood: document.getElementById("neighborhood").value.trim() || null,
+        status: "active",
+        contact_method: "message"
+      });
+
+      if (error) {
+        msg.textContent = "Error: " + error.message;
+        msg.className = "msg err";
+        return;
+      }
+
+      msg.textContent = "✅ Posted successfully!";
+      msg.className = "msg ok";
+      document.getElementById("postForm").reset();
+      showTab(document.getElementById("category").value === "trade" ? "buy_sell" : document.getElementById("category").value);
+      setTimeout(() => { msg.textContent = ""; }, 3000);
+    });
+
+    loadListings();
+  </script>
+</body>
+</html>
