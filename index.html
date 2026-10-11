@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NextFreeDoor.com - Your Neighborhood Marketplace</title>
+
+  <!-- Google AdSense -->
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX" crossorigin="anonymous"></script>
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brandDark: '#0a0d0e',
+            brandCard: '#141a1d',
+            brandGold: '#f4c430',
+            brandGoldHover: '#d4a318'
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body { background-color: #0a0d0e; color: #f3f4f6; }
+    /* Golden glowing light rays behind header emblem */
+    .logo-glow {
+      filter: drop-shadow(0px 0px 8px rgba(244, 196, 48, 0.6));
+    }
+  </style>
+</head>
+<body class="font-sans antialiased min-h-screen flex flex-col justify-between">
+
+  <!-- TOP BRAND BANNER WITH YOUR EMBLEM LOGO -->
+  <header class="bg-brandCard border-b border-yellow-600/30 sticky top-0 z-50 px-4 py-3 shadow-xl">
+    <div class="max-w-6xl mx-auto flex justify-between items-center">
+      
+      <!-- LOGO + BRAND NAME -->
+      <div class="flex items-center space-x-3 cursor-pointer" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
+        <!-- SVG Vector Replica of your Glowing House & Open Door Logo -->
+        <div class="w-10 h-10 flex items-center justify-center logo-glow">
+          <svg viewBox="0 0 100 100" class="w-full h-full">
+            <!-- Glowing background rays -->
+            <circle cx="50" cy="50" r="45" fill="none" stroke="#f4c430" stroke-width="0.5" opacity="0.3"/>
+            <!-- Outer House Outline -->
+            <path d="M 50 15 L 15 45 L 25 45 L 25 80 L 75 80 L 75 45 L 85 45 Z" fill="none" stroke="#ffffff" stroke-width="6" stroke-linejoin="round"/>
+            <!-- Chimney -->
+            <rect x="62" y="22" width="8" height="18" fill="#ffffff"/>
+            <!-- Glowing Golden Open Door -->
+            <path d="M 38 42 L 58 35 L 58 80 L 38 75 Z" fill="#f4c430" stroke="#0a0d0e" stroke-width="2"/>
+            <!-- Door Knob -->
+            <circle cx="53" cy="58" r="2" fill="#0a0d0e"/>
+            <!-- Bottom Golden Curve -->
+            <path d="M 10 88 Q 50 78 90 88" fill="none" stroke="#f4c430" stroke-width="4"/>
+          </svg>
+        </div>
+
+        <div>
+          <h1 class="text-xl md:text-2xl font-black text-white tracking-wide flex items-center">
+            Next<span class="text-brandGold">FreeDoor</span><span class="text-brandGold text-sm font-normal">.com</span>
+          </h1>
+          <p class="text-[10px] text-gray-400 italic font-medium -mt-1">Your neighborhood. Your marketplace.</p>
+        </div>
+      </div>
+
+      <!-- RIGHT SIDE LINKS -->
+      <div class="flex items-center space-x-3">
+        <!-- Ko-fi Link -->
+        <a href="https://ko-fi.com/nextfreedoor" target="_blank" rel="noopener noreferrer" class="bg-yellow-500/10 text-brandGold border border-brandGold/40 hover:bg-brandGold hover:text-brandDark px-3 py-1.5 rounded-lg text-xs md:text-sm font-semibold transition flex items-center space-x-1">
+          <span>☕</span> <span class="hidden sm:inline">Support on</span> <span>Ko-fi</span>
+        </a>
+        
+        <button onclick="openModal('authModal')" class="bg-brandGold hover:bg-brandGoldHover text-brandDark px-3 md:px-4 py-1.5 rounded-lg font-bold text-xs md:text-sm transition">
+          Sign Up
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- HERO GRAPHIC BANNER (INCORPORATING YOUR FULL BRAND ARTWORK) -->
+  <div class="bg-gradient-to-b from-brandCard to-brandDark border-b border-gray-800 py-6 px-4">
+    <div class="max-w-4xl mx-auto text-center space-y-3">
+
+      <div class="inline-block bg-yellow-500/10 border border-brandGold/30 text-brandGold text-xs font-bold px-3 py-1 rounded-full uppercase tracking-widest">
+        100% FREE LOCAL MARKETPLACE
+      </div>
+
+      <h2 class="text-2xl md:text-4xl font-extrabold text-white tracking-tight">
+        Buy, Sell, Trade & Find Gigs Near You
+      </h2>
+
+      <!-- CATEGORY BADGES MATCHING YOUR IMAGE -->
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-2 max-w-2xl mx-auto text-xs">
+        <div class="bg-brandDark/80 border border-gray-800 p-2.5 rounded-xl flex items-center justify-center space-x-2 text-gray-200">
+          <span>🏠</span>
+          <span class="font-bold">BUY / SELL / TRADE</span>
+        </div>
+        <div class="bg-brandDark/80 border border-gray-800 p-2.5 rounded-xl flex items-center justify-center space-x-2 text-gray-200">
+          <span>🎁</span>
+          <span class="font-bold">FREE STUFF</span>
+        </div>
+        <div class="bg-brandDark/80 border border-gray-800 p-2.5 rounded-xl flex items-center justify-center space-x-2 text-gray-200">
+          <span>💼</span>
+          <span class="font-bold">JOBS & SIDE GIGS</span>
+        </div>
+        <div class="bg-brandDark/80 border border-gray-800 p-2.5 rounded-xl flex items-center justify-center space-x-2 text-gray-200">
+          <span>👥</span>
+          <span class="font-bold">LOCAL COMMUNITY</span>
+        </div>
+      </div>
+
+      <div class="pt-2">
+        <span class="inline-flex items-center text-xs text-brandGold bg-brandDark px-4 py-1.5 rounded-full border border-yellow-600/30">
+          📣 Businesses Help Keep It Free!
+        </span>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- MAIN APP FEED & SIDEBAR -->
+  <main class="max-w-6xl mx-auto px-4 py-6 flex-grow w-full grid grid-cols-1 md:grid-cols-4 gap-6">
+
+    <!-- LEFT SIDEBAR -->
+    <aside class="md:col-span-1 space-y-4">
+      <div class="bg-brandCard p-4 rounded-xl border border-gray-800 shadow">
+        <h3 class="text-sm font-bold text-brandGold uppercase tracking-wider mb-3">Browse Categories</h3>
+        <ul class="space-y-2 text-sm text-gray-300">
+          <li class="hover:text-brandGold cursor-pointer py-1 flex items-center space-x-2">
+            <span>📦</span> <span>Free Items</span>
+          </li>
+          <li class="hover:text-brandGold cursor-pointer py-1 flex items-center space-x-2">
+            <span>🏷️</span> <span>For Sale</span>
+          </li>
+          <li class="hover:text-brandGold cursor-pointer py-1 flex items-center space-x-2">
+            <span>🔄</span> <span>Trade / Swap</span>
+          </li>
+          <li class="hover:text-brandGold cursor-pointer py-1 flex items-center space-x-2">
+            <span>💼</span> <span>Gigs & Side Jobs</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Google AdSense Container -->
+      <div class="bg-brandCard p-4 rounded-xl border border-gray-800 text-center text-xs text-gray-500 min-h-[250px] flex items-center justify-center">
+        <ins class="adsbygoogle"
+             style="display:block"
+             data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
+             data-ad-slot="1234567890"
+             data-ad-format="auto"
+             data-full-width-responsive="true"></ins>
+        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+      </div>
+    </aside>
+
+    <!-- CENTER FEED -->
+    <section class="md:col-span-3 space-y-6">
+
+      <!-- CREATE POST BOX -->
+      <div class="bg-brandCard p-5 rounded-xl border border-gray-800 shadow">
+        <h3 class="text-base font-bold text-brandGold mb-3">Create a Local Post</h3>
+        <form onsubmit="handlePostSubmit(event)" class="space-y-4">
+          <textarea placeholder="What are you offering, selling, or looking for?" class="w-full bg-brandDark border border-gray-700 rounded-lg p-3 text-sm focus:outline-none focus:border-brandGold text-gray-200" rows="3" required></textarea>
+
+          <!-- MULTIMEDIA UPLOAD (10 IMAGES + 1 VIDEO) -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
+            <div>
+              <label class="block font-medium text-gray-300 mb-1">Add Images (Up to 10)</label>
+              <input type="file" accept="image/*" multiple max="10" class="block w-full text-gray-400 file:mr-2 file:py-1.5 file:px-3 file:rounded-md file:border-0 file:text-xs file:font-semibold file:bg-brandGold file:text-brandDark hover:file:bg-brandGoldHover cursor-pointer"/>
+            </div>
+            <div>
+              <label class="block font-medium text-gray-300 mb-1">Add Video (1 Video)</label>
+              <input type="file" accept="video/*" class="block w-full text-gray-400 file:mr-2 file:py-1.5 file:px-3 file:rounded-md file:border-0 file:text-xs file:font-semibold file:bg-brandGold file:text-brandDark hover:file:bg-brandGoldHover cursor-pointer"/>
+            </div>
+          </div>
+
+          <button type="submit" class="bg-brandGold hover:bg-brandGoldHover text-brandDark font-bold px-6 py-2 rounded-lg text-sm w-full transition">
+            Publish to Neighborhood
+          </button>
+        </form>
+      </div>
+
+      <!-- POST CARD EXAMPLE -->
+      <div class="bg-brandCard p-5 rounded-xl border border-gray-800 shadow space-y-4">
+        <div class="flex items-center space-x-3">
+          <div class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center font-bold text-brandGold border border-yellow-600/30">
+            JD
+          </div>
+          <div>
+            <h4 class="font-bold text-gray-100">Treasure Valley Local</h4>
+            <p class="text-xs text-gray-400">Caldwell / Nampa • 15 mins ago</p>
+          </div>
+        </div>
+
+        <p class="text-sm text-gray-300">
+          Giving away a set of wooden plant stands and clean river stone pots. Free for local pickup!
+        </p>
+
+        <!-- Media Preview Area -->
+        <div class="bg-brandDark h-48 rounded-lg flex items-center justify-center text-gray-500 text-sm border border-gray-800">
+          [ 📸 Up to 10 Images + 🎥 1 Video Gallery Preview ]
+        </div>
+
+        <!-- ACTIONS -->
+        <div class="flex items-center justify-between border-t border-gray-800 pt-3 text-xs text-gray-400">
+          <button onclick="toggleComments('commentSec1')" class="hover:text-brandGold transition flex items-center space-x-1">
+            <span>💬 Comment</span>
+          </button>
+          <button onclick="openChat('Treasure Valley Local')" class="bg-yellow-500/10 text-brandGold border border-brandGold/40 px-3 py-1.5 rounded-md font-semibold hover:bg-brandGold hover:text-brandDark transition">
+            ✉️ Private Chat
+          </button>
+        </div>
+
+        <!-- COMMENTS SECTION -->
+        <div id="commentSec1" class="hidden space-y-2 pt-2 border-t border-gray-800/50">
+          <div class="bg-brandDark p-2.5 rounded-lg text-xs text-gray-300">
+            <span class="font-bold text-brandGold">Neighbor:</span> I can come pick these up this afternoon!
+          </div>
+          <div class="flex space-x-2">
+            <input type="text" placeholder="Write a comment..." class="bg-brandDark border border-gray-700 rounded-lg px-3 py-1.5 text-xs w-full text-gray-200 focus:outline-none focus:border-brandGold">
+            <button class="bg-brandGold text-brandDark px-3 py-1.5 rounded-lg text-xs font-bold">Reply</button>
+          </div>
+        </div>
+      </div>
+
+    </section>
+  </main>
+
+  <!-- AUTHENTICATION & HUMAN CHECK MODAL -->
+  <div id="authModal" class="fixed inset-0 bg-black/80 hidden items-center justify-center z-50 p-4">
+    <div class="bg-brandCard p-6 rounded-2xl max-w-md w-full border border-gray-800 space-y-4 shadow-2xl">
+      <div class="flex justify-between items-center">
+        <h3 class="text-xl font-bold text-brandGold">Join NextFreeDoor</h3>
+        <button onclick="closeModal('authModal')" class="text-gray-400 hover:text-white text-lg">✕</button>
+      </div>
+
+      <form onsubmit="handleAuth(event)" class="space-y-3">
+        <input type="text" placeholder="Full Name" class="w-full bg-brandDark border border-gray-700 rounded-lg p-2.5 text-sm text-gray-200 focus:outline-none focus:border-brandGold" required>
+        <input type="email" placeholder="Email Address" class="w-full bg-brandDark border border-gray-700 rounded-lg p-2.5 text-sm text-gray-200 focus:outline-none focus:border-brandGold" required>
+        <input type="password" placeholder="Password" class="w-full bg-brandDark border border-gray-700 rounded-lg p-2.5 text-sm text-gray-200 focus:outline-none focus:border-brandGold" required>
+
+        <!-- HUMAN VERIFICATION CHECK -->
+        <div class="flex items-center space-x-3 bg-brandDark p-3 rounded-lg border border-gray-800">
+          <input type="checkbox" id="humanCheck" class="w-4 h-4 accent-yellow-500 rounded cursor-pointer" required>
+          <label for="humanCheck" class="text-xs text-gray-300 font-medium cursor-pointer">
+            I confirm that I am a real human resident.
+          </label>
+        </div>
+
+        <button type="submit" class="w-full bg-brandGold hover:bg-brandGoldHover text-brandDark font-bold py-2.5 rounded-lg text-sm transition">
+          Create Account
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- PRIVATE CHAT MODAL -->
+  <div id="chatModal" class="fixed inset-0 bg-black/80 hidden items-center justify-center z-50 p-4">
+    <div class="bg-brandCard p-6 rounded-2xl max-w-md w-full border border-gray-800 space-y-4 shadow-2xl">
+      <div class="flex justify-between items-center">
+        <h3 class="text-lg font-bold text-brandGold" id="chatTitle">Private Chat</h3>
+        <button onclick="closeModal('chatModal')" class="text-gray-400 hover:text-white text-lg">✕</button>
+      </div>
+
+      <div class="h-48 bg-brandDark rounded-lg p-3 overflow-y-auto border border-gray-800 text-xs space-y-2 text-gray-300">
+        <p class="text-gray-500 text-center italic">Beginning of private message history...</p>
+      </div>
+
+      <div class="flex space-x-2">
+        <input type="text" placeholder="Type a message..." class="bg-brandDark border border-gray-700 rounded-lg px-3 py-2 text-xs w-full text-gray-200 focus:outline-none focus:border-brandGold">
+        <button class="bg-brandGold text-brandDark px-4 py-2 rounded-lg text-xs font-bold">Send</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="bg-brandCard border-t border-gray-800 py-4 text-center text-xs text-gray-500">
+    © 2026 NextFreeDoor.com • Your neighborhood. Your marketplace. | <a href="https://ko-fi.com/nextfreedoor" target="_blank" class="text-brandGold hover:underline">Support on Ko-fi</a>
+  </footer>
+
+  <!-- INTERACTIVE JS -->
+  <script>
+    function openModal(id) {
+      document.getElementById(id).classList.remove('hidden');
+      document.getElementById(id).classList.add('flex');
+    }
+
+    function closeModal(id) {
+      document.getElementById(id).classList.add('hidden');
+      document.getElementById(id).classList.remove('flex');
+    }
+
+    function toggleComments(id) {
+      document.getElementById(id).classList.toggle('hidden');
+    }
+
+    function openChat(userName) {
+      document.getElementById('chatTitle').innerText = 'Private Chat with ' + userName;
+      openModal('chatModal');
+    }
+
+    function handleAuth(e) {
+      e.preventDefault();
+      alert('Account created successfully!');
+      closeModal('authModal');
+    }
+
+    function handlePostSubmit(e) {
+      e.preventDefault();
+      alert('Post created with media attachments!');
+    }
+  </script>
+</body>
+</html>
