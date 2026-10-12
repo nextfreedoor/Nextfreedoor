@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -39,7 +38,6 @@
     </script>
 
     <style>
-        /* Base Styling & Smooth Scrolling */
         html {
             scroll-behavior: smooth;
         }
@@ -53,7 +51,7 @@
             position: relative;
         }
 
-        /* Sunburst Ambient Background Rays & Glow matching screenshot */
+        /* Sunburst Ambient Background Rays */
         .sunburst-container {
             position: fixed;
             top: 0;
@@ -76,7 +74,6 @@
             filter: blur(20px);
         }
 
-        /* Radial Beams Overlay Simulation */
         .sunburst-beams {
             position: absolute;
             top: -200px;
@@ -104,7 +101,6 @@
             -webkit-mask-image: radial-gradient(circle at 50% 0%, rgba(0,0,0,1) 10%, rgba(0,0,0,0) 80%);
         }
 
-        /* Sparkle Particle Overlay Effect */
         .particles-overlay {
             position: absolute;
             inset: 0;
@@ -121,7 +117,6 @@
             opacity: 0.6;
         }
 
-        /* Custom Cards & Glow Borders */
         .gold-border-card {
             background-color: rgba(20, 38, 31, 0.92);
             border: 1px solid rgba(255, 199, 44, 0.45);
@@ -136,7 +131,6 @@
             box-shadow: 0 12px 35px rgba(0, 0, 0, 0.6), 0 0 15px rgba(255, 199, 44, 0.25);
         }
 
-        /* Button Glows */
         .btn-gold {
             background: linear-gradient(180deg, #FFD700 0%, #FFC72C 100%);
             color: #0B1914;
@@ -168,7 +162,6 @@
             box-shadow: 0 0 12px rgba(255, 199, 44, 0.3);
         }
 
-        /* Scrollbar styling */
         ::-webkit-scrollbar {
             width: 8px;
         }
@@ -186,7 +179,6 @@
 </head>
 <body class="min-h-screen flex flex-col justify-between selection:bg-brandGold selection:text-brandDark relative">
 
-    <!-- Ambient Sunburst Header Layer -->
     <div class="sunburst-container">
         <div class="sunburst-beams"></div>
         <div class="sunburst-glow"></div>
@@ -199,8 +191,8 @@
             
             <!-- Site Logo & Tagline -->
             <a href="javascript:void(0)" onclick="switchView('home')" class="flex items-center space-x-3 group">
-                <div class="w-11 h-11 bg-gradient-to-br from-brandGold to-yellow-600 rounded-xl flex items-center justify-center shadow-lg shadow-yellow-500/20 group-hover:scale-105 transition">
-                    <i class="fa-solid fa-house-chimney-window text-brandDark text-2xl"></i>
+                <div class="w-11 h-11 bg-gradient-to-br from-brandGold to-yellow-600 rounded-xl flex items-center justify-center shadow-lg shadow-yellow-500/20 group-hover:scale-105 transition overflow-hidden p-1">
+                    <img src="Screenshot_20261005_130640.png" alt="NextFreeDoor Logo" class="w-full h-full object-cover rounded-lg" onerror="this.onerror=null; this.src='https://placehold.co/100x100/FFC72C/0B1914?text=NFD';">
                 </div>
                 <div>
                     <h1 class="text-xl font-extrabold tracking-tight text-white flex items-center gap-1">
@@ -216,7 +208,6 @@
                     <i class="fa-solid fa-mug-hot text-brandGold"></i> Ko-fi
                 </a>
 
-                <!-- Dynamic Auth Buttons -->
                 <div id="nav-logged-out" class="flex items-center gap-2">
                     <button onclick="openAuthModal('signin')" class="btn-outline-gold px-3.5 py-1.5 text-xs">
                         Sign In
@@ -263,16 +254,16 @@
             <!-- Quick Filter Pill Navigation -->
             <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5 pt-4">
                 <button onclick="filterCategory('For Sale')" class="p-2.5 rounded-xl bg-brandCard/80 border border-yellow-500/30 text-xs font-semibold text-white hover:border-brandGold hover:bg-yellow-500/10 transition flex items-center justify-center gap-2">
-                    <i class="fa-solid fa-house-chimney text-brandGold"></i> BUY / SELL / TRADE
+                    <i class="fa-solid fa-house-chimney text-brandGold"></i> FOR SALE
                 </button>
                 <button onclick="filterCategory('Free')" class="p-2.5 rounded-xl bg-brandCard/80 border border-yellow-500/30 text-xs font-semibold text-white hover:border-brandGold hover:bg-yellow-500/10 transition flex items-center justify-center gap-2">
-                    <i class="fa-solid fa-gift text-brandGold"></i> FREE STUFF
+                    <i class="fa-solid fa-gift text-brandGold"></i> FOR FREE
                 </button>
-                <button onclick="filterCategory('Looking for Work')" class="p-2.5 rounded-xl bg-brandCard/80 border border-yellow-500/30 text-xs font-semibold text-white hover:border-brandGold hover:bg-yellow-500/10 transition flex items-center justify-center gap-2">
-                    <i class="fa-solid fa-briefcase text-brandGold"></i> JOBS & SIDE GIGS
+                <button onclick="filterCategory('Looking for Hire')" class="p-2.5 rounded-xl bg-brandCard/80 border border-yellow-500/30 text-xs font-semibold text-white hover:border-brandGold hover:bg-yellow-500/10 transition flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-briefcase text-brandGold"></i> LOOKING FOR HIRE
                 </button>
                 <button onclick="filterCategory('Post as Ad/News/Advice Needed')" class="p-2.5 rounded-xl bg-brandCard/80 border border-yellow-500/30 text-xs font-semibold text-white hover:border-brandGold hover:bg-yellow-500/10 transition flex items-center justify-center gap-2">
-                    <i class="fa-solid fa-users text-brandGold"></i> LOCAL COMMUNITY
+                    <i class="fa-solid fa-bullhorn text-brandGold"></i> NEWS / ADVICE WANTED
                 </button>
             </div>
             
@@ -285,11 +276,9 @@
 
         <!-- VIEW 1: HOME PAGE FEED & POSTING DASHBOARD -->
         <div id="view-home" class="space-y-8">
-
-            <!-- Main Layout Grid: Sidebar Categories + Create Post Box + Feed -->
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
 
-                <!-- Left Sidebar: Browse Categories (4 Cols) -->
+                <!-- Left Sidebar: Browse Categories -->
                 <aside class="lg:col-span-4 space-y-6">
                     <div class="gold-border-card p-5 space-y-4">
                         <h3 class="text-brandGold font-extrabold text-sm uppercase tracking-wider flex items-center justify-between border-b border-brandBorder pb-3">
@@ -303,44 +292,32 @@
                                 </button>
                             </li>
                             <li>
-                                <button onclick="filterCategory('Free')" class="w-full text-left p-3 rounded-xl hover:bg-yellow-500/10 text-white flex items-center justify-between transition group">
-                                    <span class="flex items-center gap-3"><i class="fa-solid fa-box-open text-brandGold w-4"></i> Free Items</span>
-                                    <i class="fa-solid fa-chevron-right text-xs text-brandGold opacity-70 group-hover:translate-x-1 transition"></i>
-                                </button>
-                            </li>
-                            <li>
                                 <button onclick="filterCategory('For Sale')" class="w-full text-left p-3 rounded-xl hover:bg-yellow-500/10 text-white flex items-center justify-between transition group">
                                     <span class="flex items-center gap-3"><i class="fa-solid fa-tag text-brandGold w-4"></i> For Sale</span>
                                     <i class="fa-solid fa-chevron-right text-xs text-brandGold opacity-70 group-hover:translate-x-1 transition"></i>
                                 </button>
                             </li>
                             <li>
-                                <button onclick="filterCategory('Trade')" class="w-full text-left p-3 rounded-xl hover:bg-yellow-500/10 text-white flex items-center justify-between transition group">
-                                    <span class="flex items-center gap-3"><i class="fa-solid fa-arrow-rotate-left text-brandGold w-4"></i> Trade / Swap</span>
+                                <button onclick="filterCategory('Looking for Hire')" class="w-full text-left p-3 rounded-xl hover:bg-yellow-500/10 text-white flex items-center justify-between transition group">
+                                    <span class="flex items-center gap-3"><i class="fa-solid fa-user-plus text-brandGold w-4"></i> Looking for Hire</span>
                                     <i class="fa-solid fa-chevron-right text-xs text-brandGold opacity-70 group-hover:translate-x-1 transition"></i>
                                 </button>
                             </li>
                             <li>
-                                <button onclick="filterCategory('Gigs & Side Jobs')" class="w-full text-left p-3 rounded-xl hover:bg-yellow-500/10 text-white flex items-center justify-between transition group">
-                                    <span class="flex items-center gap-3"><i class="fa-solid fa-briefcase text-brandGold w-4"></i> Gigs & Side Jobs</span>
-                                    <i class="fa-solid fa-chevron-right text-xs text-brandGold opacity-70 group-hover:translate-x-1 transition"></i>
-                                </button>
-                            </li>
-                            <li>
-                                <button onclick="filterCategory('Looking for Work')" class="w-full text-left p-3 rounded-xl hover:bg-yellow-500/10 text-white flex items-center justify-between transition group">
-                                    <span class="flex items-center gap-3"><i class="fa-solid fa-user-check text-brandGold w-4"></i> Looking for Work</span>
-                                    <i class="fa-solid fa-chevron-right text-xs text-brandGold opacity-70 group-hover:translate-x-1 transition"></i>
-                                </button>
-                            </li>
-                            <li>
-                                <button onclick="filterCategory('Looking to Hire')" class="w-full text-left p-3 rounded-xl hover:bg-yellow-500/10 text-white flex items-center justify-between transition group">
-                                    <span class="flex items-center gap-3"><i class="fa-solid fa-user-plus text-brandGold w-4"></i> Looking to Hire</span>
+                                <button onclick="filterCategory('Advertising for Businesses')" class="w-full text-left p-3 rounded-xl hover:bg-yellow-500/10 text-white flex items-center justify-between transition group">
+                                    <span class="flex items-center gap-3"><i class="fa-solid fa-store text-brandGold w-4"></i> Advertising for Businesses</span>
                                     <i class="fa-solid fa-chevron-right text-xs text-brandGold opacity-70 group-hover:translate-x-1 transition"></i>
                                 </button>
                             </li>
                             <li>
                                 <button onclick="filterCategory('Post as Ad/News/Advice Needed')" class="w-full text-left p-3 rounded-xl hover:bg-yellow-500/10 text-white flex items-center justify-between transition group">
-                                    <span class="flex items-center gap-3"><i class="fa-solid fa-bullhorn text-brandGold w-4"></i> Post as Ad / News / Advice</span>
+                                    <span class="flex items-center gap-3"><i class="fa-solid fa-bullhorn text-brandGold w-4"></i> News / Advice Wanted</span>
+                                    <i class="fa-solid fa-chevron-right text-xs text-brandGold opacity-70 group-hover:translate-x-1 transition"></i>
+                                </button>
+                            </li>
+                            <li>
+                                <button onclick="filterCategory('Free')" class="w-full text-left p-3 rounded-xl hover:bg-yellow-500/10 text-white flex items-center justify-between transition group">
+                                    <span class="flex items-center gap-3"><i class="fa-solid fa-gift text-brandGold w-4"></i> For Free</span>
                                     <i class="fa-solid fa-chevron-right text-xs text-brandGold opacity-70 group-hover:translate-x-1 transition"></i>
                                 </button>
                             </li>
@@ -351,7 +328,6 @@
                     <div class="gold-border-card p-4 text-center space-y-2 overflow-hidden">
                         <span class="text-[10px] text-gray-400 uppercase tracking-wider block">SPONSORED ADVERTISEMENT</span>
                         <div class="min-h-[250px] flex items-center justify-center bg-brandDark/50 rounded-xl border border-brandBorder">
-                            <!-- NextFreeDoor AdSense Display Unit -->
                             <ins class="adsbygoogle"
                                  style="display:block; width:100%;"
                                  data-ad-client="ca-pub-6940277987635940"
@@ -365,16 +341,16 @@
                     </div>
                 </aside>
 
-                <!-- Right Side: Create Post Form & Feed (8 Cols) -->
+                <!-- Right Side: Create Post Form & Feed -->
                 <div class="lg:col-span-8 space-y-6">
 
-                    <!-- Create New Post Card Component (Matching Split Form Layout) -->
+                    <!-- Create New Post Card Component -->
                     <div id="create-post-section" class="gold-border-card p-6 space-y-5">
                         <div class="border-b border-brandBorder pb-3 flex items-center justify-between">
                             <h3 class="text-lg font-bold text-white flex items-center gap-2">
                                 <i class="fa-solid fa-circle-plus text-brandGold"></i> Create New Post
                             </h3>
-                            <span class="text-xs text-brandGlow">Free Local Publishing</span>
+                            <span class="text-xs text-brandGlow">Sign-in Required to Publish</span>
                         </div>
 
                         <form id="create-post-form" onsubmit="handleCreatePost(event)" class="space-y-4">
@@ -391,13 +367,11 @@
                                 <div>
                                     <label class="block text-xs font-bold text-yellow-300 uppercase mb-1">Select Category</label>
                                     <select id="post-category" required class="w-full bg-brandDark/80 border border-yellow-500/40 rounded-lg p-3 text-white text-sm focus:outline-none focus:border-brandGold">
-                                        <option value="Free" class="bg-brandDark text-white">Free</option>
                                         <option value="For Sale" class="bg-brandDark text-white">For Sale</option>
-                                        <option value="Trade" class="bg-brandDark text-white">Trade</option>
-                                        <option value="Gigs & Side Jobs" class="bg-brandDark text-white">Gigs & Side Jobs</option>
-                                        <option value="Looking for Work" class="bg-brandDark text-white">Looking for Work</option>
-                                        <option value="Looking to Hire" class="bg-brandDark text-white">Looking to Hire</option>
-                                        <option value="Post as Ad/News/Advice Needed" class="bg-brandDark text-white">Post as Ad/News/Advice Needed</option>
+                                        <option value="Looking for Hire" class="bg-brandDark text-white">Looking for Hire</option>
+                                        <option value="Advertising for Businesses" class="bg-brandDark text-white">Advertising for Businesses</option>
+                                        <option value="Post as Ad/News/Advice Needed" class="bg-brandDark text-white">News / Advice Wanted</option>
+                                        <option value="Free" class="bg-brandDark text-white">For Free</option>
                                     </select>
                                 </div>
                             </div>
@@ -410,6 +384,14 @@
                             <div>
                                 <label class="block text-xs font-bold text-yellow-300 uppercase mb-1">Add Video <span class="text-gray-400 font-normal">(Optional)</span></label>
                                 <input type="file" id="post-video" accept="video/*" class="w-full text-xs text-gray-300 bg-brandDark/80 border border-yellow-500/40 rounded-lg p-2.5 file:mr-3 file:py-1 file:px-3 file:rounded-md file:border-0 file:text-xs file:font-semibold file:bg-brandBorder file:text-white hover:file:bg-brandGold hover:file:text-brandDark cursor-pointer">
+                            </div>
+
+                            <!-- "I am human" Checkbox Bot Protection -->
+                            <div class="flex items-center gap-3 p-3 rounded-lg bg-brandDark border border-yellow-500/30">
+                                <input type="checkbox" id="human-checkbox" required class="w-4 h-4 text-brandGold rounded border-yellow-500/40 bg-brandDark focus:ring-brandGold cursor-pointer">
+                                <label for="human-checkbox" class="text-xs text-yellow-200 font-semibold cursor-pointer select-none flex items-center gap-2">
+                                    <i class="fa-solid fa-shield-halved text-brandGold"></i> I am human (verify to block automated spam bots)
+                                </label>
                             </div>
 
                             <button type="submit" class="btn-gold w-full py-3.5 text-sm uppercase tracking-wider font-extrabold shadow-lg">
@@ -456,9 +438,7 @@
                 <h3 class="text-lg font-bold text-white flex items-center gap-2 border-b border-brandBorder pb-2">
                     <i class="fa-solid fa-list-check text-brandGold"></i> My Active Listings & Posts
                 </h3>
-                <div id="my-listings-container" class="space-y-3">
-                    <!-- Populated dynamically -->
-                </div>
+                <div id="my-listings-container" class="space-y-3"></div>
             </div>
         </div>
 
@@ -473,7 +453,6 @@
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <!-- Sidebar Thread List -->
                     <div class="md:col-span-1 space-y-2 border-r border-brandBorder pr-0 md:pr-4">
                         <div onclick="switchChatUser('Sarah J.')" class="p-3 rounded-xl bg-brandDark/90 border border-brandGold cursor-pointer hover:bg-yellow-500/10 transition">
                             <div class="flex items-center justify-between mb-1">
@@ -484,7 +463,6 @@
                         </div>
                     </div>
 
-                    <!-- Chat Window Box -->
                     <div class="md:col-span-2 flex flex-col justify-between bg-brandDark/60 rounded-xl p-4 border border-brandBorder min-h-[350px]">
                         <div class="pb-3 border-b border-brandBorder mb-4 flex justify-between items-center">
                             <span id="active-chat-partner" class="text-xs font-bold text-white flex items-center gap-2">
@@ -577,21 +555,19 @@
         <div class="max-w-7xl mx-auto px-4 space-y-2">
             <p>&copy; 2026 NextFreeDoor.com &bull; Your Neighborhood, Your Free Marketplace</p>
             <div class="flex items-center justify-center gap-4 text-[11px] text-brandGlow">
-                <a href="javascript:void(0)" onclick="filterCategory('Free')" class="hover:underline">Free Stuff</a>
+                <a href="javascript:void(0)" onclick="filterCategory('Free')" class="hover:underline">For Free</a>
                 <span>&bull;</span>
                 <a href="javascript:void(0)" onclick="filterCategory('For Sale')" class="hover:underline">For Sale</a>
                 <span>&bull;</span>
-                <a href="javascript:void(0)" onclick="filterCategory('Gigs & Side Jobs')" class="hover:underline">Gigs & Jobs</a>
+                <a href="javascript:void(0)" onclick="filterCategory('Looking for Hire')" class="hover:underline">Looking for Hire</a>
             </div>
         </div>
     </footer>
 
     <script>
-        // App State
         let currentUser = null;
         let authMode = 'signin';
 
-        // Sample Marketplace Initial Data
         let listings = [
             {
                 id: 1,
@@ -599,6 +575,7 @@
                 category: 'Free',
                 description: 'Solid wood vintage table in good condition. Free to whoever can pick it up near Maple Street this afternoon!',
                 photos: ['https://placehold.co/600x400/14261F/FFC72C?text=Oak+Dining+Table'],
+                video: '',
                 author: 'Sarah Jenkins',
                 date: '1 hour ago',
                 comments: [
@@ -611,6 +588,7 @@
                 category: 'For Sale',
                 description: 'Runs perfectly, fresh oil change and tuned blade. Asking $120 cash or trade for tools.',
                 photos: ['https://placehold.co/600x400/14261F/FFC72C?text=Honda+Lawnmower'],
+                video: '',
                 author: 'Dave Miller',
                 date: '3 hours ago',
                 comments: []
@@ -618,9 +596,10 @@
             {
                 id: 3,
                 title: 'Experienced Handyman Available for Side Gigs',
-                category: 'Looking for Work',
+                category: 'Looking for Hire',
                 description: 'Available for light plumbing, drywall patch, fence repair, and power washing. Local resident with references.',
                 photos: ['https://placehold.co/600x400/14261F/FFC72C?text=Handyman+Services'],
+                video: '',
                 author: 'Alex Rivera',
                 date: '5 hours ago',
                 comments: []
@@ -631,13 +610,13 @@
                 category: 'Post as Ad/News/Advice Needed',
                 description: 'Join us this Saturday at Oak Park for our neighborhood potluck and games! Everyone is welcome.',
                 photos: ['https://placehold.co/600x400/14261F/FFC72C?text=Block+Party+News'],
+                video: '',
                 author: 'Community Board',
                 date: '1 day ago',
                 comments: []
             }
         ];
 
-        // Switch main views
         function switchView(viewName) {
             document.getElementById('view-home').classList.add('hidden');
             document.getElementById('view-account').classList.add('hidden');
@@ -664,7 +643,6 @@
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        // Scroll smoothly to post box
         function scrollToPostForm() {
             switchView('home');
             setTimeout(() => {
@@ -672,7 +650,6 @@
             }, 100);
         }
 
-        // Auth Modal Handlers
         function openAuthModal(mode) {
             authMode = mode;
             const modal = document.getElementById('auth-modal');
@@ -740,7 +717,6 @@
             }
         }
 
-        // Render Feed
         function renderListings(items) {
             const container = document.getElementById('listings-feed-container');
             document.getElementById('feed-count-badge').innerText = `Showing ${items.length} listing(s)`;
@@ -799,9 +775,16 @@
             }
         }
 
-        // Post Form Submission
         function handleCreatePost(e) {
             e.preventDefault();
+
+            // Strict Auth Guard check
+            if (!currentUser) {
+                openAuthModal('signin');
+                showToast('Sign In Required', 'Please sign in or sign up before publishing a listing.');
+                return;
+            }
+
             const title = document.getElementById('post-title').value;
             const category = document.getElementById('post-category').value;
             const description = document.getElementById('post-description').value;
@@ -812,7 +795,8 @@
                 category: category,
                 description: description,
                 photos: ['https://placehold.co/600x400/14261F/FFC72C?text=' + encodeURIComponent(title)],
-                author: currentUser ? currentUser.name : 'Neighbor',
+                video: '',
+                author: currentUser.name,
                 date: 'Just now',
                 comments: []
             };
@@ -823,7 +807,6 @@
             filterCategory('All');
         }
 
-        // Single Post Detail & Comments View
         function viewPostDetail(id) {
             const item = listings.find(i => i.id === id);
             if (!item) return;
@@ -887,6 +870,7 @@
             e.preventDefault();
             if (!currentUser) {
                 openAuthModal('signin');
+                showToast('Sign In Required', 'Please sign in to comment on posts.');
                 return;
             }
             const input = document.getElementById('comment-input');
@@ -898,7 +882,6 @@
             }
         }
 
-        // Account Dashboard View
         function renderMyAccount() {
             const container = document.getElementById('my-listings-container');
             document.getElementById('account-name-display').innerText = currentUser.name;
@@ -940,10 +923,10 @@
             renderMyAccount();
         }
 
-        // Messaging
         function openChatWith(author) {
             if (!currentUser) {
                 openAuthModal('signin');
+                showToast('Sign In Required', 'Please sign in to message neighbors.');
                 return;
             }
             switchView('messages');
@@ -967,7 +950,6 @@
             }
         }
 
-        // Toast Feedback System
         function showToast(title, msg) {
             const toast = document.getElementById('toast-notif');
             document.getElementById('toast-title').innerText = title;
@@ -979,11 +961,9 @@
             }, 3000);
         }
 
-        // Initial Load
         window.onload = function() {
             renderListings(listings);
         };
     </script>
 </body>
 </html>
-```
