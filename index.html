@@ -66,4 +66,454 @@
             position: absolute;
             top: -220px; left: 50%;
             transform: translateX(-50%);
-            width: 1500px; height:
+            width: 1500px; height: 750px;
+            background: conic-gradient(
+                from 180deg at 50% 0%,
+                rgba(255, 223, 100, 0.14) 0deg, transparent 15deg,
+                rgba(255, 215, 0, 0.12) 30deg, transparent 45deg,
+                rgba(255, 223, 100, 0.16) 60deg, transparent 75deg,
+                rgba(255, 215, 0, 0.13) 90deg, transparent 105deg,
+                rgba(255, 223, 100, 0.11) 120deg, transparent 135deg,
+                rgba(255, 215, 0, 0.13) 150deg, transparent 165deg,
+                rgba(255, 223, 100, 0.09) 180deg
+            );
+            mask-image: radial-gradient(circle at 50% 0%, rgba(0,0,0,1) 10%, rgba(0,0,0,0) 80%);
+            -webkit-mask-image: radial-gradient(circle at 50% 0%, rgba(0,0,0,1) 10%, rgba(0,0,0,0) 80%);
+        }
+
+        .gold-border-card {
+            background-color: rgba(20, 38, 31, 0.92);
+            border: 1px solid rgba(255, 199, 44, 0.4);
+            border-radius: 1rem;
+            backdrop-filter: blur(12px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .btn-gold {
+            background: linear-gradient(180deg, #FFD700 0%, #FFC72C 100%);
+            color: #0B1914;
+            font-weight: 700;
+            border-radius: 0.625rem;
+            box-shadow: 0 0 15px rgba(255, 199, 44, 0.3);
+            transition: all 0.2s ease-in-out;
+        }
+        .btn-gold:hover {
+            background: linear-gradient(180deg, #FFE44D 0%, #E5B120 100%);
+            box-shadow: 0 0 22px rgba(255, 199, 44, 0.55);
+        }
+
+        .btn-outline-gold {
+            background: rgba(20, 38, 31, 0.7);
+            border: 1px solid rgba(255, 199, 44, 0.5);
+            color: #FFC72C;
+            font-weight: 600;
+            border-radius: 0.625rem;
+            transition: all 0.2s ease-in-out;
+        }
+        .btn-outline-gold:hover {
+            background: rgba(255, 199, 44, 0.15);
+            color: #FFFFFF;
+        }
+
+        /* Door logo hero */
+        .door-hero {
+            max-width: 320px;
+            filter: drop-shadow(0 0 25px rgba(255, 199, 44, 0.45));
+        }
+    </style>
+</head>
+<body class="flex flex-col justify-between selection:bg-brandGold selection:text-brandDark relative">
+
+    <!-- Background rays -->
+    <div class="sunburst-container">
+        <div class="sunburst-beams"></div>
+        <div class="sunburst-glow"></div>
+    </div>
+
+    <!-- Header -->
+    <header class="sticky top-0 z-50 bg-brandDark/90 backdrop-blur-md border-b border-brandBorder px-4 py-3">
+        <div class="max-w-6xl mx-auto flex items-center justify-between">
+            <a href="javascript:void(0)" onclick="switchView('home')" class="flex items-center space-x-3 group">
+                <div class="w-11 h-11 rounded-xl overflow-hidden border border-yellow-500/40 shadow bg-brandCard flex items-center justify-center p-0.5 group-hover:scale-105 transition">
+                    <!-- Door logo in header -->
+                    <img src="Screenshot_20261012_014012.png" alt="NextFreeDoor" class="w-full h-full object-cover rounded-lg">
+                </div>
+                <div>
+                    <h1 class="text-lg font-extrabold text-white leading-tight">NextFree<span class="text-brandGold">Door</span></h1>
+                    <span class="text-[10px] text-brandGlow">Treasure Valley Community</span>
+                </div>
+            </a>
+
+            <div class="flex items-center gap-2.5">
+                <!-- Your Ko-fi link (replace with real one) -->
+                <a href="https://ko-fi.com/YOURUSERNAME" target="_blank" class="px-3 py-1.5 rounded-lg border border-yellow-500/40 text-yellow-400 text-xs font-semibold hover:bg-yellow-500/10 transition flex items-center gap-1.5">
+                    <i class="fa-solid fa-mug-hot text-brandGold"></i> Ko-fi
+                </a>
+
+                <div id="nav-logged-out" class="flex items-center gap-2">
+                    <button onclick="openAuthModal()" class="btn-outline-gold px-3.5 py-1.5 text-xs">Log in</button>
+                    <button onclick="openAuthModal()" class="btn-gold px-3.5 py-1.5 text-xs">Sign up</button>
+                </div>
+
+                <div id="nav-logged-in" class="hidden flex items-center gap-2">
+                    <button onclick="switchView('account')" class="btn-outline-gold px-3 py-1.5 text-xs"><i class="fa-solid fa-user"></i> Account</button>
+                    <button onclick="signOut()" class="px-2.5 py-1.5 rounded-lg bg-red-950/40 border border-red-500/40 text-red-400 text-xs" title="Sign Out"><i class="fa-solid fa-right-from-bracket"></i></button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main -->
+    <main class="relative z-10 max-w-6xl mx-auto w-full p-4 space-y-6 flex-grow">
+
+        <!-- Category buttons -->
+        <div class="grid grid-cols-2 sm:grid-cols-5 gap-2">
+            <button onclick="filterCategory('For Sale')" class="gold-border-card p-3 text-center text-xs font-bold text-white hover:border-brandGold transition">
+                <i class="fa-solid fa-tag text-brandGold block mb-1 text-sm"></i> For Sale
+            </button>
+            <button onclick="filterCategory('Looking for Hire')" class="gold-border-card p-3 text-center text-xs font-bold text-white hover:border-brandGold transition">
+                <i class="fa-solid fa-briefcase text-brandGold block mb-1 text-sm"></i> Looking for Hire
+            </button>
+            <button onclick="filterCategory('Advertising for Businesses')" class="gold-border-card p-3 text-center text-xs font-bold text-white hover:border-brandGold transition">
+                <i class="fa-solid fa-store text-brandGold block mb-1 text-sm"></i> Advertising for Businesses
+            </button>
+            <button onclick="filterCategory('News / Advice Wanted')" class="gold-border-card p-3 text-center text-xs font-bold text-white hover:border-brandGold transition">
+                <i class="fa-solid fa-bullhorn text-brandGold block mb-1 text-sm"></i> News / Advice Wanted
+            </button>
+            <button onclick="filterCategory('For Free')" class="gold-border-card p-3 text-center text-xs font-bold text-white hover:border-brandGold transition col-span-2 sm:col-span-1">
+                <i class="fa-solid fa-gift text-brandGold block mb-1 text-sm"></i> For Free
+            </button>
+        </div>
+
+        <!-- HOME VIEW -->
+        <div id="view-home" class="grid grid-cols-1 md:grid-cols-3 gap-6">
+
+            <!-- Left: Post form + AdSense -->
+            <div class="md:col-span-1 space-y-4">
+                <div class="gold-border-card p-4 space-y-3 sticky top-20">
+                    <h3 class="text-xs font-bold text-brandGold uppercase tracking-wider flex items-center gap-2 border-b border-brandBorder pb-2">
+                        <i class="fa-solid fa-circle-plus"></i> What's happening, neighbor?
+                    </h3>
+                    <form onsubmit="handleCreatePost(event)" class="space-y-3 text-xs">
+                        <div>
+                            <label class="block text-gray-300 font-semibold mb-1">Post Title *</label>
+                            <input type="text" id="post-title" required placeholder="What are you offering or asking?" class="w-full bg-brandDark border border-yellow-500/30 rounded p-2.5 text-white focus:border-brandGold outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-gray-300 font-semibold mb-1">Category *</label>
+                            <select id="post-category" class="w-full bg-brandDark border border-yellow-500/30 rounded p-2.5 text-white focus:border-brandGold outline-none">
+                                <option value="For Sale">For Sale</option>
+                                <option value="Looking for Hire">Looking for Hire</option>
+                                <option value="Advertising for Businesses">Advertising for Businesses</option>
+                                <option value="News / Advice Wanted">News / Advice Wanted</option>
+                                <option value="For Free">For Free</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-gray-300 font-semibold mb-1">Upload Photos *</label>
+                            <input type="file" id="post-photos" accept="image/*" required class="w-full text-[11px] text-gray-400 file:mr-2 file:py-1 file:px-2 file:rounded file:border-0 file:bg-brandGold file:text-brandDark file:font-bold cursor-pointer">
+                        </div>
+                        <div>
+                            <label class="block text-gray-300 font-semibold mb-1">Add Video (Optional)</label>
+                            <input type="file" id="post-video" accept="video/*" class="w-full text-[11px] text-gray-400 file:mr-2 file:py-1 file:px-2 file:rounded file:border-0 file:bg-brandBorder file:text-white file:font-semibold cursor-pointer">
+                        </div>
+                        <div>
+                            <label class="block text-gray-300 font-semibold mb-1">Description *</label>
+                            <textarea id="post-description" rows="3" required placeholder="Provide details, contact info, or instructions..." class="w-full bg-brandDark border border-yellow-500/30 rounded p-2.5 text-white focus:border-brandGold outline-none"></textarea>
+                        </div>
+                        <button type="submit" class="btn-gold w-full py-3 uppercase font-extrabold tracking-wider text-xs shadow-lg">Publish Post</button>
+                    </form>
+                </div>
+
+                <!-- AdSense -->
+                <div class="gold-border-card p-3 text-center space-y-1">
+                    <span class="text-[9px] text-gray-400 uppercase tracking-widest block">SPONSORED AD</span>
+                    <div class="min-h-[220px] flex items-center justify-center bg-brandDark/50 rounded border border-brandBorder overflow-hidden">
+                        <ins class="adsbygoogle"
+                             style="display:block; width:100%;"
+                             data-ad-client="ca-pub-6940277987635940"
+                             data-ad-slot="auto"
+                             data-ad-format="auto"
+                             data-full-width-responsive="true"></ins>
+                        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right: Feed -->
+            <div class="md:col-span-2 space-y-4">
+                <!-- Door logo hero on home -->
+                <div class="gold-border-card p-6 text-center mb-2">
+                    <img src="Screenshot_20261012_014012.png" alt="NextFreeDoor" class="door-hero mx-auto mb-3">
+                    <h2 class="text-xl font-extrabold text-white">Welcome to your neighborhood</h2>
+                    <p class="text-xs text-brandGlow mt-1">Buy, sell, give away, hire, and connect — right here in the Treasure Valley</p>
+                </div>
+
+                <div class="flex items-center justify-between border-b border-brandBorder pb-2 px-1">
+                    <h3 id="feed-title" class="text-xs font-bold uppercase tracking-wider text-white">Neighborhood Feed</h3>
+                    <button onclick="filterCategory('All')" class="text-[11px] text-brandGold hover:underline font-semibold">View All Categories</button>
+                </div>
+
+                <div id="listings-container" class="space-y-4">
+                    <!-- JS fills this -->
+                </div>
+            </div>
+        </div>
+
+        <!-- DETAIL VIEW -->
+        <div id="view-detail" class="hidden max-w-3xl mx-auto space-y-4"></div>
+
+        <!-- ACCOUNT VIEW -->
+        <div id="view-account" class="hidden max-w-xl mx-auto gold-border-card p-6 space-y-4">
+            <h3 class="text-sm font-bold text-white border-b border-brandBorder pb-2">My Profile & Account</h3>
+            <div id="account-info" class="text-xs space-y-2 text-gray-300"></div>
+            <button onclick="switchView('home')" class="btn-outline-gold px-3 py-1.5 text-xs">Back to Feed</button>
+        </div>
+
+    </main>
+
+    <!-- AUTH MODAL - Google + Email only (no Apple) -->
+    <div id="auth-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden flex items-center justify-center p-4">
+        <div class="gold-border-card max-w-md w-full p-6 relative shadow-2xl space-y-4">
+            <button onclick="closeAuthModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+
+            <div class="text-center space-y-1.5">
+                <img src="Screenshot_20261012_014012.png" alt="NextFreeDoor" class="w-16 h-16 mx-auto mb-2 rounded-xl">
+                <h3 class="text-xl font-extrabold text-white">Discover your neighborhood</h3>
+                <p class="text-xs text-brandGlow">Join NextFreeDoor to connect, post, and comment</p>
+            </div>
+
+            <div class="space-y-3 pt-2">
+                <!-- Google only -->
+                <button onclick="socialLogin('Google')" class="w-full py-3 px-4 rounded-xl bg-white text-gray-900 font-bold text-xs flex items-center justify-center gap-3 shadow hover:bg-gray-100 transition">
+                    <i class="fa-brands fa-google text-red-500 text-sm"></i> Continue with Google
+                </button>
+            </div>
+
+            <div class="relative flex py-2 items-center">
+                <div class="flex-grow border-t border-brandBorder"></div>
+                <span class="flex-shrink mx-4 text-gray-400 text-[11px]">or</span>
+                <div class="flex-grow border-t border-brandBorder"></div>
+            </div>
+
+            <!-- Email -->
+            <form onsubmit="handleEmailAuth(event)" class="space-y-3 text-xs">
+                <input type="email" id="auth-email" required placeholder="Email address" class="w-full bg-brandDark border border-yellow-500/30 rounded-xl p-3 text-white outline-none focus:border-brandGold">
+                <input type="password" id="auth-password" required placeholder="Create or enter password" class="w-full bg-brandDark border border-yellow-500/30 rounded-xl p-3 text-white outline-none focus:border-brandGold">
+                <button type="submit" class="btn-gold w-full py-3 font-bold text-xs uppercase tracking-wider">Continue with Email</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="relative z-10 border-t border-brandBorder py-4 text-center text-[11px] text-gray-400 bg-brandDark">
+        &copy; 2026 NextFreeDoor.com &bull; Treasure Valley Community Marketplace
+    </footer>
+
+    <script>
+        let currentUser = null;
+        let listings = [
+            { 
+                id: 1, 
+                title: 'Solid Oak Dining Table - Free Pickup', 
+                category: 'For Free', 
+                description: 'Good condition solid wood table. First come, first served near downtown Caldwell.', 
+                photo: 'https://placehold.co/600x400/14261F/FFC72C?text=Oak+Table', 
+                video: '', 
+                author: 'Sarah J.', 
+                date: '2h ago', 
+                comments: [{ author: 'Mike M.', text: 'Is this still available for pickup today?' }] 
+            },
+            { 
+                id: 2, 
+                title: 'Professional House Cleaning Service', 
+                category: 'Advertising for Businesses', 
+                description: 'Treasure Valley Sparkle Cleaning is taking new residential and commercial clients this week!', 
+                photo: 'https://placehold.co/600x400/14261F/FFC72C?text=Cleaning+Services', 
+                video: '', 
+                author: 'Ashley S.', 
+                date: '5h ago', 
+                comments: [] 
+            }
+        ];
+
+        function switchView(view) {
+            document.getElementById('view-home').classList.add('hidden');
+            document.getElementById('view-detail').classList.add('hidden');
+            document.getElementById('view-account').classList.add('hidden');
+
+            if (view === 'home') {
+                document.getElementById('view-home').classList.remove('hidden');
+                renderListings(listings);
+            } else if (view === 'detail') {
+                document.getElementById('view-detail').classList.remove('hidden');
+            } else if (view === 'account') {
+                if (!currentUser) { openAuthModal(); return; }
+                document.getElementById('view-account').classList.remove('hidden');
+                document.getElementById('account-info').innerHTML = `
+                    <p><b>Name:</b> ${currentUser.name}</p>
+                    <p><b>Email:</b> ${currentUser.email}</p>
+                    <p class="text-brandGold pt-2 font-semibold">Status: Verified Neighbor</p>`;
+            }
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function renderListings(items) {
+            const container = document.getElementById('listings-container');
+            if (items.length === 0) {
+                container.innerHTML = `<div class="gold-border-card p-6 text-center text-xs text-gray-400">No listings found in this category. Be the first to post!</div>`;
+                return;
+            }
+            container.innerHTML = items.map(item => `
+                <div class="gold-border-card p-4 space-y-3">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center gap-2">
+                            <div class="w-8 h-8 rounded-full bg-brandGold text-brandDark font-bold flex items-center justify-center text-xs shadow">
+                                ${item.author.charAt(0)}
+                            </div>
+                            <div>
+                                <h4 class="text-xs font-bold text-white">${item.author}</h4>
+                                <span class="text-[10px] text-gray-400">${item.date} &bull; Local Neighbor</span>
+                            </div>
+                        </div>
+                        <span class="text-[10px] text-brandGold bg-brandDark px-2.5 py-1 rounded-full border border-yellow-500/30 font-semibold uppercase">${item.category}</span>
+                    </div>
+                    <div>
+                        <h3 class="text-sm font-bold text-white mb-1">${item.title}</h3>
+                        <p class="text-xs text-gray-300 line-clamp-2">${item.description}</p>
+                    </div>
+                    <div class="rounded-xl overflow-hidden border border-brandBorder h-56 bg-brandDark">
+                        <img src="${item.photo}" class="w-full h-full object-cover">
+                    </div>
+                    <div class="flex items-center justify-between pt-2 border-t border-brandBorder/60">
+                        <button onclick="viewDetail(${item.id})" class="text-xs text-brandGold hover:underline font-semibold flex items-center gap-1.5">
+                            <i class="fa-solid fa-comments"></i> Comments (${item.comments.length})
+                        </button>
+                        <button onclick="viewDetail(${item.id})" class="btn-outline-gold px-3 py-1.5 text-xs">View Full Page</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function filterCategory(cat) {
+            switchView('home');
+            document.getElementById('feed-title').innerText = cat === 'All' ? 'Neighborhood Feed' : `Category: ${cat}`;
+            renderListings(cat === 'All' ? listings : listings.filter(i => i.category === cat));
+        }
+
+        function handleCreatePost(e) {
+            e.preventDefault();
+            if (!currentUser) {
+                openAuthModal();
+                alert('Please sign in with Google or Email before publishing a post.');
+                return;
+            }
+            const title = document.getElementById('post-title').value;
+            const category = document.getElementById('post-category').value;
+            const description = document.getElementById('post-description').value;
+
+            listings.unshift({
+                id: Date.now(),
+                title, category, description,
+                photo: 'https://placehold.co/600x400/14261F/FFC72C?text=' + encodeURIComponent(title),
+                video: '',
+                author: currentUser.name,
+                date: 'Just now',
+                comments: []
+            });
+
+            document.getElementById('post-title').value = '';
+            document.getElementById('post-description').value = '';
+            filterCategory('All');
+            alert('Listing published successfully!');
+        }
+
+        function viewDetail(id) {
+            const item = listings.find(i => i.id === id);
+            if (!item) return;
+            switchView('detail');
+
+            document.getElementById('view-detail').innerHTML = `
+                <div class="gold-border-card p-6 space-y-4">
+                    <button onclick="switchView('home')" class="btn-outline-gold px-3 py-1.5 text-xs"><i class="fa-solid fa-arrow-left"></i> Back to Feed</button>
+                    <div class="flex items-center justify-between border-b border-brandBorder pb-3">
+                        <div>
+                            <span class="text-[10px] text-brandGold font-bold uppercase">${item.category}</span>
+                            <h2 class="text-base font-bold text-white mt-1">${item.title}</h2>
+                            <span class="text-[11px] text-gray-400">Posted by ${item.author} &bull; ${item.date}</span>
+                        </div>
+                    </div>
+                    <div class="rounded-xl overflow-hidden border border-brandBorder h-72 bg-brandDark">
+                        <img src="${item.photo}" class="w-full h-full object-cover">
+                    </div>
+                    <p class="text-xs text-gray-200 leading-relaxed bg-brandDark/50 p-3.5 rounded-xl border border-brandBorder">${item.description}</p>
+                    
+                    <div class="border-t border-brandBorder pt-4 space-y-3">
+                        <h4 class="text-xs font-bold text-white"><i class="fa-solid fa-comments text-brandGold"></i> Neighborhood Comments (${item.comments.length})</h4>
+                        <div class="space-y-2" id="comment-list">
+                            ${item.comments.length === 0 
+                                ? '<p class="text-[11px] text-gray-500 italic">No comments yet. Be the first neighbor to reply!</p>' 
+                                : item.comments.map(c => `<div class="bg-brandDark p-3 rounded-xl text-xs border border-brandBorder"><b>${c.author}:</b> ${c.text}</div>`).join('')}
+                        </div>
+                        <form onsubmit="addComment(event, ${item.id})" class="flex gap-2 pt-1">
+                            <input type="text" id="comment-box" required placeholder="Write a comment..." class="flex-grow bg-brandDark border border-yellow-500/30 rounded-xl p-3 text-xs text-white outline-none focus:border-brandGold">
+                            <button type="submit" class="btn-gold px-4 py-2 text-xs font-bold">Reply</button>
+                        </form>
+                    </div>
+                </div>
+            `;
+        }
+
+        function addComment(e, id) {
+            e.preventDefault();
+            if (!currentUser) { openAuthModal(); alert('Please sign in to comment on posts.'); return; }
+            const text = document.getElementById('comment-box').value;
+            const item = listings.find(i => i.id === id);
+            if (item && text.trim()) {
+                item.comments.push({ author: currentUser.name, text: text.trim() });
+                viewDetail(id);
+            }
+        }
+
+        function openAuthModal() { document.getElementById('auth-modal').classList.remove('hidden'); }
+        function closeAuthModal() { document.getElementById('auth-modal').classList.add('hidden'); }
+
+        function socialLogin(provider) {
+            currentUser = { name: 'Ashley S.', email: 'user@gmail.com' };
+            closeAuthModal();
+            updateNavState();
+            alert('Successfully signed in with Google!');
+        }
+
+        function handleEmailAuth(e) {
+            e.preventDefault();
+            const email = document.getElementById('auth-email').value;
+            currentUser = { name: email.split('@')[0], email: email };
+            closeAuthModal();
+            updateNavState();
+            alert('Successfully signed in as ' + currentUser.name);
+        }
+
+        function signOut() {
+            currentUser = null;
+            updateNavState();
+            switchView('home');
+            alert('Signed out successfully.');
+        }
+
+        function updateNavState() {
+            if (currentUser) {
+                document.getElementById('nav-logged-out').classList.add('hidden');
+                document.getElementById('nav-logged-in').classList.remove('hidden');
+            } else {
+                document.getElementById('nav-logged-out').classList.remove('hidden');
+                document.getElementById('nav-logged-in').classList.add('hidden');
+            }
+        }
+
+        window.onload = () => renderListings(listings);
+    </script>
+</body>
+</html>
