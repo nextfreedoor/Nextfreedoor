@@ -5,16 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NextFreeDoor.com - Your Neighborhood Marketplace</title>
 
-    <!-- Google AdSense -->
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6940277987635940" crossorigin="anonymous"></script>
-
-    <!-- Tailwind -->
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
 
-    <!-- FontAwesome -->
+    <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-    <!-- Google Font -->
+    <!-- Google Font Inter -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
     <script>
@@ -41,13 +38,14 @@
             color: #F0EAD6;
             font-family: 'Inter', sans-serif;
             min-height: 100vh;
+            position: relative;
             overflow-x: hidden;
         }
 
         .sunburst-container {
             position: fixed;
             top: 0; left: 0; right: 0;
-            height: 700px;
+            height: 600px;
             pointer-events: none;
             z-index: 0;
             overflow: hidden;
@@ -55,27 +53,27 @@
 
         .sunburst-glow {
             position: absolute;
-            top: -180px; left: 50%;
+            top: -150px; left: 50%;
             transform: translateX(-50%);
-            width: 1100px; height: 650px;
-            background: radial-gradient(ellipse at center top, rgba(255, 215, 0, 0.45) 0%, rgba(255, 199, 44, 0.18) 35%, rgba(11, 25, 20, 0) 75%);
-            filter: blur(30px);
+            width: 1000px; height: 600px;
+            background: radial-gradient(ellipse at center top, rgba(255, 215, 0, 0.4) 0%, rgba(255, 199, 44, 0.15) 35%, rgba(11, 25, 20, 0) 75%);
+            filter: blur(25px);
         }
 
         .sunburst-beams {
             position: absolute;
-            top: -220px; left: 50%;
+            top: -200px; left: 50%;
             transform: translateX(-50%);
-            width: 1500px; height: 750px;
+            width: 1400px; height: 700px;
             background: conic-gradient(
                 from 180deg at 50% 0%,
-                rgba(255, 223, 100, 0.14) 0deg, transparent 15deg,
-                rgba(255, 215, 0, 0.12) 30deg, transparent 45deg,
-                rgba(255, 223, 100, 0.16) 60deg, transparent 75deg,
-                rgba(255, 215, 0, 0.13) 90deg, transparent 105deg,
-                rgba(255, 223, 100, 0.11) 120deg, transparent 135deg,
-                rgba(255, 215, 0, 0.13) 150deg, transparent 165deg,
-                rgba(255, 223, 100, 0.09) 180deg
+                rgba(255, 223, 100, 0.12) 0deg, transparent 15deg,
+                rgba(255, 215, 0, 0.1) 30deg, transparent 45deg,
+                rgba(255, 223, 100, 0.15) 60deg, transparent 75deg,
+                rgba(255, 215, 0, 0.12) 90deg, transparent 105deg,
+                rgba(255, 223, 100, 0.1) 120deg, transparent 135deg,
+                rgba(255, 215, 0, 0.12) 150deg, transparent 165deg,
+                rgba(255, 223, 100, 0.08) 180deg
             );
             mask-image: radial-gradient(circle at 50% 0%, rgba(0,0,0,1) 10%, rgba(0,0,0,0) 80%);
             -webkit-mask-image: radial-gradient(circle at 50% 0%, rgba(0,0,0,1) 10%, rgba(0,0,0,0) 80%);
@@ -97,9 +95,10 @@
             box-shadow: 0 0 15px rgba(255, 199, 44, 0.3);
             transition: all 0.2s ease-in-out;
         }
+
         .btn-gold:hover {
             background: linear-gradient(180deg, #FFE44D 0%, #E5B120 100%);
-            box-shadow: 0 0 22px rgba(255, 199, 44, 0.55);
+            box-shadow: 0 0 20px rgba(255, 199, 44, 0.5);
         }
 
         .btn-outline-gold {
@@ -110,33 +109,26 @@
             border-radius: 0.625rem;
             transition: all 0.2s ease-in-out;
         }
+
         .btn-outline-gold:hover {
             background: rgba(255, 199, 44, 0.15);
             color: #FFFFFF;
-        }
-
-        /* Door logo hero */
-        .door-hero {
-            max-width: 320px;
-            filter: drop-shadow(0 0 25px rgba(255, 199, 44, 0.45));
         }
     </style>
 </head>
 <body class="flex flex-col justify-between selection:bg-brandGold selection:text-brandDark relative">
 
-    <!-- Background rays -->
     <div class="sunburst-container">
         <div class="sunburst-beams"></div>
         <div class="sunburst-glow"></div>
     </div>
 
-    <!-- Header -->
+    <!-- Header Section (Fixed: Logo strictly on the left) -->
     <header class="sticky top-0 z-50 bg-brandDark/90 backdrop-blur-md border-b border-brandBorder px-4 py-3">
         <div class="max-w-6xl mx-auto flex items-center justify-between">
             <a href="javascript:void(0)" onclick="switchView('home')" class="flex items-center space-x-3 group">
                 <div class="w-11 h-11 rounded-xl overflow-hidden border border-yellow-500/40 shadow bg-brandCard flex items-center justify-center p-0.5 group-hover:scale-105 transition">
-                    <!-- Door logo in header -->
-                    <img src="Screenshot_20261012_014012.png" alt="NextFreeDoor" class="w-full h-full object-cover rounded-lg">
+                    <img src="Screenshot_20261005_130640.png" alt="NextFreeDoor Logo" class="w-full h-full object-cover rounded-lg" onerror="this.onerror=null; this.src='https://placehold.co/100x100/14261F/FFC72C?text=NFD';">
                 </div>
                 <div>
                     <h1 class="text-lg font-extrabold text-white leading-tight">NextFree<span class="text-brandGold">Door</span></h1>
@@ -145,8 +137,7 @@
             </a>
 
             <div class="flex items-center gap-2.5">
-                <!-- Your Ko-fi link (replace with real one) -->
-                <a href="https://ko-fi.com/YOURUSERNAME" target="_blank" class="px-3 py-1.5 rounded-lg border border-yellow-500/40 text-yellow-400 text-xs font-semibold hover:bg-yellow-500/10 transition flex items-center gap-1.5">
+                <a href="https://ko-fi.com" target="_blank" class="px-3 py-1.5 rounded-lg border border-yellow-500/40 text-yellow-400 text-xs font-semibold hover:bg-yellow-500/10 transition flex items-center gap-1.5">
                     <i class="fa-solid fa-mug-hot text-brandGold"></i> Ko-fi
                 </a>
 
@@ -163,10 +154,10 @@
         </div>
     </header>
 
-    <!-- Main -->
+    <!-- Main Content Container -->
     <main class="relative z-10 max-w-6xl mx-auto w-full p-4 space-y-6 flex-grow">
 
-        <!-- Category buttons -->
+        <!-- Category Filter Buttons -->
         <div class="grid grid-cols-2 sm:grid-cols-5 gap-2">
             <button onclick="filterCategory('For Sale')" class="gold-border-card p-3 text-center text-xs font-bold text-white hover:border-brandGold transition">
                 <i class="fa-solid fa-tag text-brandGold block mb-1 text-sm"></i> For Sale
@@ -185,10 +176,10 @@
             </button>
         </div>
 
-        <!-- HOME VIEW -->
+        <!-- VIEW 1: HOME FEED & POSTING SIDEBAR -->
         <div id="view-home" class="grid grid-cols-1 md:grid-cols-3 gap-6">
-
-            <!-- Left: Post form + AdSense -->
+            
+            <!-- Left Column: Create New Post Form -->
             <div class="md:col-span-1 space-y-4">
                 <div class="gold-border-card p-4 space-y-3 sticky top-20">
                     <h3 class="text-xs font-bold text-brandGold uppercase tracking-wider flex items-center gap-2 border-b border-brandBorder pb-2">
@@ -221,49 +212,33 @@
                             <label class="block text-gray-300 font-semibold mb-1">Description *</label>
                             <textarea id="post-description" rows="3" required placeholder="Provide details, contact info, or instructions..." class="w-full bg-brandDark border border-yellow-500/30 rounded p-2.5 text-white focus:border-brandGold outline-none"></textarea>
                         </div>
+
                         <button type="submit" class="btn-gold w-full py-3 uppercase font-extrabold tracking-wider text-xs shadow-lg">Publish Post</button>
                     </form>
                 </div>
 
-                <!-- AdSense -->
-                <div class="gold-border-card p-3 text-center space-y-1">
-                    <span class="text-[9px] text-gray-400 uppercase tracking-widest block">SPONSORED AD</span>
-                    <div class="min-h-[220px] flex items-center justify-center bg-brandDark/50 rounded border border-brandBorder overflow-hidden">
-                        <ins class="adsbygoogle"
-                             style="display:block; width:100%;"
-                             data-ad-client="ca-pub-6940277987635940"
-                             data-ad-slot="auto"
-                             data-ad-format="auto"
-                             data-full-width-responsive="true"></ins>
-                        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-                    </div>
+                <div class="gold-border-card p-4 text-center space-y-2">
+                    <span class="text-[9px] text-brandGold uppercase tracking-widest block font-bold">TREASURE VALLEY SPOTLIGHT</span>
+                    <h4 class="text-xs font-bold text-white">Support Local Business & Neighbors</h4>
+                    <p class="text-[11px] text-gray-300">Connecting Boise, Nampa, Caldwell, Meridian, and Star.</p>
                 </div>
             </div>
 
-            <!-- Right: Feed -->
+            <!-- Right Column: Feed -->
             <div class="md:col-span-2 space-y-4">
-                <!-- Door logo hero on home -->
-                <div class="gold-border-card p-6 text-center mb-2">
-                    <img src="Screenshot_20261012_014012.png" alt="NextFreeDoor" class="door-hero mx-auto mb-3">
-                    <h2 class="text-xl font-extrabold text-white">Welcome to your neighborhood</h2>
-                    <p class="text-xs text-brandGlow mt-1">Buy, sell, give away, hire, and connect — right here in the Treasure Valley</p>
-                </div>
-
                 <div class="flex items-center justify-between border-b border-brandBorder pb-2 px-1">
                     <h3 id="feed-title" class="text-xs font-bold uppercase tracking-wider text-white">Neighborhood Feed</h3>
                     <button onclick="filterCategory('All')" class="text-[11px] text-brandGold hover:underline font-semibold">View All Categories</button>
                 </div>
 
-                <div id="listings-container" class="space-y-4">
-                    <!-- JS fills this -->
-                </div>
+                <div id="listings-container" class="space-y-4"></div>
             </div>
         </div>
 
-        <!-- DETAIL VIEW -->
+        <!-- VIEW 2: DETAIL PAGE -->
         <div id="view-detail" class="hidden max-w-3xl mx-auto space-y-4"></div>
 
-        <!-- ACCOUNT VIEW -->
+        <!-- VIEW 3: ACCOUNT DASHBOARD -->
         <div id="view-account" class="hidden max-w-xl mx-auto gold-border-card p-6 space-y-4">
             <h3 class="text-sm font-bold text-white border-b border-brandBorder pb-2">My Profile & Account</h3>
             <div id="account-info" class="text-xs space-y-2 text-gray-300"></div>
@@ -272,21 +247,17 @@
 
     </main>
 
-    <!-- AUTH MODAL - Google + Email only (no Apple) -->
+    <!-- Auth Modal -->
     <div id="auth-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden flex items-center justify-center p-4">
         <div class="gold-border-card max-w-md w-full p-6 relative shadow-2xl space-y-4">
-            <button onclick="closeAuthModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white">
-                <i class="fa-solid fa-xmark text-lg"></i>
-            </button>
-
+            <button onclick="closeAuthModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
+            
             <div class="text-center space-y-1.5">
-                <img src="Screenshot_20261012_014012.png" alt="NextFreeDoor" class="w-16 h-16 mx-auto mb-2 rounded-xl">
                 <h3 class="text-xl font-extrabold text-white">Discover your neighborhood</h3>
                 <p class="text-xs text-brandGlow">Join NextFreeDoor to connect, post, and comment</p>
             </div>
 
             <div class="space-y-3 pt-2">
-                <!-- Google only -->
                 <button onclick="socialLogin('Google')" class="w-full py-3 px-4 rounded-xl bg-white text-gray-900 font-bold text-xs flex items-center justify-center gap-3 shadow hover:bg-gray-100 transition">
                     <i class="fa-brands fa-google text-red-500 text-sm"></i> Continue with Google
                 </button>
@@ -298,7 +269,6 @@
                 <div class="flex-grow border-t border-brandBorder"></div>
             </div>
 
-            <!-- Email -->
             <form onsubmit="handleEmailAuth(event)" class="space-y-3 text-xs">
                 <input type="email" id="auth-email" required placeholder="Email address" class="w-full bg-brandDark border border-yellow-500/30 rounded-xl p-3 text-white outline-none focus:border-brandGold">
                 <input type="password" id="auth-password" required placeholder="Create or enter password" class="w-full bg-brandDark border border-yellow-500/30 rounded-xl p-3 text-white outline-none focus:border-brandGold">
@@ -352,10 +322,7 @@
             } else if (view === 'account') {
                 if (!currentUser) { openAuthModal(); return; }
                 document.getElementById('view-account').classList.remove('hidden');
-                document.getElementById('account-info').innerHTML = `
-                    <p><b>Name:</b> ${currentUser.name}</p>
-                    <p><b>Email:</b> ${currentUser.email}</p>
-                    <p class="text-brandGold pt-2 font-semibold">Status: Verified Neighbor</p>`;
+                document.getElementById('account-info').innerHTML = `<p><b>Name:</b> ${currentUser.name}</p><p><b>Email:</b> ${currentUser.email}</p><p class="text-brandGold pt-2 font-semibold">Status: Verified Neighbor</p>`;
             }
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
@@ -380,13 +347,16 @@
                         </div>
                         <span class="text-[10px] text-brandGold bg-brandDark px-2.5 py-1 rounded-full border border-yellow-500/30 font-semibold uppercase">${item.category}</span>
                     </div>
+
                     <div>
                         <h3 class="text-sm font-bold text-white mb-1">${item.title}</h3>
                         <p class="text-xs text-gray-300 line-clamp-2">${item.description}</p>
                     </div>
+
                     <div class="rounded-xl overflow-hidden border border-brandBorder h-56 bg-brandDark">
                         <img src="${item.photo}" class="w-full h-full object-cover">
                     </div>
+
                     <div class="flex items-center justify-between pt-2 border-t border-brandBorder/60">
                         <button onclick="viewDetail(${item.id})" class="text-xs text-brandGold hover:underline font-semibold flex items-center gap-1.5">
                             <i class="fa-solid fa-comments"></i> Comments (${item.comments.length})
@@ -407,7 +377,7 @@
             e.preventDefault();
             if (!currentUser) {
                 openAuthModal();
-                alert('Please sign in with Google or Email before publishing a post.');
+                alert('Please sign in before publishing a post.');
                 return;
             }
             const title = document.getElementById('post-title').value;
@@ -415,7 +385,7 @@
             const description = document.getElementById('post-description').value;
 
             listings.unshift({
-                id: Date.now(),
+                id: listings.length + 1,
                 title, category, description,
                 photo: 'https://placehold.co/600x400/14261F/FFC72C?text=' + encodeURIComponent(title),
                 video: '',
@@ -453,9 +423,7 @@
                     <div class="border-t border-brandBorder pt-4 space-y-3">
                         <h4 class="text-xs font-bold text-white"><i class="fa-solid fa-comments text-brandGold"></i> Neighborhood Comments (${item.comments.length})</h4>
                         <div class="space-y-2" id="comment-list">
-                            ${item.comments.length === 0 
-                                ? '<p class="text-[11px] text-gray-500 italic">No comments yet. Be the first neighbor to reply!</p>' 
-                                : item.comments.map(c => `<div class="bg-brandDark p-3 rounded-xl text-xs border border-brandBorder"><b>${c.author}:</b> ${c.text}</div>`).join('')}
+                            ${item.comments.length === 0 ? '<p class="text-[11px] text-gray-500 italic">No comments yet. Be the first neighbor to reply!</p>' : item.comments.map(c => `<div class="bg-brandDark p-3 rounded-xl text-xs border border-brandBorder"><b>${c.author}:</b>${c.text}</div>`).join('')}
                         </div>
                         <form onsubmit="addComment(event, ${item.id})" class="flex gap-2 pt-1">
                             <input type="text" id="comment-box" required placeholder="Write a comment..." class="flex-grow bg-brandDark border border-yellow-500/30 rounded-xl p-3 text-xs text-white outline-none focus:border-brandGold">
@@ -481,7 +449,7 @@
         function closeAuthModal() { document.getElementById('auth-modal').classList.add('hidden'); }
 
         function socialLogin(provider) {
-            currentUser = { name: 'Ashley S.', email: 'user@gmail.com' };
+            currentUser = { name: 'Ashley S.', email: 'ashley@treasuresparkle.com' };
             closeAuthModal();
             updateNavState();
             alert('Successfully signed in with Google!');
