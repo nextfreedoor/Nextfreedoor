@@ -1,196 +1,313 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>NextFreeDoor.com — Your Neighborhood Marketplace</title>
-<meta name="description" content="Buy, sell, trade, find work, share news, and give things away with Treasure Valley neighbors. Free community listings.">
-<meta property="og:title" content="NextFreeDoor.com — Your Neighborhood Marketplace">
-<meta property="og:description" content="Buy, sell, trade, find work, and help your neighbors. Free community listings.">
-<meta property="og:url" content="https://www.nextfreedoor.com/">
-<meta name="theme-color" content="#0B1914">
-<script src="https://cdn.tailwindcss.com"></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-<!-- Supabase browser SDK -->
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script>
-tailwind.config={theme:{extend:{colors:{brandDark:'#0B1914',brandCard:'#14261F',brandGold:'#FFC72C',brandGlow:'#FFE885',brandBorder:'#234E3F'},fontFamily:{sans:['Inter','sans-serif']}}}};
-</script>
-<style>
-html{scroll-behavior:smooth} body{background:#0B1914;color:#F0EAD6;font-family:Inter,sans-serif;min-height:100vh;overflow-x:hidden}
-.sunburst-container{position:fixed;inset:0 0 auto;height:600px;pointer-events:none;z-index:0;overflow:hidden}
-.sunburst-glow{position:absolute;top:-150px;left:50%;transform:translateX(-50%);width:1000px;height:600px;background:radial-gradient(ellipse at center top,rgba(255,215,0,.4),rgba(255,199,44,.15) 35%,transparent 75%);filter:blur(25px)}
-.sunburst-beams{position:absolute;top:-200px;left:50%;transform:translateX(-50%);width:1400px;height:700px;background:conic-gradient(from 180deg at 50% 0%,rgba(255,223,100,.12) 0deg,transparent 15deg,rgba(255,215,0,.1) 30deg,transparent 45deg,rgba(255,223,100,.15) 60deg,transparent 75deg,rgba(255,215,0,.12) 90deg,transparent 105deg,rgba(255,223,100,.1) 120deg,transparent 135deg,rgba(255,215,0,.12) 150deg,transparent 165deg,rgba(255,223,100,.08) 180deg);mask-image:radial-gradient(circle at 50% 0%,#000 10%,transparent 80%);-webkit-mask-image:radial-gradient(circle at 50% 0%,#000 10%,transparent 80%)}
-.gold-border-card{background:rgba(20,38,31,.94);border:1px solid rgba(255,199,44,.4);border-radius:1rem;backdrop-filter:blur(12px);box-shadow:0 10px 30px rgba(0,0,0,.35)}
-.btn-gold{background:linear-gradient(180deg,#FFD700,#FFC72C);color:#0B1914;font-weight:800;border-radius:.625rem;box-shadow:0 0 15px rgba(255,199,44,.22);transition:.2s}
-.btn-gold:hover{background:linear-gradient(180deg,#FFE44D,#E5B120);box-shadow:0 0 20px rgba(255,199,44,.4)}
-.btn-outline-gold{background:rgba(20,38,31,.7);border:1px solid rgba(255,199,44,.5);color:#FFC72C;font-weight:600;border-radius:.625rem;transition:.2s}
-.btn-outline-gold:hover{background:rgba(255,199,44,.15);color:white}
-.field{width:100%;background:#0B1914;border:1px solid rgba(255,199,44,.3);border-radius:.65rem;padding:.7rem;color:#fff;outline:none}
-.field:focus{border-color:#FFC72C;box-shadow:0 0 0 2px #ffc72c20}
-.small-muted{font-size:11px;color:#b8c3bb}.pill{border:1px solid #234E3F;background:#0B1914;color:#FFC72C;border-radius:999px;padding:.3rem .65rem;font-size:10px;font-weight:700}
-.post-media{width:100%;max-height:380px;object-fit:contain;background:#08110d}
-.logo-img{object-fit:contain}
-.hidden{display:none!important}
-@media(max-width:640px){.nav-label{display:none}.sunburst-container{height:430px}}
-</style>
-<!-- AdSense: add your real client ID here after AdSense approves the site.
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX" crossorigin="anonymous"></script>
--->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#071b14">
+  <meta name="description" content="NextFreeDoor — a free neighborhood marketplace for the Treasure Valley, Idaho.">
+  <title>NextFreeDoor | Your Neighborhood Marketplace</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6940277987635940" crossorigin="anonymous"></script>
+  <style>
+    :root{--bg:#07130f;--panel:#0d2119;--panel2:#102a20;--gold:#e8c56a;--gold2:#b99642;--line:#294638;--text:#f6f7f4;--muted:#b6c4bc;--danger:#ffb4a9;--ok:#b9efc8}
+    *{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at top,#123426 0,#07130f 55%);color:var(--text);font-family:Inter,system-ui,sans-serif;min-height:100vh}button,input,textarea,select{font:inherit}button{cursor:pointer}button:disabled{opacity:.55;cursor:not-allowed}a{color:var(--gold)}.wrap{width:min(1100px,calc(100% - 28px));margin:auto}.topbar{border-bottom:1px solid var(--line);background:#06110deF;position:sticky;top:0;z-index:10;backdrop-filter:blur(12px)}.nav{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:12px 0}.brand{display:flex;align-items:center;gap:12px;min-width:0}.brand img{width:54px;height:54px;object-fit:contain;border-radius:12px}.brand-title{font-weight:800;font-size:clamp(18px,3vw,25px);letter-spacing:-.7px}.brand-title span{color:var(--gold)}.tagline{color:var(--muted);font-size:11px;margin-top:3px}.nav-actions{display:flex;gap:8px;align-items:center;flex-wrap:wrap;justify-content:flex-end}.btn{border:1px solid var(--line);border-radius:11px;padding:10px 14px;font-weight:700;font-size:13px;background:#13291f;color:var(--text)}.btn:hover{border-color:var(--gold)}.btn-gold{background:linear-gradient(135deg,#f3d982,#c8a64d);border-color:#f3d982;color:#142016}.btn-outline{background:transparent;border-color:var(--gold2);color:var(--gold)}.btn-danger{color:var(--danger)}main{padding:24px 0 55px}.hero{border:1px solid var(--line);border-radius:22px;padding:clamp(22px,5vw,42px);background:linear-gradient(120deg,#102b20ed,#091810ed);display:grid;grid-template-columns:1.6fr 1fr;gap:24px;align-items:center;box-shadow:0 20px 55px #0003}.eyebrow{color:var(--gold);text-transform:uppercase;font-size:11px;font-weight:800;letter-spacing:2px}.hero h1{font-size:clamp(30px,5vw,48px);line-height:1.07;letter-spacing:-1.7px;margin:12px 0}.hero h1 span{color:var(--gold)}.hero p{color:var(--muted);line-height:1.65;max-width:650px}.hero-stats{border:1px solid var(--line);border-radius:17px;padding:20px;background:#07170f8c}.hero-stats strong{display:block;color:var(--gold);font-size:25px;margin-bottom:5px}.hero-stats div+div{border-top:1px solid var(--line);margin-top:14px;padding-top:14px}.layout{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:22px;margin-top:22px;align-items:start}.panel,.post-card{border:1px solid var(--line);background:linear-gradient(150deg,#10261c,#0a1a13);border-radius:17px;padding:18px}.panel h2,.panel h3{margin:0 0 14px}.section-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:24px 0 12px}.section-head h2{margin:0;font-size:20px}.muted,.small{color:var(--muted)}.small{font-size:12px}.field{width:100%;background:#07150f;color:var(--text);border:1px solid var(--line);border-radius:10px;padding:12px;outline:none}.field:focus{border-color:var(--gold2);box-shadow:0 0 0 3px #e8c56a18}.field::placeholder{color:#80958a}textarea.field{resize:vertical;min-height:110px}.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.span-2{grid-column:1/-1}.form-label{font-size:12px;font-weight:700;color:#dce6df;display:block;margin:0 0 6px}.categories{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0 18px}.chip{border:1px solid var(--line);border-radius:999px;background:#0b1b13;color:#dce6df;padding:8px 12px;font-size:12px;font-weight:700}.chip.active,.chip:hover{background:#e8c56a;color:#152016;border-color:#e8c56a}.feed{display:grid;gap:14px}.post-card{padding:18px}.post-top{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}.pill{display:inline-block;border:1px solid #6d5a2b;color:var(--gold);border-radius:999px;padding:5px 9px;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.5px}.post-card h3{font-size:19px;line-height:1.3;margin:10px 0 6px;overflow-wrap:anywhere}.post-body{white-space:pre-wrap;overflow-wrap:anywhere;line-height:1.6;color:#e3eae5;font-size:14px}.post-media-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:12px}.post-media{width:100%;max-height:380px;object-fit:contain;background:#020805;border-radius:11px;border:1px solid var(--line)}.post-actions{display:flex;flex-wrap:wrap;gap:8px;border-top:1px solid var(--line);margin-top:14px;padding-top:12px}.post-actions .btn{padding:8px 11px;font-size:12px}.side-stack{display:grid;gap:14px}.side-link{display:flex;align-items:center;gap:10px;text-decoration:none;padding:10px 0;border-bottom:1px solid var(--line);color:var(--text);font-size:13px}.side-link:last-child{border-bottom:0}.side-link i{color:var(--gold);width:20px;text-align:center}.notice{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);width:min(600px,calc(100% - 28px));padding:13px 16px;border:1px solid var(--gold2);border-radius:12px;background:#10261cf5;box-shadow:0 10px 35px #0008;z-index:30;font-size:13px;display:none}.notice.error{border-color:#a34a40;color:#ffe2de}.notice.show{display:block}.modal{position:fixed;inset:0;background:#000b;z-index:20;display:none;align-items:center;justify-content:center;padding:16px}.modal.open{display:flex}.modal-card{width:min(460px,100%);max-height:90vh;overflow:auto;border:1px solid var(--gold2);border-radius:18px;padding:22px;background:#0b1c13;box-shadow:0 20px 80px #000a}.modal-head{display:flex;justify-content:space-between;gap:10px;align-items:center;margin-bottom:16px}.modal-head h2{margin:0}.xbtn{border:0;background:transparent;color:var(--muted);font-size:23px}.hidden{display:none!important}.empty{border:1px dashed var(--line);padding:26px;text-align:center;color:var(--muted);border-radius:14px}.comment{border-top:1px solid var(--line);padding:10px 0;font-size:13px}.footer{border-top:1px solid var(--line);padding:22px 0;color:var(--muted);font-size:12px}.footer-inner{display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap}.account-row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 0;border-bottom:1px solid var(--line)}.checkrow{display:flex;gap:9px;align-items:flex-start;color:var(--muted);font-size:12px}.status{font-size:12px;color:var(--ok);min-height:16px}
+    @media(max-width:820px){.hero{grid-template-columns:1fr}.hero-stats{display:grid;grid-template-columns:1fr 1fr;gap:12px}.hero-stats div+div{border-top:0;border-left:1px solid var(--line);margin:0;padding:0 0 0 14px}.layout{grid-template-columns:1fr}.side-stack{grid-template-columns:1fr 1fr}.brand img{width:45px;height:45px}}
+    @media(max-width:540px){.wrap{width:calc(100% - 20px)}.nav{align-items:flex-start}.nav-actions{max-width:145px}.nav-actions .btn{padding:8px 10px}.tagline{display:none}.hero{padding:22px}.form-grid{grid-template-columns:1fr}.span-2{grid-column:auto}.side-stack{grid-template-columns:1fr}.post-media-grid{grid-template-columns:1fr}.brand-title{font-size:18px}.hero-stats{grid-template-columns:1fr}.hero-stats div+div{border-left:0;border-top:1px solid var(--line);margin-top:8px;padding:12px 0 0}}
+  </style>
 </head>
-<body class="flex flex-col min-h-screen selection:bg-brandGold selection:text-brandDark">
-<div class="sunburst-container"><div class="sunburst-beams"></div><div class="sunburst-glow"></div></div>
-<header class="sticky top-0 z-40 bg-brandDark/95 backdrop-blur-md border-b border-brandBorder px-3 sm:px-4 py-3">
-  <div class="max-w-6xl mx-auto flex items-center justify-between gap-3">
-    <button onclick="switchView('home')" class="flex items-center gap-2.5 text-left min-w-0">
-      <div class="w-12 h-12 rounded-xl overflow-hidden border border-yellow-500/50 bg-brandCard flex items-center justify-center p-1 shrink-0"><img src="logo.png" alt="Next Free Door logo" class="logo-img w-full h-full"></div>
-      <span><span class="block text-lg font-extrabold text-white leading-tight">NextFree<span class="text-brandGold">Door</span></span><span class="block text-[10px] text-brandGlow">Treasure Valley Community</span></span>
-    </button>
-    <div class="flex items-center gap-2">
-      <a id="kofi-link" href="https://ko-fi.com/" target="_blank" rel="noopener noreferrer" class="btn-outline-gold px-3 py-2 text-xs"><i class="fa-solid fa-mug-hot mr-1"></i><span class="nav-label">Support</span> Ko-fi</a>
-      <div id="nav-logged-out" class="flex items-center gap-2"><button onclick="openAuthModal('login')" class="btn-outline-gold px-3 py-2 text-xs">Log in</button><button onclick="openAuthModal('signup')" class="btn-gold px-3 py-2 text-xs">Sign up</button></div>
-      <div id="nav-logged-in" class="hidden items-center gap-2"><button onclick="switchView('messages')" class="btn-outline-gold px-3 py-2 text-xs"><i class="fa-regular fa-envelope"></i><span class="nav-label"> Messages</span></button><button onclick="switchView('account')" class="btn-outline-gold px-3 py-2 text-xs"><i class="fa-solid fa-user"></i></button><button onclick="signOut()" class="px-3 py-2 rounded-lg bg-red-950/50 border border-red-500/40 text-red-300 text-xs" title="Sign out"><i class="fa-solid fa-right-from-bracket"></i></button></div>
-    </div>
+<body>
+<header class="topbar"><div class="wrap nav">
+  <a href="#top" class="brand" style="text-decoration:none;color:inherit" aria-label="NextFreeDoor home">
+    <img src="logo.png" alt="NextFreeDoor logo" onerror="this.style.display='none'">
+    <div><div class="brand-title">NextFree<span>Door</span></div><div class="tagline">Your neighborhood. Your community. Your door.</div></div>
+  </a>
+  <div class="nav-actions">
+    <button class="btn btn-outline" id="messages-nav" type="button"><i class="fa-regular fa-envelope"></i> Messages</button>
+    <button class="btn btn-outline" id="login-nav" type="button">Log in</button>
+    <button class="btn btn-gold" id="signup-nav" type="button">Join free</button>
+    <button class="btn hidden" id="account-nav" type="button"><i class="fa-regular fa-user"></i> Account</button>
+    <button class="btn btn-danger hidden" id="logout-nav" type="button">Sign out</button>
   </div>
-</header>
-
-<main class="relative z-10 max-w-6xl mx-auto w-full p-3 sm:p-4 space-y-6 flex-grow">
-  <section class="gold-border-card p-5 sm:p-7 text-center">
-    <p class="text-brandGold text-[10px] sm:text-xs font-extrabold tracking-[.25em] uppercase mb-2">Your neighbors. Your community. No paywall.</p>
-    <h1 class="text-2xl sm:text-4xl font-extrabold text-white">Buy. Sell. Trade. <span class="text-brandGold">Help each other.</span></h1>
-    <p class="text-sm text-gray-300 max-w-2xl mx-auto mt-3">A free neighborhood marketplace for Treasure Valley, Idaho. Share a deal, find a gig, give something away, or lend a hand.</p>
-    <div class="flex flex-wrap justify-center gap-2 mt-5"><button onclick="document.getElementById('post-title').focus()" class="btn-gold px-5 py-2.5 text-sm"><i class="fa-solid fa-plus mr-2"></i>Post a free ad</button><button onclick="filterCategory('Community News / Advice')" class="btn-outline-gold px-5 py-2.5 text-sm">Community news</button></div>
+</div></header>
+<main id="top" class="wrap">
+  <section class="hero">
+    <div><div class="eyebrow">Made for the Treasure Valley</div><h1>Your neighborhood is <span>better together.</span></h1><p>Buy, sell, give away, trade, find local work, share community news, and lend a hand. A simple place for neighbors to connect — with free listings.</p><button class="btn btn-gold" id="hero-post"><i class="fa-solid fa-plus"></i> Create a free listing</button></div>
+    <div class="hero-stats"><div><strong>100% Free</strong><span class="small">No paid listing fees</span></div><div><strong>Local First</strong><span class="small">Built for Idaho neighbors</span></div></div>
   </section>
-
-  <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2" id="category-buttons">
-    <button onclick="filterCategory('All')" class="gold-border-card p-3 text-center text-xs font-bold text-white hover:border-brandGold"><i class="fa-solid fa-house text-brandGold block mb-1 text-base"></i>All posts</button>
-    <button onclick="filterCategory('For Sale')" class="gold-border-card p-3 text-center text-xs font-bold text-white hover:border-brandGold"><i class="fa-solid fa-tag text-brandGold block mb-1 text-base"></i>For sale</button>
-    <button onclick="filterCategory('Jobs & Gigs')" class="gold-border-card p-3 text-center text-xs font-bold text-white hover:border-brandGold"><i class="fa-solid fa-briefcase text-brandGold block mb-1 text-base"></i>Jobs & gigs</button>
-    <button onclick="filterCategory('Business Ads')" class="gold-border-card p-3 text-center text-xs font-bold text-white hover:border-brandGold"><i class="fa-solid fa-store text-brandGold block mb-1 text-base"></i>Business ads</button>
-    <button onclick="filterCategory('Community News / Advice')" class="gold-border-card p-3 text-center text-xs font-bold text-white hover:border-brandGold"><i class="fa-solid fa-bullhorn text-brandGold block mb-1 text-base"></i>News / advice</button>
-    <button onclick="filterCategory('For Free')" class="gold-border-card p-3 text-center text-xs font-bold text-white hover:border-brandGold"><i class="fa-solid fa-gift text-brandGold block mb-1 text-base"></i>For free</button>
-  </div>
-
-  <div id="setup-warning" class="hidden gold-border-card p-4 text-sm border-red-500/60 text-red-100"><b>Supabase setup needed:</b> add your project URL and publishable/anon key in the CONFIG section of index.html. Never put a service-role or secret key in this file.</div>
-  <div id="site-notice" role="status" class="hidden gold-border-card p-3 text-sm"></div>
-
-  <div id="view-home" class="grid grid-cols-1 md:grid-cols-3 gap-5">
-    <aside class="md:col-span-1 space-y-4">
-      <div class="gold-border-card p-4 space-y-3 md:sticky md:top-24">
-        <h2 class="text-xs font-extrabold text-brandGold uppercase tracking-wider border-b border-brandBorder pb-2"><i class="fa-solid fa-circle-plus mr-2"></i>What's happening, neighbor?</h2>
-        <form id="post-form" class="space-y-3 text-xs">
-          <label class="block text-gray-300 font-semibold">Post title *<input id="post-title" class="field mt-1" required maxlength="120" placeholder="What are you offering or asking?"></label>
-          <label class="block text-gray-300 font-semibold">Category *<select id="post-category" class="field mt-1" required><option>For Sale</option><option>Jobs & Gigs</option><option>Business Ads</option><option>Community News / Advice</option><option>For Free</option><option>Neighbors Helping Neighbors</option><option>Looking for Work</option><option>Trade / Barter</option></select></label>
-          <label class="block text-gray-300 font-semibold">Photos (up to 10)<input type="file" id="post-photos" accept="image/*" multiple class="block w-full mt-1 text-[11px] text-gray-300"></label>
-          <label class="block text-gray-300 font-semibold">Video (optional, one)<input type="file" id="post-video" accept="video/*" class="block w-full mt-1 text-[11px] text-gray-300"></label>
-          <p class="small-muted">Uploads require the public Supabase Storage bucket named <code>post-media</code> and its policies from the included SQL file.</p>
-          <label class="block text-gray-300 font-semibold">Description *<textarea id="post-description" class="field mt-1" rows="4" required maxlength="6000" placeholder="Share details, location area, price, or instructions…"></textarea></label>
-          <label class="flex gap-2 items-start text-gray-300"><input id="human-check" type="checkbox" class="mt-0.5 accent-yellow-400" required><span>I'm a real person, not a bot.</span></label>
-          <button type="submit" class="btn-gold w-full py-3 uppercase font-extrabold tracking-wider">Publish free ad</button>
-          <p class="small-muted">You must sign in to publish. Listings are free.</p>
-        </form>
-      </div>
-      <div class="gold-border-card p-4 text-center space-y-2"><span class="text-[9px] text-brandGold uppercase tracking-widest font-bold">TREASURE VALLEY SPOTLIGHT</span><h3 class="text-sm font-bold text-white">Support local neighbors</h3><p class="text-[11px] text-gray-300">Connecting Boise, Nampa, Caldwell, Meridian, Star, and nearby communities.</p></div>
-      <div class="gold-border-card p-4 text-center text-xs"><p class="text-brandGold font-bold mb-1">Keep NextFreeDoor free</p><p class="text-gray-300 mb-3">If you find the community useful, you can support its upkeep.</p><a id="kofi-sidebar" href="https://ko-fi.com/" target="_blank" rel="noopener noreferrer" class="btn-outline-gold inline-block px-4 py-2"><i class="fa-solid fa-mug-hot mr-2"></i>Support on Ko-fi</a></div>
-    </aside>
-    <section class="md:col-span-2 space-y-4">
-      <div class="flex items-center justify-between border-b border-brandBorder pb-2 px-1 gap-2"><h2 id="feed-title" class="text-xs font-extrabold uppercase tracking-wider text-white">Neighborhood feed</h2><button onclick="loadPosts()" class="text-[11px] text-brandGold hover:underline"><i class="fa-solid fa-rotate mr-1"></i>Refresh</button></div>
-      <div id="listings-container" class="space-y-4"><div class="gold-border-card p-6 text-center text-sm text-gray-300">Loading community posts…</div></div>
-      <div id="ad-slot" class="gold-border-card p-4 text-center text-[11px] text-gray-500">Community-supported space. AdSense ads appear here after your site is approved and configured.</div>
+  <div id="config-warning" class="panel hidden" style="margin-top:18px;border-color:#a34a40"><strong style="color:var(--danger)">Supabase connection problem</strong><p id="config-warning-text" class="small">Check the project URL and public key in this file.</p></div>
+  <div class="layout">
+    <section>
+      <section class="panel" id="create-panel">
+        <div class="section-head" style="margin-top:0"><h2><i class="fa-solid fa-sparkles" style="color:var(--gold)"></i> Post something</h2><span class="pill">Always free</span></div>
+        <p class="small" style="margin-top:-6px;margin-bottom:16px">Share something with your neighbors. You need a free account to publish.</p>
+        <form id="post-form"><div class="form-grid">
+          <div class="span-2"><label class="form-label" for="post-title">Listing title</label><input class="field" id="post-title" maxlength="120" required placeholder="What are you sharing?"></div>
+          <div><label class="form-label" for="post-category">Category</label><select class="field" id="post-category" required><option>For Sale</option><option>For Free</option><option>Jobs & Gigs</option><option>Looking for Work</option><option>Business Ads</option><option>Community News / Advice</option><option>Neighbors Helping Neighbors</option><option>Trade / Barter</option></select></div>
+          <div><label class="form-label" for="post-photos">Photos (up to 5)</label><input class="field" id="post-photos" type="file" accept="image/*" multiple></div>
+          <div class="span-2"><label class="form-label" for="post-description">Description</label><textarea class="field" id="post-description" maxlength="5000" required placeholder="Add details, location area, price if applicable, and how neighbors can respond…"></textarea></div>
+          <div class="span-2"><label class="form-label" for="post-video">Optional video</label><input class="field" id="post-video" type="file" accept="video/*"><p class="small">Photo/video uploads require the public Supabase Storage bucket named <code>post-media</code> and its policies.</p></div>
+          <div class="span-2"><button class="btn btn-gold" type="submit" id="publish-btn"><i class="fa-solid fa-paper-plane"></i> Publish free listing</button><span id="post-status" class="status" aria-live="polite" style="margin-left:10px"></span></div>
+        </div></form>
+      </section>
+      <div class="section-head"><h2 id="feed-heading">Neighborhood feed</h2><button class="btn" id="refresh-btn" type="button"><i class="fa-solid fa-rotate"></i> Refresh</button></div>
+      <div class="categories" id="category-filters"></div>
+      <div id="feed" class="feed" aria-live="polite"><div class="empty">Connecting to your neighborhood…</div></div>
     </section>
+    <aside class="side-stack">
+      <div class="panel"><h3><i class="fa-solid fa-compass" style="color:var(--gold)"></i> Explore NextFreeDoor</h3>
+        <a class="side-link" href="#create-panel"><i class="fa-solid fa-tags"></i><span>Buy & sell locally</span></a>
+        <a class="side-link" href="#create-panel"><i class="fa-solid fa-hand-holding-heart"></i><span>Give things away</span></a>
+        <a class="side-link" href="#create-panel"><i class="fa-solid fa-briefcase"></i><span>Jobs, gigs & services</span></a>
+        <a class="side-link" href="#create-panel"><i class="fa-solid fa-people-group"></i><span>Help your neighbors</span></a>
+      </div>
+      <div class="panel"><h3><i class="fa-solid fa-heart" style="color:var(--gold)"></i> Support the project</h3><p class="small" style="line-height:1.6">Like this free community resource? Tips help support the work that goes into keeping it going.</p><a class="btn btn-gold" href="https://ko-fi.com/nextfreedoor" target="_blank" rel="noopener noreferrer" style="display:inline-block;text-decoration:none;margin-top:6px"><i class="fa-solid fa-mug-hot"></i> Support on Ko-fi</a></div>
+      <div class="panel"><h3><i class="fa-solid fa-shield-heart" style="color:var(--gold)"></i> Neighbor reminder</h3><p class="small" style="line-height:1.65">Meet in a public place when possible, inspect items before paying, and never share passwords or verification codes. NextFreeDoor does not process payments for listings.</p></div>
+      <div class="panel"><h3>About</h3><p class="small" style="line-height:1.65">NextFreeDoor is a community marketplace created to help Treasure Valley neighbors connect. Listings are free.</p><a href="mailto:hello@nextfreedoor.com" class="small">Contact us</a></div>
+    </aside>
   </div>
-
-  <section id="view-detail" class="hidden max-w-3xl mx-auto space-y-4"></section>
-  <section id="view-account" class="hidden max-w-xl mx-auto gold-border-card p-6 space-y-4"><h2 class="text-sm font-bold text-white border-b border-brandBorder pb-2">My account</h2><div id="account-info" class="text-sm space-y-2 text-gray-300"></div><button onclick="switchView('home')" class="btn-outline-gold px-3 py-2 text-xs">Back to feed</button></section>
-  <section id="view-messages" class="hidden max-w-3xl mx-auto gold-border-card p-4 sm:p-6 space-y-4"><h2 class="text-lg font-bold text-white"><i class="fa-regular fa-envelope text-brandGold mr-2"></i>Private messages</h2><p class="small-muted">Messages are private to their sender and recipient, subject to the database policies in the included SQL setup.</p><div class="grid sm:grid-cols-2 gap-3"><label class="text-xs text-gray-300">Neighbor's account email (recipient)<input id="message-to" type="email" class="field mt-1" placeholder="neighbor@example.com"></label><label class="text-xs text-gray-300">Message<input id="message-text" class="field mt-1" placeholder="Write a private message…"></label></div><button onclick="sendPrivateMessage()" class="btn-gold px-4 py-2 text-xs">Send message</button><div id="message-list" class="space-y-2"></div><button onclick="switchView('home')" class="btn-outline-gold px-3 py-2 text-xs">Back to feed</button></section>
+  <section class="panel hidden" id="account-panel" style="margin-top:20px"><div class="section-head" style="margin-top:0"><h2>Your account</h2><button class="btn" id="account-close">Close</button></div><div id="account-info" class="small"></div></section>
+  <section class="panel hidden" id="messages-panel" style="margin-top:20px"><div class="section-head" style="margin-top:0"><h2><i class="fa-regular fa-envelope" style="color:var(--gold)"></i> Private messages</h2><button class="btn" id="messages-close">Close</button></div><p class="small">Messages are sent to the account owner of a listing. You must be signed in.</p><div id="message-list" class="feed" style="margin:12px 0"></div><form id="message-form" class="form-grid"><div><label class="form-label" for="message-to">Recipient user ID</label><input id="message-to" class="field" required placeholder="Choose Message on a listing"></div><div><label class="form-label" for="message-text">Message</label><input id="message-text" class="field" maxlength="3000" required placeholder="Write your message"></div><div class="span-2"><button class="btn btn-gold" type="submit">Send message</button></div></form></section>
 </main>
-
-<div id="auth-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden items-center justify-center p-4">
-  <div class="gold-border-card max-w-md w-full p-6 relative space-y-4"><button onclick="closeAuthModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white" aria-label="Close"><i class="fa-solid fa-xmark text-lg"></i></button>
-    <div class="text-center"><h2 id="auth-title" class="text-xl font-extrabold text-white">Join your neighborhood</h2><p class="text-xs text-brandGlow mt-1">Post, comment, and connect with Treasure Valley neighbors.</p></div>
-    <button onclick="socialLogin()" class="w-full py-3 px-4 rounded-xl bg-white text-gray-900 font-bold text-xs flex items-center justify-center gap-3 hover:bg-gray-100"><i class="fa-brands fa-google text-red-500 text-sm"></i> Continue with Google</button>
-    <div class="relative flex items-center gap-3 text-gray-500 text-[11px]"><span class="flex-grow border-t border-brandBorder"></span>or email<span class="flex-grow border-t border-brandBorder"></span></div>
-    <form id="email-auth-form" class="space-y-3 text-xs"><input type="email" id="auth-email" class="field" required autocomplete="email" placeholder="Email address"><input type="password" id="auth-password" class="field" required minlength="8" autocomplete="current-password" placeholder="Password (at least 8 characters)"><label id="human-auth-label" class="flex gap-2 items-center text-gray-300"><input id="human-auth" type="checkbox" required class="accent-yellow-400"> I'm a real person</label><button id="email-auth-submit" type="submit" class="btn-gold w-full py-3 font-bold uppercase tracking-wider">Create account</button></form>
-    <button id="toggle-auth-mode" onclick="toggleAuthMode()" class="w-full text-brandGold text-xs underline">Already have an account? Log in</button>
-    <p class="small-muted">If email confirmation is enabled in Supabase, check your inbox to confirm your account before signing in.</p>
-  </div>
-</div>
-
-<footer class="relative z-10 border-t border-brandBorder py-5 px-4 text-center text-[11px] text-gray-400 bg-brandDark"><p>© <span id="year"></span> NextFreeDoor.com · Treasure Valley Community Marketplace</p><p class="mt-1">Free community listings. Be kind, stay safe, and meet buyers in public places.</p><p class="mt-2"><a href="#top" onclick="window.scrollTo({top:0,behavior:'smooth'});return false" class="text-brandGold hover:underline">Back to top</a></p></footer>
-
+<footer class="footer"><div class="wrap footer-inner"><span>© <span id="year"></span> NextFreeDoor.com · Treasure Valley, Idaho</span><span>Free community listings · Be kind to your neighbors</span></div></footer>
+<div class="notice" id="notice" role="status" aria-live="polite"></div>
+<div class="modal" id="auth-modal" role="dialog" aria-modal="true" aria-labelledby="auth-title"><div class="modal-card"><div class="modal-head"><h2 id="auth-title">Join your neighborhood</h2><button class="xbtn" id="auth-close" aria-label="Close">×</button></div><form id="auth-form" class="form-grid"><div class="span-2"><label class="form-label" for="auth-name">Display name (for new accounts)</label><input class="field" id="auth-name" maxlength="80" placeholder="Your name or neighbor nickname"></div><div class="span-2"><label class="form-label" for="auth-email">Email</label><input class="field" id="auth-email" type="email" required autocomplete="email" placeholder="you@example.com"></div><div class="span-2"><label class="form-label" for="auth-password">Password</label><input class="field" id="auth-password" type="password" minlength="6" required autocomplete="current-password" placeholder="At least 6 characters"></div><div class="span-2"><button class="btn btn-gold" type="submit" id="auth-submit" style="width:100%">Create account</button></div></form><button class="btn" id="google-login" type="button" style="width:100%;margin-top:10px"><i class="fa-brands fa-google"></i> Continue with Google</button><p class="small" style="line-height:1.6;margin-top:14px">By joining, please be respectful and do not post scams, illegal items, or private information about others.</p><button id="auth-toggle" class="btn btn-outline" type="button" style="width:100%">Already have an account? Log in</button></div></div>
+<div class="modal" id="comments-modal" role="dialog" aria-modal="true" aria-labelledby="comments-title"><div class="modal-card"><div class="modal-head"><h2 id="comments-title">Listing comments</h2><button class="xbtn" id="comments-close" aria-label="Close">×</button></div><div id="comments-content"></div><form id="comment-form" style="margin-top:14px"><label class="form-label" for="comment-text">Add a comment</label><textarea id="comment-text" class="field" maxlength="2000" required placeholder="Write a helpful comment…"></textarea><button class="btn btn-gold" style="margin-top:10px" type="submit">Post comment</button></form></div></div>
 <script>
-/* ===================== CONFIG: PUT YOUR OWN VALUES HERE =====================
-   Supabase Dashboard -> Project Settings -> API:
-   SUPABASE_URL = Project URL
-   SUPABASE_ANON_KEY = publishable key (sb_publishable_...) or legacy anon public key.
-   Never paste a service_role key or any secret key into website code.
-   Add your actual Ko-fi page URL below. AdSense needs approval and its real ca-pub ID.
-============================================================================= */
-const SUPABASE_URL = "https://bpzuqzpgwdkjjmrvbhhn.supabase.co";
-const SUPABASE_ANON_KEY = "sb_publishable_ZiyoCanqiioUYfcil90UiA_aT4wfdrj";
-const KOFI_URL = "https://ko-fi.com/"; // Replace with your actual Ko-fi page URL
-const supabaseReady = window.supabase && SUPABASE_URL.startsWith("https://") &&
-  !SUPABASE_URL.includes("PASTE_") && SUPABASE_ANON_KEY && !SUPABASE_ANON_KEY.includes("PASTE_");
-const db = supabaseReady ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY) : null;
-document.getElementById('year').textContent = new Date().getFullYear();
-document.getElementById('kofi-link').href = KOFI_URL;
-document.getElementById('kofi-sidebar').href = KOFI_URL;
-if (!supabaseReady) document.getElementById('setup-warning').classList.remove('hidden');
+(() => {
+  'use strict';
+  // This is a browser-safe publishable key. Never put a Supabase secret/service-role key here.
+  const SUPABASE_URL = 'https://bpzuqzpgwdkjjmrvbhhn.supabase.co';
+  const SUPABASE_ANON_KEY = 'sb_publishable_ZiyoCanqiioUYfcil90UiA_aT4wfdrj';
+  const $ = id => document.getElementById(id);
+  const CATEGORIES = ['All','For Sale','For Free','Jobs & Gigs','Looking for Work','Business Ads','Community News / Advice','Neighbors Helping Neighbors','Trade / Barter'];
+  let db = null, currentUser = null, authMode = 'signup', activeCategory = 'All', activeCommentPost = null, noticeTimer = null;
 
-let currentUser = null, activeCategory = 'All', authMode = 'signup', currentDetail = null, profileCache = {};
-const $ = id => document.getElementById(id);
-function notice(msg, error=false){const el=$('site-notice');el.textContent=msg;el.classList.remove('hidden');el.style.borderColor=error?'#f87171':'#FFC72C';el.style.color=error?'#fecaca':'#fef3c7';window.setTimeout(()=>el.classList.add('hidden'),7000)}
-function esc(s=''){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
-function niceDate(s){if(!s)return 'Just now';const d=new Date(s);return isNaN(d)?esc(s):d.toLocaleString(undefined,{dateStyle:'medium',timeStyle:'short'})}
-function nameFor(user){return user?.user_metadata?.full_name||user?.user_metadata?.name||user?.email?.split('@')[0]||'Neighbor'}
-function openAuthModal(mode='signup'){authMode=mode;updateAuthMode();$('auth-modal').classList.remove('hidden');$('auth-modal').classList.add('flex')}
-function closeAuthModal(){$('auth-modal').classList.add('hidden');$('auth-modal').classList.remove('flex')}
-function toggleAuthMode(){authMode=authMode==='signup'?'login':'signup';updateAuthMode()}
-function updateAuthMode(){$('auth-title').textContent=authMode==='signup'?'Join your neighborhood':'Welcome back, neighbor';$('email-auth-submit').textContent=authMode==='signup'?'Create account':'Log in';$('toggle-auth-mode').textContent=authMode==='signup'?'Already have an account? Log in':"Need an account? Sign up";$('human-auth-label').classList.toggle('hidden',authMode==='login');$('human-auth').required=authMode==='signup'}
-async function socialLogin(){if(!db)return notice('Add your Supabase Project URL and public key in CONFIG first.',true);const {error}=await db.auth.signInWithOAuth({provider:'google',options:{redirectTo:location.origin+location.pathname}});if(error)notice(error.message,true)}
-$('email-auth-form').addEventListener('submit',async e=>{e.preventDefault();if(!db)return notice('Add your Supabase Project URL and public key in CONFIG first.',true);if(authMode==='signup'&&!$('human-auth').checked)return notice('Please check the human verification box.',true);
-const email=$('auth-email').value.trim(),password=$('auth-password').value;let result;
-if(authMode==='signup') result=await db.auth.signUp({email,password,options:{data:{full_name:email.split('@')[0]}}});
-else result=await db.auth.signInWithPassword({email,password});
-if(result.error)return notice(result.error.message,true);
-if(authMode==='signup'&&!result.data.session){closeAuthModal();return notice('Account created. Check your email for a confirmation link, then log in.')}
-closeAuthModal();notice(authMode==='signup'?'Account created! Welcome to the neighborhood.':'You are signed in.');await refreshUser();});
-async function signOut(){if(db)await db.auth.signOut();currentUser=null;updateNavState();switchView('home');notice('You have signed out.')}
-async function refreshUser(){if(!db){updateNavState();return}const {data}=await db.auth.getUser();currentUser=data?.user||null;updateNavState();if(currentUser)loadProfile()}
-function updateNavState(){const on=!!currentUser;$('nav-logged-out').classList.toggle('hidden',on);$('nav-logged-in').classList.toggle('hidden',!on);$('nav-logged-in').classList.toggle('flex',on)}
-async function loadProfile(){if(!db||!currentUser)return;const {data}=await db.from('profiles').select('*').eq('id',currentUser.id).maybeSingle();profileCache[currentUser.id]=data||{}}
-function switchView(view){['home','detail','account','messages'].forEach(v=>$('view-'+v).classList.add('hidden'));$('view-'+view).classList.remove('hidden');if(view==='home')loadPosts();if(view==='account')renderAccount();if(view==='messages')loadMessages();window.scrollTo({top:0,behavior:'smooth'})}
-function filterCategory(cat){activeCategory=cat;$('feed-title').textContent=cat==='All'?'Neighborhood feed':cat;switchView('home')}
-function mediaHtml(url,type){if(!url)return '';if(type==='video')return `<video controls preload="metadata" class="post-media" src="${esc(url)}"></video>`;return `<img loading="lazy" class="post-media" src="${esc(url)}" alt="Post photo">`}
-async function loadPosts(){const container=$('listings-container');if(!db){container.innerHTML='<div class="gold-border-card p-6 text-center text-sm text-gray-300">The design is ready. Add your Supabase project URL and public key in the CONFIG section to load real posts.</div>';return}
-container.innerHTML='<div class="gold-border-card p-6 text-center text-sm text-gray-300">Loading community posts…</div>';
-let q=db.from('posts').select('*').order('created_at',{ascending:false}).limit(100);
-if(activeCategory!=='All')q=q.eq('type',activeCategory);
-const {data,error}=await q;if(error){container.innerHTML=`<div class="gold-border-card p-5 text-sm text-red-200">Couldn't load posts: ${esc(error.message)}<p class="small-muted mt-2">Check that the posts table and Row Level Security policies are set up using the included SQL file.</p></div>`;return}
-if(!data?.length){container.innerHTML='<div class="gold-border-card p-7 text-center text-sm text-gray-300">No posts in this category yet. Be the first neighbor to post a free ad!</div>';return}
-const ids=data.map(p=>p.id);let mediaMap={},commentCounts={};
-const {data:media}=await db.from('post_media').select('*').in('post_id',ids).order('created_at',{ascending:true});(media||[]).forEach(m=>(mediaMap[m.post_id]??=[]).push(m));
-const {data:comments}=await db.from('comments').select('post_id').in('post_id',ids);(comments||[]).forEach(c=>commentCounts[c.post_id]=(commentCounts[c.post_id]||0)+1);
-container.innerHTML=data.map(p=>{const files=mediaMap[p.id]||[];const first=files[0];const author=esc(p.author_name||'Neighbor');return `<article class="gold-border-card p-4 space-y-3"><div class="flex items-center justify-between gap-2"><div class="flex items-center gap-2 min-w-0"><div class="w-9 h-9 rounded-full bg-brandGold text-brandDark font-extrabold flex items-center justify-center shrink-0">${esc(author.charAt(0).toUpperCase())}</div><div class="min-w-0"><h3 class="text-xs font-bold text-white truncate">${author}</h3><p class="small-muted">${niceDate(p.created_at)} · Local neighbor</p></div></div><span class="pill">${esc(p.type||'Community')}</span></div><div><h4 class="text-base font-bold text-white mb-1">${esc(p.title)}</h4><p class="text-sm text-gray-300 whitespace-pre-wrap break-words">${esc(p.body||'')}</p></div>${first?mediaHtml(first.url,first.media_type):''}${files.length>1?`<div class="grid grid-cols-3 gap-2">${files.slice(1).map(m=>`<div class="rounded-lg overflow-hidden">${m.media_type==='video'?`<a class="text-brandGold text-xs underline" href="${esc(m.url)}" target="_blank">Open video</a>`:`<img loading="lazy" src="${esc(m.url)}" class="w-full h-24 object-cover" alt="Post photo">`}</div>`).join('')}</div>`:''}<div class="flex flex-wrap items-center justify-between gap-2 border-t border-brandBorder pt-3"><button onclick="viewDetail('${esc(p.id)}')" class="text-xs text-brandGold hover:underline"><i class="fa-solid fa-comments mr-1"></i>Comments (${commentCounts[p.id]||0})</button><button onclick="startMessage('${esc(p.user_id||'')}','${esc(author)}')" class="btn-outline-gold px-3 py-2 text-xs" ${!currentUser||p.user_id===currentUser.id?'disabled':''}><i class="fa-regular fa-envelope mr-1"></i>Message neighbor</button><button onclick="viewDetail('${esc(p.id)}')" class="btn-gold px-3 py-2 text-xs">View post</button></div></article>`}).join('')}
-async function uploadMedia(postId,files){if(!files.length)return;const maxPhoto=10;const photos=Array.from(files).filter(f=>f.type.startsWith('image/'));const videos=Array.from(files).filter(f=>f.type.startsWith('video/'));if(photos.length>maxPhoto)throw Error('Choose no more than 10 photos.');if(videos.length>1)throw Error('Choose only one video.');if(photos.length+videos.length!==files.length)throw Error('Only image and video files are allowed.');
-for(const f of files){if(f.size>100*1024*1024)throw Error(`${f.name} is over 100 MB. Please choose a smaller file.`);const path=`${currentUser.id}/${postId}/${crypto.randomUUID()}-${f.name.replace(/[^a-zA-Z0-9._-]/g,'_')}`;const {error:upErr}=await db.storage.from('post-media').upload(path,f,{upsert:false,contentType:f.type});if(upErr)throw upErr;const {data}=db.storage.from('post-media').getPublicUrl(path);const {error:rowErr}=await db.from('post_media').insert({post_id:postId,user_id:currentUser.id,url:data.publicUrl,media_type:f.type.startsWith('video/')?'video':'image',storage_path:path});if(rowErr)throw rowErr}}
-$('post-form').addEventListener('submit',async e=>{e.preventDefault();if(!db)return notice('Add your Supabase URL and public key first.',true);if(!currentUser){openAuthModal('login');return notice('Please sign in before publishing.',true)}if(!$('human-check').checked)return notice('Please check the human verification box.',true);
-const photos=Array.from($('post-photos').files||[]),video=$('post-video').files?.[0];if(photos.length>10)return notice('You can upload up to 10 photos.',true);if(video&&video.size>100*1024*1024)return notice('The video must be 100 MB or smaller.',true);
-const allFiles=[...photos,...(video?[video]:[])];const btn=e.submitter;btn.disabled=true;btn.textContent='Publishing…';
-try{const title=$('post-title').value.trim(),body=$('post-description').value.trim(),type=$('post-category').value;const {data:post,error}=await db.from('posts').insert({user_id:currentUser.id,author_name:nameFor(currentUser),title,body,type,likes:0}).select().single();if(error)throw error;await uploadMedia(post.id,allFiles);$('post-form').reset();activeCategory='All';$('feed-title').textContent='Neighborhood feed';notice('Your free ad has been published!');await loadPosts()}catch(err){notice('Could not publish: '+(err.message||'Unknown error')+'. Check the included SQL/storage setup.',true)}finally{btn.disabled=false;btn.textContent='Publish free ad'}});
-async function viewDetail(id){if(!db)return;const {data:p,error}=await db.from('posts').select('*').eq('id',id).single();if(error)return notice(error.message,true);currentDetail=p;const [{data:files},{data:comments}]=await Promise.all([db.from('post_media').select('*').eq('post_id',id).order('created_at'),db.from('comments').select('*').eq('post_id',id).order('created_at')]);
-switchView('detail');$('view-detail').innerHTML=`<div class="gold-border-card p-5 sm:p-6 space-y-4"><button onclick="switchView('home')" class="btn-outline-gold px-3 py-2 text-xs"><i class="fa-solid fa-arrow-left mr-1"></i>Back to feed</button><span class="pill">${esc(p.type||'Community')}</span><h2 class="text-xl font-extrabold text-white">${esc(p.title)}</h2><p class="small-muted">Posted by ${esc(p.author_name||'Neighbor')} · ${niceDate(p.created_at)}</p><p class="text-sm text-gray-200 whitespace-pre-wrap break-words">${esc(p.body||'')}</p><div class="grid sm:grid-cols-2 gap-3">${(files||[]).map(f=>`<div class="rounded-xl overflow-hidden border border-brandBorder">${f.media_type==='video'?mediaHtml(f.url,'video'):mediaHtml(f.url,'image')}</div>`).join('')}</div><div class="border-t border-brandBorder pt-4 space-y-3"><h3 class="text-sm font-bold text-white"><i class="fa-solid fa-comments text-brandGold mr-2"></i>Comments (${(comments||[]).length})</h3><div class="space-y-2">${(comments||[]).length?(comments||[]).map(c=>`<div class="bg-brandDark p-3 rounded-xl text-sm border border-brandBorder"><b class="text-brandGold">${esc(c.author_name||'Neighbor')}</b><p class="mt-1 whitespace-pre-wrap">${esc(c.body||c.text||'')}</p><span class="small-muted">${niceDate(c.created_at)}</span></div>`).join(''):'<p class="small-muted italic">No comments yet. Be the first to reply.</p>'}</div><form onsubmit="addComment(event,'${esc(p.id)}')" class="space-y-2"><textarea id="comment-box" required maxlength="2000" class="field" rows="2" placeholder="Write a helpful comment…"></textarea><button class="btn-gold px-4 py-2 text-xs">Post comment</button></form></div><div class="border-t border-brandBorder pt-3"><button onclick="startMessage('${esc(p.user_id||'')}','${esc(p.author_name||'Neighbor')}')" class="btn-outline-gold px-4 py-2 text-xs" ${!currentUser||p.user_id===currentUser.id?'disabled':''}><i class="fa-regular fa-envelope mr-2"></i>Private message author</button></div></div>`}
-async function addComment(e,id){e.preventDefault();if(!currentUser){openAuthModal('login');return notice('Please sign in to comment.',true)}const body=$('comment-box').value.trim();if(!body)return;const {error}=await db.from('comments').insert({post_id:id,user_id:currentUser.id,author_name:nameFor(currentUser),body});if(error)return notice('Could not add comment: '+error.message,true);notice('Comment posted.');await viewDetail(id)}
-function startMessage(userId,author){if(!currentUser){openAuthModal('login');return notice('Please sign in to send private messages.',true)}if(!userId||userId===currentUser.id)return notice('You can message another signed-in neighbor from their post.',true);switchView('messages');$('message-to').dataset.receiverId=userId;$('message-to').value='';$('message-to').placeholder='Messaging '+author;$('message-text').focus()}
-async function sendPrivateMessage(){if(!db||!currentUser){openAuthModal('login');return}const receiverId=$('message-to').dataset.receiverId;const email=$('message-to').value.trim();const body=$('message-text').value.trim();if(!receiverId&&!email)return notice('Open Message neighbor from a post to choose a recipient.',true);if(!body)return notice('Write a message first.',true);
-let target=receiverId;if(!target){return notice('For privacy, open the recipient from one of their posts to message them. Email lookup is not exposed publicly.',true)}
-const {error}=await db.from('messages').insert({sender_id:currentUser.id,receiver_id:target,body});if(error)return notice('Could not send message: '+error.message,true);$('message-text').value='';notice('Private message sent.');loadMessages()}
-async function loadMessages(){if(!db||!currentUser){$('message-list').innerHTML='<p class="small-muted">Sign in to view your private messages.</p>';return}const {data,error}=await db.from('messages').select('*').or(`sender_id.eq.${currentUser.id},receiver_id.eq.${currentUser.id}`).order('created_at',{ascending:false}).limit(100);if(error){$('message-list').innerHTML=`<p class="text-red-200 text-xs">${esc(error.message)}</p>`;return}const rows=data||[];if(!rows.length){$('message-list').innerHTML='<p class="small-muted">No private messages yet.</p>';return}
-$('message-list').innerHTML=rows.map(m=>`<div class="bg-brandDark border border-brandBorder rounded-xl p-3 text-sm"><p class="text-brandGold text-xs font-bold">${m.sender_id===currentUser.id?'You sent':'Received'} · ${niceDate(m.created_at)}</p><p class="mt-1 whitespace-pre-wrap">${esc(m.body||m.content||'')}</p></div>`).join('')}
-function renderAccount(){if(!currentUser){openAuthModal('login');return}const meta=currentUser.user_metadata||{};$('account-info').innerHTML=`<p><b>Name:</b> ${esc(nameFor(currentUser))}</p><p><b>Email:</b> ${esc(currentUser.email||'')}</p><p><b>Account:</b> Signed in</p><p class="text-brandGold pt-2">Welcome to NextFreeDoor!</p>`}
-window.addEventListener('load',async()=>{if(db){const {data:{subscription}}=db.auth.onAuthStateChange((_event,session)=>{currentUser=session?.user||null;updateNavState();if(currentUser)loadProfile();loadPosts()});await refreshUser()}else{renderListingsPlaceholder()}});
-function renderListingsPlaceholder(){ $('listings-container').innerHTML='<div class="gold-border-card p-6 text-center text-sm text-gray-300">Welcome to NextFreeDoor! Connect Supabase in the CONFIG section to enable real accounts and live community posts.</div>'}
+  function esc(value) {
+    return String(value ?? '').replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
+  }
+  function showNotice(message, error = false) {
+    const el = $('notice'); el.textContent = message; el.classList.toggle('error', !!error); el.classList.add('show');
+    clearTimeout(noticeTimer); noticeTimer = setTimeout(() => el.classList.remove('show'), 6000);
+  }
+  function friendlyError(err) {
+    const message = err?.message || String(err || 'Unknown error');
+    if (/row-level security|permission denied|not allowed/i.test(message)) return message + ' — this usually means a Supabase table policy is blocking the action.';
+    if (/bucket|storage/i.test(message)) return message + ' — check that the post-media storage bucket exists and its policies allow this action.';
+    return message;
+  }
+  function nameFor(user) {
+    return user?.user_metadata?.full_name || user?.user_metadata?.name || user?.user_metadata?.display_name || user?.email?.split('@')[0] || 'Neighbor';
+  }
+  function niceDate(value) {
+    if (!value) return 'Just now';
+    const date = new Date(value); return Number.isNaN(date.getTime()) ? '' : date.toLocaleString([], {dateStyle:'medium',timeStyle:'short'});
+  }
+  function openAuth(mode = 'signup') {
+    authMode = mode; updateAuthMode(); $('auth-modal').classList.add('open');
+  }
+  function closeAuth() { $('auth-modal').classList.remove('open'); }
+  function updateAuthMode() {
+    $('auth-title').textContent = authMode === 'signup' ? 'Join your neighborhood' : 'Welcome back, neighbor';
+    $('auth-submit').textContent = authMode === 'signup' ? 'Create account' : 'Log in';
+    $('auth-toggle').textContent = authMode === 'signup' ? 'Already have an account? Log in' : 'Need an account? Sign up';
+    $('auth-name').classList.toggle('hidden', authMode !== 'signup');
+    $('auth-password').autocomplete = authMode === 'signup' ? 'new-password' : 'current-password';
+  }
+  function updateNav() {
+    const signedIn = !!currentUser;
+    $('login-nav').classList.toggle('hidden', signedIn);
+    $('signup-nav').classList.toggle('hidden', signedIn);
+    $('account-nav').classList.toggle('hidden', !signedIn);
+    $('logout-nav').classList.toggle('hidden', !signedIn);
+  }
+  function renderCategories() {
+    $('category-filters').innerHTML = CATEGORIES.map(c => `<button type="button" class="chip ${c === activeCategory ? 'active' : ''}" data-category="${esc(c)}">${esc(c)}</button>`).join('');
+    $('category-filters').querySelectorAll('[data-category]').forEach(btn => btn.addEventListener('click', () => {
+      activeCategory = btn.dataset.category; $('feed-heading').textContent = activeCategory === 'All' ? 'Neighborhood feed' : activeCategory; renderCategories(); loadPosts();
+    }));
+  }
+  function mediaMarkup(item) {
+    const url = esc(item.url || ''); if (!url) return '';
+    if ((item.media_type || '').toLowerCase() === 'video') return `<video class="post-media" src="${url}" controls playsinline preload="metadata"></video>`;
+    return `<a href="${url}" target="_blank" rel="noopener noreferrer"><img class="post-media" src="${url}" alt="Listing photo" loading="lazy"></a>`;
+  }
+  async function loadPosts() {
+    if (!db) { $('feed').innerHTML = '<div class="empty">Could not connect to Supabase. Check the project URL and publishable key.</div>'; return; }
+    $('feed').innerHTML = '<div class="empty"><i class="fa-solid fa-spinner fa-spin"></i> Loading listings…</div>';
+    try {
+      let query = db.from('posts').select('*').order('created_at', {ascending:false}).limit(100);
+      if (activeCategory !== 'All') query = query.eq('type', activeCategory);
+      const {data: posts, error} = await query;
+      if (error) throw error;
+      const list = posts || [];
+      let mediaMap = {};
+      if (list.length) {
+        const {data: media, error: mediaError} = await db.from('post_media').select('*').in('post_id', list.map(p => p.id));
+        if (!mediaError) (media || []).forEach(m => { (mediaMap[m.post_id] ||= []).push(m); });
+      }
+      if (!list.length) { $('feed').innerHTML = '<div class="empty"><i class="fa-regular fa-face-smile"></i><p>No listings here yet.</p><span class="small">Be the first neighbor to post something!</span></div>'; return; }
+      $('feed').innerHTML = list.map(p => {
+        const media = mediaMap[p.id] || [];
+        return `<article class="post-card"><div class="post-top"><span class="pill">${esc(p.type || 'Community')}</span><span class="small">${esc(niceDate(p.created_at))}</span></div><h3>${esc(p.title || 'Untitled listing')}</h3><div class="small">Posted by <strong>${esc(p.author_name || 'Neighbor')}</strong></div><p class="post-body">${esc(p.body || '')}</p>${media.length ? `<div class="post-media-grid">${media.map(mediaMarkup).join('')}</div>` : ''}<div class="post-actions"><button class="btn" type="button" data-comments="${esc(p.id)}"><i class="fa-regular fa-comments"></i> Comments</button>${currentUser && p.user_id && p.user_id !== currentUser.id ? `<button class="btn btn-outline" type="button" data-message="${esc(p.user_id)}" data-author="${esc(p.author_name || 'Neighbor')}"><i class="fa-regular fa-envelope"></i> Message neighbor</button>` : ''}</div></article>`;
+      }).join('');
+      $('feed').querySelectorAll('[data-comments]').forEach(b => b.addEventListener('click', () => openComments(b.dataset.comments)));
+      $('feed').querySelectorAll('[data-message]').forEach(b => b.addEventListener('click', () => startMessage(b.dataset.message, b.dataset.author)));
+    } catch (err) {
+      $('feed').innerHTML = `<div class="empty" style="color:var(--danger)"><strong>Could not load listings.</strong><p>${esc(friendlyError(err))}</p><span class="small">Confirm the posts table has SELECT permission/policy for visitors.</span></div>`;
+    }
+  }
+  async function refreshUser() {
+    if (!db) return;
+    const {data, error} = await db.auth.getUser();
+    currentUser = error ? null : (data.user || null); updateNav();
+    if (currentUser) await loadMessages();
+    await loadPosts();
+  }
+  async function uploadMedia(postId, file) {
+    const safeName = file.name.replace(/[^a-zA-Z0-9._-]/g, '_');
+    const path = `${currentUser.id}/${postId}/${Date.now()}-${safeName}`;
+    const {error: uploadError} = await db.storage.from('post-media').upload(path, file, {upsert:false, contentType:file.type || 'application/octet-stream'});
+    if (uploadError) throw uploadError;
+    const {data: publicData} = db.storage.from('post-media').getPublicUrl(path);
+    const {error: rowError} = await db.from('post_media').insert({post_id:postId,user_id:currentUser.id,url:publicData.publicUrl,media_type:file.type.startsWith('video/') ? 'video' : 'image',storage_path:path});
+    if (rowError) throw rowError;
+  }
+  async function publishPost(event) {
+    event.preventDefault();
+    if (!db) return showNotice('Supabase is not configured.', true);
+    if (!currentUser) { openAuth('login'); return showNotice('Log in or create a free account before publishing.'); }
+    const title = $('post-title').value.trim(), body = $('post-description').value.trim(), type = $('post-category').value;
+    const photos = Array.from($('post-photos').files || []), video = $('post-video').files?.[0];
+    if (!title || !body) return showNotice('Please add a title and description.', true);
+    if (photos.length > 5) return showNotice('Please choose no more than 5 photos.', true);
+    const files = [...photos, ...(video ? [video] : [])];
+    if (files.some(f => f.size > 50 * 1024 * 1024)) return showNotice('Each photo/video must be smaller than 50 MB.', true);
+    const btn = $('publish-btn'); btn.disabled = true; btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Publishing…'; $('post-status').textContent = '';
+    try {
+      // Do not claim success unless Supabase confirms the INSERT.
+      const {data: post, error} = await db.from('posts').insert({user_id:currentUser.id,author_name:nameFor(currentUser),title,body,type,likes:0}).select().single();
+      if (error) throw error;
+      let mediaProblem = '';
+      for (const file of files) {
+        try { await uploadMedia(post.id, file); }
+        catch (err) { mediaProblem = friendlyError(err); break; }
+      }
+      $('post-form').reset(); activeCategory = 'All'; $('feed-heading').textContent = 'Neighborhood feed'; renderCategories(); await loadPosts();
+      if (mediaProblem) showNotice('Listing saved, but a media upload failed: ' + mediaProblem, true);
+      else showNotice('Your listing was saved successfully!');
+    } catch (err) {
+      const msg = friendlyError(err); $('post-status').textContent = 'Not saved.'; showNotice('Could not save listing: ' + msg, true);
+    } finally { btn.disabled = false; btn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Publish free listing'; }
+  }
+  async function openComments(postId) {
+    if (!db) return;
+    activeCommentPost = postId; $('comments-content').innerHTML = '<div class="empty">Loading comments…</div>'; $('comments-modal').classList.add('open');
+    try {
+      const {data, error} = await db.from('comments').select('*').eq('post_id', postId).order('created_at', {ascending:true});
+      if (error) throw error;
+      const comments = data || [];
+      $('comments-content').innerHTML = comments.length ? comments.map(c => `<div class="comment"><strong>${esc(c.author_name || 'Neighbor')}</strong><span class="small"> · ${esc(niceDate(c.created_at))}</span><p style="white-space:pre-wrap;overflow-wrap:anywhere">${esc(c.body || '')}</p></div>`).join('') : '<div class="empty">No comments yet. Start the conversation!</div>';
+    } catch (err) { $('comments-content').innerHTML = `<div class="empty">Could not load comments: ${esc(friendlyError(err))}</div>`; }
+  }
+  async function addComment(event) {
+    event.preventDefault();
+    if (!currentUser) { $('comments-modal').classList.remove('open'); openAuth('login'); return showNotice('Log in to comment.'); }
+    const body = $('comment-text').value.trim(); if (!body || !activeCommentPost) return;
+    const {error} = await db.from('comments').insert({post_id:activeCommentPost,user_id:currentUser.id,author_name:nameFor(currentUser),body});
+    if (error) return showNotice('Could not post comment: ' + friendlyError(error), true);
+    $('comment-text').value = ''; showNotice('Comment posted.'); await openComments(activeCommentPost);
+  }
+  function openMessages() {
+    if (!currentUser) { openAuth('login'); return showNotice('Log in to use private messages.'); }
+    $('messages-panel').classList.remove('hidden'); $('account-panel').classList.add('hidden'); $('messages-panel').scrollIntoView({behavior:'smooth',block:'start'}); loadMessages();
+  }
+  function startMessage(userId, author) {
+    if (!currentUser) { openAuth('login'); return; }
+    if (!userId || userId === currentUser.id) return showNotice('You cannot message yourself.', true);
+    $('message-to').value = userId; $('message-text').focus(); openMessages(); showNotice('Write your message to ' + author + '.');
+  }
+  async function sendMessage(event) {
+    event.preventDefault();
+    if (!currentUser) { openAuth('login'); return; }
+    const receiverId = $('message-to').value.trim(), body = $('message-text').value.trim();
+    if (!receiverId || !body) return showNotice('Choose a recipient and write a message.', true);
+    if (receiverId === currentUser.id) return showNotice('You cannot message yourself.', true);
+    const {error} = await db.from('messages').insert({sender_id:currentUser.id,receiver_id:receiverId,body});
+    if (error) return showNotice('Could not send message: ' + friendlyError(error), true);
+    $('message-text').value = ''; showNotice('Message sent.'); await loadMessages();
+  }
+  async function loadMessages() {
+    if (!db || !currentUser) { $('message-list').innerHTML = '<div class="empty">Log in to see your messages.</div>'; return; }
+    try {
+      const id = currentUser.id;
+      const {data,error} = await db.from('messages').select('*').or(`sender_id.eq.${id},receiver_id.eq.${id}`).order('created_at',{ascending:false}).limit(100);
+      if (error) throw error;
+      const rows = data || [];
+      $('message-list').innerHTML = rows.length ? rows.map(m => `<div class="post-card"><div class="small">${m.sender_id === id ? 'Sent' : 'Received'} · ${esc(niceDate(m.created_at))}</div><p class="post-body">${esc(m.body || '')}</p><div class="small">${m.sender_id === id ? 'To' : 'From'} account: <code>${esc(m.sender_id === id ? m.receiver_id : m.sender_id)}</code></div></div>`).join('') : '<div class="empty">No messages yet. Open a listing and choose “Message neighbor” to start a conversation.</div>';
+    } catch (err) { $('message-list').innerHTML = `<div class="empty">Could not load messages: ${esc(friendlyError(err))}</div>`; }
+  }
+  async function submitAuth(event) {
+    event.preventDefault(); if (!db) return showNotice('Supabase is not connected.', true);
+    const email = $('auth-email').value.trim(), password = $('auth-password').value;
+    const submit = $('auth-submit'); submit.disabled = true;
+    try {
+      let result;
+      if (authMode === 'signup') {
+        const displayName = $('auth-name').value.trim() || email.split('@')[0];
+        result = await db.auth.signUp({email,password,options:{data:{full_name:displayName,name:displayName},emailRedirectTo:location.origin}});
+      } else result = await db.auth.signInWithPassword({email,password});
+      if (result.error) throw result.error;
+      if (authMode === 'signup' && !result.data.session) {
+        closeAuth(); showNotice('Account created. Check your email for the confirmation link, then log in.');
+      } else { closeAuth(); showNotice(authMode === 'signup' ? 'Welcome to NextFreeDoor!' : 'You are logged in.'); await refreshUser(); }
+      $('auth-form').reset();
+    } catch (err) { showNotice('Account action failed: ' + friendlyError(err), true); }
+    finally { submit.disabled = false; }
+  }
+  async function googleLogin() {
+    if (!db) return showNotice('Supabase is not connected.', true);
+    const {error} = await db.auth.signInWithOAuth({provider:'google',options:{redirectTo:location.origin}});
+    if (error) showNotice('Google login failed: ' + friendlyError(error), true);
+  }
+  async function logout() {
+    const {error} = await db.auth.signOut();
+    if (error) return showNotice('Sign out failed: ' + friendlyError(error), true);
+    currentUser = null; updateNav(); $('account-panel').classList.add('hidden'); $('messages-panel').classList.add('hidden'); showNotice('You have signed out.'); await loadPosts();
+  }
+  function showAccount() {
+    if (!currentUser) return openAuth('login');
+    $('account-info').innerHTML = `<div class="account-row"><span class="muted">Display name</span><strong>${esc(nameFor(currentUser))}</strong></div><div class="account-row"><span class="muted">Email</span><strong>${esc(currentUser.email || '')}</strong></div><div class="account-row"><span class="muted">Account ID</span><code>${esc(currentUser.id)}</code></div><p class="small" style="margin-top:12px">Your listing history is shown in the neighborhood feed.</p>`;
+    $('account-panel').classList.remove('hidden'); $('messages-panel').classList.add('hidden'); $('account-panel').scrollIntoView({behavior:'smooth',block:'start'});
+  }
+  function init() {
+    $('year').textContent = new Date().getFullYear(); renderCategories();
+    $('login-nav').addEventListener('click', () => openAuth('login')); $('signup-nav').addEventListener('click', () => openAuth('signup'));
+    $('hero-post').addEventListener('click', () => { if (!currentUser) openAuth('signup'); else $('create-panel').scrollIntoView({behavior:'smooth'}); });
+    $('auth-close').addEventListener('click', closeAuth); $('auth-toggle').addEventListener('click', () => { authMode = authMode === 'signup' ? 'login' : 'signup'; updateAuthMode(); });
+    $('auth-form').addEventListener('submit', submitAuth); $('google-login').addEventListener('click', googleLogin); $('logout-nav').addEventListener('click', logout);
+    $('account-nav').addEventListener('click', showAccount); $('account-close').addEventListener('click', () => $('account-panel').classList.add('hidden'));
+    $('messages-nav').addEventListener('click', openMessages); $('messages-close').addEventListener('click', () => $('messages-panel').classList.add('hidden'));
+    $('comments-close').addEventListener('click', () => $('comments-modal').classList.remove('open')); $('comment-form').addEventListener('submit', addComment);
+    $('post-form').addEventListener('submit', publishPost); $('message-form').addEventListener('submit', sendMessage); $('refresh-btn').addEventListener('click', loadPosts);
+    ['auth-modal','comments-modal'].forEach(id => $(id).addEventListener('click', e => { if (e.target.id === id) $(id).classList.remove('open'); }));
+    if (!window.supabase || !window.supabase.createClient) {
+      $('config-warning').classList.remove('hidden'); $('config-warning-text').textContent = 'The Supabase JavaScript library did not load. Check your connection and refresh.'; loadPosts(); return;
+    }
+    try { db = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY); }
+    catch (err) { $('config-warning').classList.remove('hidden'); $('config-warning-text').textContent = 'Could not initialize Supabase: ' + err.message; return; }
+    db.auth.onAuthStateChange((_event, session) => {
+      currentUser = session?.user || null; updateNav();
+      // Defer data fetching outside the auth callback to avoid locking auth operations.
+      setTimeout(() => { loadPosts(); if (currentUser) loadMessages(); }, 0);
+    });
+    refreshUser();
+  }
+  document.addEventListener('DOMContentLoaded', init);
+})();
 </script>
 </body>
 </html>
