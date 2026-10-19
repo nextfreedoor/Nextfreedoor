@@ -1,487 +1,196 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NextFreeDoor.com - Your Neighborhood Marketplace</title>
-
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-
-    <!-- FontAwesome Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
-    <!-- Google Font Inter -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        brandDark: '#0B1914',
-                        brandCard: '#14261F',
-                        brandGold: '#FFC72C',
-                        brandGlow: '#FFE885',
-                        brandBorder: '#234E3F'
-                    },
-                    fontFamily: { sans: ['Inter', 'sans-serif'] }
-                }
-            }
-        }
-    </script>
-
-    <style>
-        html { scroll-behavior: smooth; }
-        body {
-            background-color: #0B1914;
-            color: #F0EAD6;
-            font-family: 'Inter', sans-serif;
-            min-height: 100vh;
-            position: relative;
-            overflow-x: hidden;
-        }
-
-        .sunburst-container {
-            position: fixed;
-            top: 0; left: 0; right: 0;
-            height: 600px;
-            pointer-events: none;
-            z-index: 0;
-            overflow: hidden;
-        }
-
-        .sunburst-glow {
-            position: absolute;
-            top: -150px; left: 50%;
-            transform: translateX(-50%);
-            width: 1000px; height: 600px;
-            background: radial-gradient(ellipse at center top, rgba(255, 215, 0, 0.4) 0%, rgba(255, 199, 44, 0.15) 35%, rgba(11, 25, 20, 0) 75%);
-            filter: blur(25px);
-        }
-
-        .sunburst-beams {
-            position: absolute;
-            top: -200px; left: 50%;
-            transform: translateX(-50%);
-            width: 1400px; height: 700px;
-            background: conic-gradient(
-                from 180deg at 50% 0%,
-                rgba(255, 223, 100, 0.12) 0deg, transparent 15deg,
-                rgba(255, 215, 0, 0.1) 30deg, transparent 45deg,
-                rgba(255, 223, 100, 0.15) 60deg, transparent 75deg,
-                rgba(255, 215, 0, 0.12) 90deg, transparent 105deg,
-                rgba(255, 223, 100, 0.1) 120deg, transparent 135deg,
-                rgba(255, 215, 0, 0.12) 150deg, transparent 165deg,
-                rgba(255, 223, 100, 0.08) 180deg
-            );
-            mask-image: radial-gradient(circle at 50% 0%, rgba(0,0,0,1) 10%, rgba(0,0,0,0) 80%);
-            -webkit-mask-image: radial-gradient(circle at 50% 0%, rgba(0,0,0,1) 10%, rgba(0,0,0,0) 80%);
-        }
-
-        .gold-border-card {
-            background-color: rgba(20, 38, 31, 0.92);
-            border: 1px solid rgba(255, 199, 44, 0.4);
-            border-radius: 1rem;
-            backdrop-filter: blur(12px);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-        }
-
-        .btn-gold {
-            background: linear-gradient(180deg, #FFD700 0%, #FFC72C 100%);
-            color: #0B1914;
-            font-weight: 700;
-            border-radius: 0.625rem;
-            box-shadow: 0 0 15px rgba(255, 199, 44, 0.3);
-            transition: all 0.2s ease-in-out;
-        }
-
-        .btn-gold:hover {
-            background: linear-gradient(180deg, #FFE44D 0%, #E5B120 100%);
-            box-shadow: 0 0 20px rgba(255, 199, 44, 0.5);
-        }
-
-        .btn-outline-gold {
-            background: rgba(20, 38, 31, 0.7);
-            border: 1px solid rgba(255, 199, 44, 0.5);
-            color: #FFC72C;
-            font-weight: 600;
-            border-radius: 0.625rem;
-            transition: all 0.2s ease-in-out;
-        }
-
-        .btn-outline-gold:hover {
-            background: rgba(255, 199, 44, 0.15);
-            color: #FFFFFF;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NextFreeDoor.com — Your Neighborhood Marketplace</title>
+<meta name="description" content="Buy, sell, trade, find work, share news, and give things away with Treasure Valley neighbors. Free community listings.">
+<meta property="og:title" content="NextFreeDoor.com — Your Neighborhood Marketplace">
+<meta property="og:description" content="Buy, sell, trade, find work, and help your neighbors. Free community listings.">
+<meta property="og:url" content="https://www.nextfreedoor.com/">
+<meta name="theme-color" content="#0B1914">
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<!-- Supabase browser SDK -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+tailwind.config={theme:{extend:{colors:{brandDark:'#0B1914',brandCard:'#14261F',brandGold:'#FFC72C',brandGlow:'#FFE885',brandBorder:'#234E3F'},fontFamily:{sans:['Inter','sans-serif']}}}};
+</script>
+<style>
+html{scroll-behavior:smooth} body{background:#0B1914;color:#F0EAD6;font-family:Inter,sans-serif;min-height:100vh;overflow-x:hidden}
+.sunburst-container{position:fixed;inset:0 0 auto;height:600px;pointer-events:none;z-index:0;overflow:hidden}
+.sunburst-glow{position:absolute;top:-150px;left:50%;transform:translateX(-50%);width:1000px;height:600px;background:radial-gradient(ellipse at center top,rgba(255,215,0,.4),rgba(255,199,44,.15) 35%,transparent 75%);filter:blur(25px)}
+.sunburst-beams{position:absolute;top:-200px;left:50%;transform:translateX(-50%);width:1400px;height:700px;background:conic-gradient(from 180deg at 50% 0%,rgba(255,223,100,.12) 0deg,transparent 15deg,rgba(255,215,0,.1) 30deg,transparent 45deg,rgba(255,223,100,.15) 60deg,transparent 75deg,rgba(255,215,0,.12) 90deg,transparent 105deg,rgba(255,223,100,.1) 120deg,transparent 135deg,rgba(255,215,0,.12) 150deg,transparent 165deg,rgba(255,223,100,.08) 180deg);mask-image:radial-gradient(circle at 50% 0%,#000 10%,transparent 80%);-webkit-mask-image:radial-gradient(circle at 50% 0%,#000 10%,transparent 80%)}
+.gold-border-card{background:rgba(20,38,31,.94);border:1px solid rgba(255,199,44,.4);border-radius:1rem;backdrop-filter:blur(12px);box-shadow:0 10px 30px rgba(0,0,0,.35)}
+.btn-gold{background:linear-gradient(180deg,#FFD700,#FFC72C);color:#0B1914;font-weight:800;border-radius:.625rem;box-shadow:0 0 15px rgba(255,199,44,.22);transition:.2s}
+.btn-gold:hover{background:linear-gradient(180deg,#FFE44D,#E5B120);box-shadow:0 0 20px rgba(255,199,44,.4)}
+.btn-outline-gold{background:rgba(20,38,31,.7);border:1px solid rgba(255,199,44,.5);color:#FFC72C;font-weight:600;border-radius:.625rem;transition:.2s}
+.btn-outline-gold:hover{background:rgba(255,199,44,.15);color:white}
+.field{width:100%;background:#0B1914;border:1px solid rgba(255,199,44,.3);border-radius:.65rem;padding:.7rem;color:#fff;outline:none}
+.field:focus{border-color:#FFC72C;box-shadow:0 0 0 2px #ffc72c20}
+.small-muted{font-size:11px;color:#b8c3bb}.pill{border:1px solid #234E3F;background:#0B1914;color:#FFC72C;border-radius:999px;padding:.3rem .65rem;font-size:10px;font-weight:700}
+.post-media{width:100%;max-height:380px;object-fit:contain;background:#08110d}
+.logo-img{object-fit:contain}
+.hidden{display:none!important}
+@media(max-width:640px){.nav-label{display:none}.sunburst-container{height:430px}}
+</style>
+<!-- AdSense: add your real client ID here after AdSense approves the site.
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX" crossorigin="anonymous"></script>
+-->
 </head>
-<body class="flex flex-col justify-between selection:bg-brandGold selection:text-brandDark relative">
-
-    <div class="sunburst-container">
-        <div class="sunburst-beams"></div>
-        <div class="sunburst-glow"></div>
+<body class="flex flex-col min-h-screen selection:bg-brandGold selection:text-brandDark">
+<div class="sunburst-container"><div class="sunburst-beams"></div><div class="sunburst-glow"></div></div>
+<header class="sticky top-0 z-40 bg-brandDark/95 backdrop-blur-md border-b border-brandBorder px-3 sm:px-4 py-3">
+  <div class="max-w-6xl mx-auto flex items-center justify-between gap-3">
+    <button onclick="switchView('home')" class="flex items-center gap-2.5 text-left min-w-0">
+      <div class="w-12 h-12 rounded-xl overflow-hidden border border-yellow-500/50 bg-brandCard flex items-center justify-center p-1 shrink-0"><img src="logo.png" alt="Next Free Door logo" class="logo-img w-full h-full"></div>
+      <span><span class="block text-lg font-extrabold text-white leading-tight">NextFree<span class="text-brandGold">Door</span></span><span class="block text-[10px] text-brandGlow">Treasure Valley Community</span></span>
+    </button>
+    <div class="flex items-center gap-2">
+      <a id="kofi-link" href="https://ko-fi.com/" target="_blank" rel="noopener noreferrer" class="btn-outline-gold px-3 py-2 text-xs"><i class="fa-solid fa-mug-hot mr-1"></i><span class="nav-label">Support</span> Ko-fi</a>
+      <div id="nav-logged-out" class="flex items-center gap-2"><button onclick="openAuthModal('login')" class="btn-outline-gold px-3 py-2 text-xs">Log in</button><button onclick="openAuthModal('signup')" class="btn-gold px-3 py-2 text-xs">Sign up</button></div>
+      <div id="nav-logged-in" class="hidden items-center gap-2"><button onclick="switchView('messages')" class="btn-outline-gold px-3 py-2 text-xs"><i class="fa-regular fa-envelope"></i><span class="nav-label"> Messages</span></button><button onclick="switchView('account')" class="btn-outline-gold px-3 py-2 text-xs"><i class="fa-solid fa-user"></i></button><button onclick="signOut()" class="px-3 py-2 rounded-lg bg-red-950/50 border border-red-500/40 text-red-300 text-xs" title="Sign out"><i class="fa-solid fa-right-from-bracket"></i></button></div>
     </div>
+  </div>
+</header>
 
-    <!-- Header Section (Fixed: Logo strictly on the left) -->
-    <header class="sticky top-0 z-50 bg-brandDark/90 backdrop-blur-md border-b border-brandBorder px-4 py-3">
-        <div class="max-w-6xl mx-auto flex items-center justify-between">
-            <a href="javascript:void(0)" onclick="switchView('home')" class="flex items-center space-x-3 group">
-                <div class="w-11 h-11 rounded-xl overflow-hidden border border-yellow-500/40 shadow bg-brandCard flex items-center justify-center p-0.5 group-hover:scale-105 transition">
-                    <img src="Screenshot_20261005_130640.png" alt="NextFreeDoor Logo" class="w-full h-full object-cover rounded-lg" onerror="this.onerror=null; this.src='https://placehold.co/100x100/14261F/FFC72C?text=NFD';">
-                </div>
-                <div>
-                    <h1 class="text-lg font-extrabold text-white leading-tight">NextFree<span class="text-brandGold">Door</span></h1>
-                    <span class="text-[10px] text-brandGlow">Treasure Valley Community</span>
-                </div>
-            </a>
+<main class="relative z-10 max-w-6xl mx-auto w-full p-3 sm:p-4 space-y-6 flex-grow">
+  <section class="gold-border-card p-5 sm:p-7 text-center">
+    <p class="text-brandGold text-[10px] sm:text-xs font-extrabold tracking-[.25em] uppercase mb-2">Your neighbors. Your community. No paywall.</p>
+    <h1 class="text-2xl sm:text-4xl font-extrabold text-white">Buy. Sell. Trade. <span class="text-brandGold">Help each other.</span></h1>
+    <p class="text-sm text-gray-300 max-w-2xl mx-auto mt-3">A free neighborhood marketplace for Treasure Valley, Idaho. Share a deal, find a gig, give something away, or lend a hand.</p>
+    <div class="flex flex-wrap justify-center gap-2 mt-5"><button onclick="document.getElementById('post-title').focus()" class="btn-gold px-5 py-2.5 text-sm"><i class="fa-solid fa-plus mr-2"></i>Post a free ad</button><button onclick="filterCategory('Community News / Advice')" class="btn-outline-gold px-5 py-2.5 text-sm">Community news</button></div>
+  </section>
 
-            <div class="flex items-center gap-2.5">
-                <a href="https://ko-fi.com" target="_blank" class="px-3 py-1.5 rounded-lg border border-yellow-500/40 text-yellow-400 text-xs font-semibold hover:bg-yellow-500/10 transition flex items-center gap-1.5">
-                    <i class="fa-solid fa-mug-hot text-brandGold"></i> Ko-fi
-                </a>
+  <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2" id="category-buttons">
+    <button onclick="filterCategory('All')" class="gold-border-card p-3 text-center text-xs font-bold text-white hover:border-brandGold"><i class="fa-solid fa-house text-brandGold block mb-1 text-base"></i>All posts</button>
+    <button onclick="filterCategory('For Sale')" class="gold-border-card p-3 text-center text-xs font-bold text-white hover:border-brandGold"><i class="fa-solid fa-tag text-brandGold block mb-1 text-base"></i>For sale</button>
+    <button onclick="filterCategory('Jobs & Gigs')" class="gold-border-card p-3 text-center text-xs font-bold text-white hover:border-brandGold"><i class="fa-solid fa-briefcase text-brandGold block mb-1 text-base"></i>Jobs & gigs</button>
+    <button onclick="filterCategory('Business Ads')" class="gold-border-card p-3 text-center text-xs font-bold text-white hover:border-brandGold"><i class="fa-solid fa-store text-brandGold block mb-1 text-base"></i>Business ads</button>
+    <button onclick="filterCategory('Community News / Advice')" class="gold-border-card p-3 text-center text-xs font-bold text-white hover:border-brandGold"><i class="fa-solid fa-bullhorn text-brandGold block mb-1 text-base"></i>News / advice</button>
+    <button onclick="filterCategory('For Free')" class="gold-border-card p-3 text-center text-xs font-bold text-white hover:border-brandGold"><i class="fa-solid fa-gift text-brandGold block mb-1 text-base"></i>For free</button>
+  </div>
 
-                <div id="nav-logged-out" class="flex items-center gap-2">
-                    <button onclick="openAuthModal()" class="btn-outline-gold px-3.5 py-1.5 text-xs">Log in</button>
-                    <button onclick="openAuthModal()" class="btn-gold px-3.5 py-1.5 text-xs">Sign up</button>
-                </div>
+  <div id="setup-warning" class="hidden gold-border-card p-4 text-sm border-red-500/60 text-red-100"><b>Supabase setup needed:</b> add your project URL and publishable/anon key in the CONFIG section of index.html. Never put a service-role or secret key in this file.</div>
+  <div id="site-notice" role="status" class="hidden gold-border-card p-3 text-sm"></div>
 
-                <div id="nav-logged-in" class="hidden flex items-center gap-2">
-                    <button onclick="switchView('account')" class="btn-outline-gold px-3 py-1.5 text-xs"><i class="fa-solid fa-user"></i> Account</button>
-                    <button onclick="signOut()" class="px-2.5 py-1.5 rounded-lg bg-red-950/40 border border-red-500/40 text-red-400 text-xs" title="Sign Out"><i class="fa-solid fa-right-from-bracket"></i></button>
-                </div>
-            </div>
-        </div>
-    </header>
+  <div id="view-home" class="grid grid-cols-1 md:grid-cols-3 gap-5">
+    <aside class="md:col-span-1 space-y-4">
+      <div class="gold-border-card p-4 space-y-3 md:sticky md:top-24">
+        <h2 class="text-xs font-extrabold text-brandGold uppercase tracking-wider border-b border-brandBorder pb-2"><i class="fa-solid fa-circle-plus mr-2"></i>What's happening, neighbor?</h2>
+        <form id="post-form" class="space-y-3 text-xs">
+          <label class="block text-gray-300 font-semibold">Post title *<input id="post-title" class="field mt-1" required maxlength="120" placeholder="What are you offering or asking?"></label>
+          <label class="block text-gray-300 font-semibold">Category *<select id="post-category" class="field mt-1" required><option>For Sale</option><option>Jobs & Gigs</option><option>Business Ads</option><option>Community News / Advice</option><option>For Free</option><option>Neighbors Helping Neighbors</option><option>Looking for Work</option><option>Trade / Barter</option></select></label>
+          <label class="block text-gray-300 font-semibold">Photos (up to 10)<input type="file" id="post-photos" accept="image/*" multiple class="block w-full mt-1 text-[11px] text-gray-300"></label>
+          <label class="block text-gray-300 font-semibold">Video (optional, one)<input type="file" id="post-video" accept="video/*" class="block w-full mt-1 text-[11px] text-gray-300"></label>
+          <p class="small-muted">Uploads require the public Supabase Storage bucket named <code>post-media</code> and its policies from the included SQL file.</p>
+          <label class="block text-gray-300 font-semibold">Description *<textarea id="post-description" class="field mt-1" rows="4" required maxlength="6000" placeholder="Share details, location area, price, or instructions…"></textarea></label>
+          <label class="flex gap-2 items-start text-gray-300"><input id="human-check" type="checkbox" class="mt-0.5 accent-yellow-400" required><span>I'm a real person, not a bot.</span></label>
+          <button type="submit" class="btn-gold w-full py-3 uppercase font-extrabold tracking-wider">Publish free ad</button>
+          <p class="small-muted">You must sign in to publish. Listings are free.</p>
+        </form>
+      </div>
+      <div class="gold-border-card p-4 text-center space-y-2"><span class="text-[9px] text-brandGold uppercase tracking-widest font-bold">TREASURE VALLEY SPOTLIGHT</span><h3 class="text-sm font-bold text-white">Support local neighbors</h3><p class="text-[11px] text-gray-300">Connecting Boise, Nampa, Caldwell, Meridian, Star, and nearby communities.</p></div>
+      <div class="gold-border-card p-4 text-center text-xs"><p class="text-brandGold font-bold mb-1">Keep NextFreeDoor free</p><p class="text-gray-300 mb-3">If you find the community useful, you can support its upkeep.</p><a id="kofi-sidebar" href="https://ko-fi.com/" target="_blank" rel="noopener noreferrer" class="btn-outline-gold inline-block px-4 py-2"><i class="fa-solid fa-mug-hot mr-2"></i>Support on Ko-fi</a></div>
+    </aside>
+    <section class="md:col-span-2 space-y-4">
+      <div class="flex items-center justify-between border-b border-brandBorder pb-2 px-1 gap-2"><h2 id="feed-title" class="text-xs font-extrabold uppercase tracking-wider text-white">Neighborhood feed</h2><button onclick="loadPosts()" class="text-[11px] text-brandGold hover:underline"><i class="fa-solid fa-rotate mr-1"></i>Refresh</button></div>
+      <div id="listings-container" class="space-y-4"><div class="gold-border-card p-6 text-center text-sm text-gray-300">Loading community posts…</div></div>
+      <div id="ad-slot" class="gold-border-card p-4 text-center text-[11px] text-gray-500">Community-supported space. AdSense ads appear here after your site is approved and configured.</div>
+    </section>
+  </div>
 
-    <!-- Main Content Container -->
-    <main class="relative z-10 max-w-6xl mx-auto w-full p-4 space-y-6 flex-grow">
+  <section id="view-detail" class="hidden max-w-3xl mx-auto space-y-4"></section>
+  <section id="view-account" class="hidden max-w-xl mx-auto gold-border-card p-6 space-y-4"><h2 class="text-sm font-bold text-white border-b border-brandBorder pb-2">My account</h2><div id="account-info" class="text-sm space-y-2 text-gray-300"></div><button onclick="switchView('home')" class="btn-outline-gold px-3 py-2 text-xs">Back to feed</button></section>
+  <section id="view-messages" class="hidden max-w-3xl mx-auto gold-border-card p-4 sm:p-6 space-y-4"><h2 class="text-lg font-bold text-white"><i class="fa-regular fa-envelope text-brandGold mr-2"></i>Private messages</h2><p class="small-muted">Messages are private to their sender and recipient, subject to the database policies in the included SQL setup.</p><div class="grid sm:grid-cols-2 gap-3"><label class="text-xs text-gray-300">Neighbor's account email (recipient)<input id="message-to" type="email" class="field mt-1" placeholder="neighbor@example.com"></label><label class="text-xs text-gray-300">Message<input id="message-text" class="field mt-1" placeholder="Write a private message…"></label></div><button onclick="sendPrivateMessage()" class="btn-gold px-4 py-2 text-xs">Send message</button><div id="message-list" class="space-y-2"></div><button onclick="switchView('home')" class="btn-outline-gold px-3 py-2 text-xs">Back to feed</button></section>
+</main>
 
-        <!-- Category Filter Buttons -->
-        <div class="grid grid-cols-2 sm:grid-cols-5 gap-2">
-            <button onclick="filterCategory('For Sale')" class="gold-border-card p-3 text-center text-xs font-bold text-white hover:border-brandGold transition">
-                <i class="fa-solid fa-tag text-brandGold block mb-1 text-sm"></i> For Sale
-            </button>
-            <button onclick="filterCategory('Looking for Hire')" class="gold-border-card p-3 text-center text-xs font-bold text-white hover:border-brandGold transition">
-                <i class="fa-solid fa-briefcase text-brandGold block mb-1 text-sm"></i> Looking for Hire
-            </button>
-            <button onclick="filterCategory('Advertising for Businesses')" class="gold-border-card p-3 text-center text-xs font-bold text-white hover:border-brandGold transition">
-                <i class="fa-solid fa-store text-brandGold block mb-1 text-sm"></i> Advertising for Businesses
-            </button>
-            <button onclick="filterCategory('News / Advice Wanted')" class="gold-border-card p-3 text-center text-xs font-bold text-white hover:border-brandGold transition">
-                <i class="fa-solid fa-bullhorn text-brandGold block mb-1 text-sm"></i> News / Advice Wanted
-            </button>
-            <button onclick="filterCategory('For Free')" class="gold-border-card p-3 text-center text-xs font-bold text-white hover:border-brandGold transition col-span-2 sm:col-span-1">
-                <i class="fa-solid fa-gift text-brandGold block mb-1 text-sm"></i> For Free
-            </button>
-        </div>
+<div id="auth-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden items-center justify-center p-4">
+  <div class="gold-border-card max-w-md w-full p-6 relative space-y-4"><button onclick="closeAuthModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white" aria-label="Close"><i class="fa-solid fa-xmark text-lg"></i></button>
+    <div class="text-center"><h2 id="auth-title" class="text-xl font-extrabold text-white">Join your neighborhood</h2><p class="text-xs text-brandGlow mt-1">Post, comment, and connect with Treasure Valley neighbors.</p></div>
+    <button onclick="socialLogin()" class="w-full py-3 px-4 rounded-xl bg-white text-gray-900 font-bold text-xs flex items-center justify-center gap-3 hover:bg-gray-100"><i class="fa-brands fa-google text-red-500 text-sm"></i> Continue with Google</button>
+    <div class="relative flex items-center gap-3 text-gray-500 text-[11px]"><span class="flex-grow border-t border-brandBorder"></span>or email<span class="flex-grow border-t border-brandBorder"></span></div>
+    <form id="email-auth-form" class="space-y-3 text-xs"><input type="email" id="auth-email" class="field" required autocomplete="email" placeholder="Email address"><input type="password" id="auth-password" class="field" required minlength="8" autocomplete="current-password" placeholder="Password (at least 8 characters)"><label id="human-auth-label" class="flex gap-2 items-center text-gray-300"><input id="human-auth" type="checkbox" required class="accent-yellow-400"> I'm a real person</label><button id="email-auth-submit" type="submit" class="btn-gold w-full py-3 font-bold uppercase tracking-wider">Create account</button></form>
+    <button id="toggle-auth-mode" onclick="toggleAuthMode()" class="w-full text-brandGold text-xs underline">Already have an account? Log in</button>
+    <p class="small-muted">If email confirmation is enabled in Supabase, check your inbox to confirm your account before signing in.</p>
+  </div>
+</div>
 
-        <!-- VIEW 1: HOME FEED & POSTING SIDEBAR -->
-        <div id="view-home" class="grid grid-cols-1 md:grid-cols-3 gap-6">
-            
-            <!-- Left Column: Create New Post Form -->
-            <div class="md:col-span-1 space-y-4">
-                <div class="gold-border-card p-4 space-y-3 sticky top-20">
-                    <h3 class="text-xs font-bold text-brandGold uppercase tracking-wider flex items-center gap-2 border-b border-brandBorder pb-2">
-                        <i class="fa-solid fa-circle-plus"></i> What's happening, neighbor?
-                    </h3>
-                    <form onsubmit="handleCreatePost(event)" class="space-y-3 text-xs">
-                        <div>
-                            <label class="block text-gray-300 font-semibold mb-1">Post Title *</label>
-                            <input type="text" id="post-title" required placeholder="What are you offering or asking?" class="w-full bg-brandDark border border-yellow-500/30 rounded p-2.5 text-white focus:border-brandGold outline-none">
-                        </div>
-                        <div>
-                            <label class="block text-gray-300 font-semibold mb-1">Category *</label>
-                            <select id="post-category" class="w-full bg-brandDark border border-yellow-500/30 rounded p-2.5 text-white focus:border-brandGold outline-none">
-                                <option value="For Sale">For Sale</option>
-                                <option value="Looking for Hire">Looking for Hire</option>
-                                <option value="Advertising for Businesses">Advertising for Businesses</option>
-                                <option value="News / Advice Wanted">News / Advice Wanted</option>
-                                <option value="For Free">For Free</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label class="block text-gray-300 font-semibold mb-1">Upload Photos *</label>
-                            <input type="file" id="post-photos" accept="image/*" required class="w-full text-[11px] text-gray-400 file:mr-2 file:py-1 file:px-2 file:rounded file:border-0 file:bg-brandGold file:text-brandDark file:font-bold cursor-pointer">
-                        </div>
-                        <div>
-                            <label class="block text-gray-300 font-semibold mb-1">Add Video (Optional)</label>
-                            <input type="file" id="post-video" accept="video/*" class="w-full text-[11px] text-gray-400 file:mr-2 file:py-1 file:px-2 file:rounded file:border-0 file:bg-brandBorder file:text-white file:font-semibold cursor-pointer">
-                        </div>
-                        <div>
-                            <label class="block text-gray-300 font-semibold mb-1">Description *</label>
-                            <textarea id="post-description" rows="3" required placeholder="Provide details, contact info, or instructions..." class="w-full bg-brandDark border border-yellow-500/30 rounded p-2.5 text-white focus:border-brandGold outline-none"></textarea>
-                        </div>
+<footer class="relative z-10 border-t border-brandBorder py-5 px-4 text-center text-[11px] text-gray-400 bg-brandDark"><p>© <span id="year"></span> NextFreeDoor.com · Treasure Valley Community Marketplace</p><p class="mt-1">Free community listings. Be kind, stay safe, and meet buyers in public places.</p><p class="mt-2"><a href="#top" onclick="window.scrollTo({top:0,behavior:'smooth'});return false" class="text-brandGold hover:underline">Back to top</a></p></footer>
 
-                        <button type="submit" class="btn-gold w-full py-3 uppercase font-extrabold tracking-wider text-xs shadow-lg">Publish Post</button>
-                    </form>
-                </div>
+<script>
+/* ===================== CONFIG: PUT YOUR OWN VALUES HERE =====================
+   Supabase Dashboard -> Project Settings -> API:
+   SUPABASE_URL = Project URL
+   SUPABASE_ANON_KEY = publishable key (sb_publishable_...) or legacy anon public key.
+   Never paste a service_role key or any secret key into website code.
+   Add your actual Ko-fi page URL below. AdSense needs approval and its real ca-pub ID.
+============================================================================= */
+const SUPABASE_URL = "PASTE_YOUR_SUPABASE_PROJECT_URL_HERE";
+const SUPABASE_ANON_KEY = "PASTE_YOUR_SUPABASE_PUBLISHABLE_OR_ANON_KEY_HERE";
+const KOFI_URL = "https://ko-fi.com/"; // Replace with your actual Ko-fi page URL
+const supabaseReady = window.supabase && SUPABASE_URL.startsWith("https://") &&
+  !SUPABASE_URL.includes("PASTE_") && SUPABASE_ANON_KEY && !SUPABASE_ANON_KEY.includes("PASTE_");
+const db = supabaseReady ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY) : null;
+document.getElementById('year').textContent = new Date().getFullYear();
+document.getElementById('kofi-link').href = KOFI_URL;
+document.getElementById('kofi-sidebar').href = KOFI_URL;
+if (!supabaseReady) document.getElementById('setup-warning').classList.remove('hidden');
 
-                <div class="gold-border-card p-4 text-center space-y-2">
-                    <span class="text-[9px] text-brandGold uppercase tracking-widest block font-bold">TREASURE VALLEY SPOTLIGHT</span>
-                    <h4 class="text-xs font-bold text-white">Support Local Business & Neighbors</h4>
-                    <p class="text-[11px] text-gray-300">Connecting Boise, Nampa, Caldwell, Meridian, and Star.</p>
-                </div>
-            </div>
-
-            <!-- Right Column: Feed -->
-            <div class="md:col-span-2 space-y-4">
-                <div class="flex items-center justify-between border-b border-brandBorder pb-2 px-1">
-                    <h3 id="feed-title" class="text-xs font-bold uppercase tracking-wider text-white">Neighborhood Feed</h3>
-                    <button onclick="filterCategory('All')" class="text-[11px] text-brandGold hover:underline font-semibold">View All Categories</button>
-                </div>
-
-                <div id="listings-container" class="space-y-4"></div>
-            </div>
-        </div>
-
-        <!-- VIEW 2: DETAIL PAGE -->
-        <div id="view-detail" class="hidden max-w-3xl mx-auto space-y-4"></div>
-
-        <!-- VIEW 3: ACCOUNT DASHBOARD -->
-        <div id="view-account" class="hidden max-w-xl mx-auto gold-border-card p-6 space-y-4">
-            <h3 class="text-sm font-bold text-white border-b border-brandBorder pb-2">My Profile & Account</h3>
-            <div id="account-info" class="text-xs space-y-2 text-gray-300"></div>
-            <button onclick="switchView('home')" class="btn-outline-gold px-3 py-1.5 text-xs">Back to Feed</button>
-        </div>
-
-    </main>
-
-    <!-- Auth Modal -->
-    <div id="auth-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden flex items-center justify-center p-4">
-        <div class="gold-border-card max-w-md w-full p-6 relative shadow-2xl space-y-4">
-            <button onclick="closeAuthModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
-            
-            <div class="text-center space-y-1.5">
-                <h3 class="text-xl font-extrabold text-white">Discover your neighborhood</h3>
-                <p class="text-xs text-brandGlow">Join NextFreeDoor to connect, post, and comment</p>
-            </div>
-
-            <div class="space-y-3 pt-2">
-                <button onclick="socialLogin('Google')" class="w-full py-3 px-4 rounded-xl bg-white text-gray-900 font-bold text-xs flex items-center justify-center gap-3 shadow hover:bg-gray-100 transition">
-                    <i class="fa-brands fa-google text-red-500 text-sm"></i> Continue with Google
-                </button>
-            </div>
-
-            <div class="relative flex py-2 items-center">
-                <div class="flex-grow border-t border-brandBorder"></div>
-                <span class="flex-shrink mx-4 text-gray-400 text-[11px]">or</span>
-                <div class="flex-grow border-t border-brandBorder"></div>
-            </div>
-
-            <form onsubmit="handleEmailAuth(event)" class="space-y-3 text-xs">
-                <input type="email" id="auth-email" required placeholder="Email address" class="w-full bg-brandDark border border-yellow-500/30 rounded-xl p-3 text-white outline-none focus:border-brandGold">
-                <input type="password" id="auth-password" required placeholder="Create or enter password" class="w-full bg-brandDark border border-yellow-500/30 rounded-xl p-3 text-white outline-none focus:border-brandGold">
-                <button type="submit" class="btn-gold w-full py-3 font-bold text-xs uppercase tracking-wider">Continue with Email</button>
-            </form>
-        </div>
-    </div>
-
-    <!-- Footer -->
-    <footer class="relative z-10 border-t border-brandBorder py-4 text-center text-[11px] text-gray-400 bg-brandDark">
-        &copy; 2026 NextFreeDoor.com &bull; Treasure Valley Community Marketplace
-    </footer>
-
-    <script>
-        let currentUser = null;
-        let listings = [
-            { 
-                id: 1, 
-                title: 'Solid Oak Dining Table - Free Pickup', 
-                category: 'For Free', 
-                description: 'Good condition solid wood table. First come, first served near downtown Caldwell.', 
-                photo: 'https://placehold.co/600x400/14261F/FFC72C?text=Oak+Table', 
-                video: '', 
-                author: 'Sarah J.', 
-                date: '2h ago', 
-                comments: [{ author: 'Mike M.', text: 'Is this still available for pickup today?' }] 
-            },
-            { 
-                id: 2, 
-                title: 'Professional House Cleaning Service', 
-                category: 'Advertising for Businesses', 
-                description: 'Treasure Valley Sparkle Cleaning is taking new residential and commercial clients this week!', 
-                photo: 'https://placehold.co/600x400/14261F/FFC72C?text=Cleaning+Services', 
-                video: '', 
-                author: 'Ashley S.', 
-                date: '5h ago', 
-                comments: [] 
-            }
-        ];
-
-        function switchView(view) {
-            document.getElementById('view-home').classList.add('hidden');
-            document.getElementById('view-detail').classList.add('hidden');
-            document.getElementById('view-account').classList.add('hidden');
-
-            if (view === 'home') {
-                document.getElementById('view-home').classList.remove('hidden');
-                renderListings(listings);
-            } else if (view === 'detail') {
-                document.getElementById('view-detail').classList.remove('hidden');
-            } else if (view === 'account') {
-                if (!currentUser) { openAuthModal(); return; }
-                document.getElementById('view-account').classList.remove('hidden');
-                document.getElementById('account-info').innerHTML = `<p><b>Name:</b> ${currentUser.name}</p><p><b>Email:</b> ${currentUser.email}</p><p class="text-brandGold pt-2 font-semibold">Status: Verified Neighbor</p>`;
-            }
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-
-        function renderListings(items) {
-            const container = document.getElementById('listings-container');
-            if (items.length === 0) {
-                container.innerHTML = `<div class="gold-border-card p-6 text-center text-xs text-gray-400">No listings found in this category. Be the first to post!</div>`;
-                return;
-            }
-            container.innerHTML = items.map(item => `
-                <div class="gold-border-card p-4 space-y-3">
-                    <div class="flex items-center justify-between">
-                        <div class="flex items-center gap-2">
-                            <div class="w-8 h-8 rounded-full bg-brandGold text-brandDark font-bold flex items-center justify-center text-xs shadow">
-                                ${item.author.charAt(0)}
-                            </div>
-                            <div>
-                                <h4 class="text-xs font-bold text-white">${item.author}</h4>
-                                <span class="text-[10px] text-gray-400">${item.date} &bull; Local Neighbor</span>
-                            </div>
-                        </div>
-                        <span class="text-[10px] text-brandGold bg-brandDark px-2.5 py-1 rounded-full border border-yellow-500/30 font-semibold uppercase">${item.category}</span>
-                    </div>
-
-                    <div>
-                        <h3 class="text-sm font-bold text-white mb-1">${item.title}</h3>
-                        <p class="text-xs text-gray-300 line-clamp-2">${item.description}</p>
-                    </div>
-
-                    <div class="rounded-xl overflow-hidden border border-brandBorder h-56 bg-brandDark">
-                        <img src="${item.photo}" class="w-full h-full object-cover">
-                    </div>
-
-                    <div class="flex items-center justify-between pt-2 border-t border-brandBorder/60">
-                        <button onclick="viewDetail(${item.id})" class="text-xs text-brandGold hover:underline font-semibold flex items-center gap-1.5">
-                            <i class="fa-solid fa-comments"></i> Comments (${item.comments.length})
-                        </button>
-                        <button onclick="viewDetail(${item.id})" class="btn-outline-gold px-3 py-1.5 text-xs">View Full Page</button>
-                    </div>
-                </div>
-            `).join('');
-        }
-
-        function filterCategory(cat) {
-            switchView('home');
-            document.getElementById('feed-title').innerText = cat === 'All' ? 'Neighborhood Feed' : `Category: ${cat}`;
-            renderListings(cat === 'All' ? listings : listings.filter(i => i.category === cat));
-        }
-
-        function handleCreatePost(e) {
-            e.preventDefault();
-            if (!currentUser) {
-                openAuthModal();
-                alert('Please sign in before publishing a post.');
-                return;
-            }
-            const title = document.getElementById('post-title').value;
-            const category = document.getElementById('post-category').value;
-            const description = document.getElementById('post-description').value;
-
-            listings.unshift({
-                id: listings.length + 1,
-                title, category, description,
-                photo: 'https://placehold.co/600x400/14261F/FFC72C?text=' + encodeURIComponent(title),
-                video: '',
-                author: currentUser.name,
-                date: 'Just now',
-                comments: []
-            });
-
-            document.getElementById('post-title').value = '';
-            document.getElementById('post-description').value = '';
-            filterCategory('All');
-            alert('Listing published successfully!');
-        }
-
-        function viewDetail(id) {
-            const item = listings.find(i => i.id === id);
-            if (!item) return;
-            switchView('detail');
-
-            document.getElementById('view-detail').innerHTML = `
-                <div class="gold-border-card p-6 space-y-4">
-                    <button onclick="switchView('home')" class="btn-outline-gold px-3 py-1.5 text-xs"><i class="fa-solid fa-arrow-left"></i> Back to Feed</button>
-                    <div class="flex items-center justify-between border-b border-brandBorder pb-3">
-                        <div>
-                            <span class="text-[10px] text-brandGold font-bold uppercase">${item.category}</span>
-                            <h2 class="text-base font-bold text-white mt-1">${item.title}</h2>
-                            <span class="text-[11px] text-gray-400">Posted by ${item.author} &bull; ${item.date}</span>
-                        </div>
-                    </div>
-                    <div class="rounded-xl overflow-hidden border border-brandBorder h-72 bg-brandDark">
-                        <img src="${item.photo}" class="w-full h-full object-cover">
-                    </div>
-                    <p class="text-xs text-gray-200 leading-relaxed bg-brandDark/50 p-3.5 rounded-xl border border-brandBorder">${item.description}</p>
-                    
-                    <div class="border-t border-brandBorder pt-4 space-y-3">
-                        <h4 class="text-xs font-bold text-white"><i class="fa-solid fa-comments text-brandGold"></i> Neighborhood Comments (${item.comments.length})</h4>
-                        <div class="space-y-2" id="comment-list">
-                            ${item.comments.length === 0 ? '<p class="text-[11px] text-gray-500 italic">No comments yet. Be the first neighbor to reply!</p>' : item.comments.map(c => `<div class="bg-brandDark p-3 rounded-xl text-xs border border-brandBorder"><b>${c.author}:</b>${c.text}</div>`).join('')}
-                        </div>
-                        <form onsubmit="addComment(event, ${item.id})" class="flex gap-2 pt-1">
-                            <input type="text" id="comment-box" required placeholder="Write a comment..." class="flex-grow bg-brandDark border border-yellow-500/30 rounded-xl p-3 text-xs text-white outline-none focus:border-brandGold">
-                            <button type="submit" class="btn-gold px-4 py-2 text-xs font-bold">Reply</button>
-                        </form>
-                    </div>
-                </div>
-            `;
-        }
-
-        function addComment(e, id) {
-            e.preventDefault();
-            if (!currentUser) { openAuthModal(); alert('Please sign in to comment on posts.'); return; }
-            const text = document.getElementById('comment-box').value;
-            const item = listings.find(i => i.id === id);
-            if (item && text.trim()) {
-                item.comments.push({ author: currentUser.name, text: text.trim() });
-                viewDetail(id);
-            }
-        }
-
-        function openAuthModal() { document.getElementById('auth-modal').classList.remove('hidden'); }
-        function closeAuthModal() { document.getElementById('auth-modal').classList.add('hidden'); }
-
-        function socialLogin(provider) {
-            currentUser = { name: 'Ashley S.', email: 'ashley@treasuresparkle.com' };
-            closeAuthModal();
-            updateNavState();
-            alert('Successfully signed in with Google!');
-        }
-
-        function handleEmailAuth(e) {
-            e.preventDefault();
-            const email = document.getElementById('auth-email').value;
-            currentUser = { name: email.split('@')[0], email: email };
-            closeAuthModal();
-            updateNavState();
-            alert('Successfully signed in as ' + currentUser.name);
-        }
-
-        function signOut() {
-            currentUser = null;
-            updateNavState();
-            switchView('home');
-            alert('Signed out successfully.');
-        }
-
-        function updateNavState() {
-            if (currentUser) {
-                document.getElementById('nav-logged-out').classList.add('hidden');
-                document.getElementById('nav-logged-in').classList.remove('hidden');
-            } else {
-                document.getElementById('nav-logged-out').classList.remove('hidden');
-                document.getElementById('nav-logged-in').classList.add('hidden');
-            }
-        }
-
-        window.onload = () => renderListings(listings);
-    </script>
+let currentUser = null, activeCategory = 'All', authMode = 'signup', currentDetail = null, profileCache = {};
+const $ = id => document.getElementById(id);
+function notice(msg, error=false){const el=$('site-notice');el.textContent=msg;el.classList.remove('hidden');el.style.borderColor=error?'#f87171':'#FFC72C';el.style.color=error?'#fecaca':'#fef3c7';window.setTimeout(()=>el.classList.add('hidden'),7000)}
+function esc(s=''){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function niceDate(s){if(!s)return 'Just now';const d=new Date(s);return isNaN(d)?esc(s):d.toLocaleString(undefined,{dateStyle:'medium',timeStyle:'short'})}
+function nameFor(user){return user?.user_metadata?.full_name||user?.user_metadata?.name||user?.email?.split('@')[0]||'Neighbor'}
+function openAuthModal(mode='signup'){authMode=mode;updateAuthMode();$('auth-modal').classList.remove('hidden');$('auth-modal').classList.add('flex')}
+function closeAuthModal(){$('auth-modal').classList.add('hidden');$('auth-modal').classList.remove('flex')}
+function toggleAuthMode(){authMode=authMode==='signup'?'login':'signup';updateAuthMode()}
+function updateAuthMode(){$('auth-title').textContent=authMode==='signup'?'Join your neighborhood':'Welcome back, neighbor';$('email-auth-submit').textContent=authMode==='signup'?'Create account':'Log in';$('toggle-auth-mode').textContent=authMode==='signup'?'Already have an account? Log in':"Need an account? Sign up";$('human-auth-label').classList.toggle('hidden',authMode==='login');$('human-auth').required=authMode==='signup'}
+async function socialLogin(){if(!db)return notice('Add your Supabase Project URL and public key in CONFIG first.',true);const {error}=await db.auth.signInWithOAuth({provider:'google',options:{redirectTo:location.origin+location.pathname}});if(error)notice(error.message,true)}
+$('email-auth-form').addEventListener('submit',async e=>{e.preventDefault();if(!db)return notice('Add your Supabase Project URL and public key in CONFIG first.',true);if(authMode==='signup'&&!$('human-auth').checked)return notice('Please check the human verification box.',true);
+const email=$('auth-email').value.trim(),password=$('auth-password').value;let result;
+if(authMode==='signup') result=await db.auth.signUp({email,password,options:{data:{full_name:email.split('@')[0]}}});
+else result=await db.auth.signInWithPassword({email,password});
+if(result.error)return notice(result.error.message,true);
+if(authMode==='signup'&&!result.data.session){closeAuthModal();return notice('Account created. Check your email for a confirmation link, then log in.')}
+closeAuthModal();notice(authMode==='signup'?'Account created! Welcome to the neighborhood.':'You are signed in.');await refreshUser();});
+async function signOut(){if(db)await db.auth.signOut();currentUser=null;updateNavState();switchView('home');notice('You have signed out.')}
+async function refreshUser(){if(!db){updateNavState();return}const {data}=await db.auth.getUser();currentUser=data?.user||null;updateNavState();if(currentUser)loadProfile()}
+function updateNavState(){const on=!!currentUser;$('nav-logged-out').classList.toggle('hidden',on);$('nav-logged-in').classList.toggle('hidden',!on);$('nav-logged-in').classList.toggle('flex',on)}
+async function loadProfile(){if(!db||!currentUser)return;const {data}=await db.from('profiles').select('*').eq('id',currentUser.id).maybeSingle();profileCache[currentUser.id]=data||{}}
+function switchView(view){['home','detail','account','messages'].forEach(v=>$('view-'+v).classList.add('hidden'));$('view-'+view).classList.remove('hidden');if(view==='home')loadPosts();if(view==='account')renderAccount();if(view==='messages')loadMessages();window.scrollTo({top:0,behavior:'smooth'})}
+function filterCategory(cat){activeCategory=cat;$('feed-title').textContent=cat==='All'?'Neighborhood feed':cat;switchView('home')}
+function mediaHtml(url,type){if(!url)return '';if(type==='video')return `<video controls preload="metadata" class="post-media" src="${esc(url)}"></video>`;return `<img loading="lazy" class="post-media" src="${esc(url)}" alt="Post photo">`}
+async function loadPosts(){const container=$('listings-container');if(!db){container.innerHTML='<div class="gold-border-card p-6 text-center text-sm text-gray-300">The design is ready. Add your Supabase project URL and public key in the CONFIG section to load real posts.</div>';return}
+container.innerHTML='<div class="gold-border-card p-6 text-center text-sm text-gray-300">Loading community posts…</div>';
+let q=db.from('posts').select('*').order('created_at',{ascending:false}).limit(100);
+if(activeCategory!=='All')q=q.eq('type',activeCategory);
+const {data,error}=await q;if(error){container.innerHTML=`<div class="gold-border-card p-5 text-sm text-red-200">Couldn't load posts: ${esc(error.message)}<p class="small-muted mt-2">Check that the posts table and Row Level Security policies are set up using the included SQL file.</p></div>`;return}
+if(!data?.length){container.innerHTML='<div class="gold-border-card p-7 text-center text-sm text-gray-300">No posts in this category yet. Be the first neighbor to post a free ad!</div>';return}
+const ids=data.map(p=>p.id);let mediaMap={},commentCounts={};
+const {data:media}=await db.from('post_media').select('*').in('post_id',ids).order('created_at',{ascending:true});(media||[]).forEach(m=>(mediaMap[m.post_id]??=[]).push(m));
+const {data:comments}=await db.from('comments').select('post_id').in('post_id',ids);(comments||[]).forEach(c=>commentCounts[c.post_id]=(commentCounts[c.post_id]||0)+1);
+container.innerHTML=data.map(p=>{const files=mediaMap[p.id]||[];const first=files[0];const author=esc(p.author_name||'Neighbor');return `<article class="gold-border-card p-4 space-y-3"><div class="flex items-center justify-between gap-2"><div class="flex items-center gap-2 min-w-0"><div class="w-9 h-9 rounded-full bg-brandGold text-brandDark font-extrabold flex items-center justify-center shrink-0">${esc(author.charAt(0).toUpperCase())}</div><div class="min-w-0"><h3 class="text-xs font-bold text-white truncate">${author}</h3><p class="small-muted">${niceDate(p.created_at)} · Local neighbor</p></div></div><span class="pill">${esc(p.type||'Community')}</span></div><div><h4 class="text-base font-bold text-white mb-1">${esc(p.title)}</h4><p class="text-sm text-gray-300 whitespace-pre-wrap break-words">${esc(p.body||'')}</p></div>${first?mediaHtml(first.url,first.media_type):''}${files.length>1?`<div class="grid grid-cols-3 gap-2">${files.slice(1).map(m=>`<div class="rounded-lg overflow-hidden">${m.media_type==='video'?`<a class="text-brandGold text-xs underline" href="${esc(m.url)}" target="_blank">Open video</a>`:`<img loading="lazy" src="${esc(m.url)}" class="w-full h-24 object-cover" alt="Post photo">`}</div>`).join('')}</div>`:''}<div class="flex flex-wrap items-center justify-between gap-2 border-t border-brandBorder pt-3"><button onclick="viewDetail('${esc(p.id)}')" class="text-xs text-brandGold hover:underline"><i class="fa-solid fa-comments mr-1"></i>Comments (${commentCounts[p.id]||0})</button><button onclick="startMessage('${esc(p.user_id||'')}','${esc(author)}')" class="btn-outline-gold px-3 py-2 text-xs" ${!currentUser||p.user_id===currentUser.id?'disabled':''}><i class="fa-regular fa-envelope mr-1"></i>Message neighbor</button><button onclick="viewDetail('${esc(p.id)}')" class="btn-gold px-3 py-2 text-xs">View post</button></div></article>`}).join('')}
+async function uploadMedia(postId,files){if(!files.length)return;const maxPhoto=10;const photos=Array.from(files).filter(f=>f.type.startsWith('image/'));const videos=Array.from(files).filter(f=>f.type.startsWith('video/'));if(photos.length>maxPhoto)throw Error('Choose no more than 10 photos.');if(videos.length>1)throw Error('Choose only one video.');if(photos.length+videos.length!==files.length)throw Error('Only image and video files are allowed.');
+for(const f of files){if(f.size>100*1024*1024)throw Error(`${f.name} is over 100 MB. Please choose a smaller file.`);const path=`${currentUser.id}/${postId}/${crypto.randomUUID()}-${f.name.replace(/[^a-zA-Z0-9._-]/g,'_')}`;const {error:upErr}=await db.storage.from('post-media').upload(path,f,{upsert:false,contentType:f.type});if(upErr)throw upErr;const {data}=db.storage.from('post-media').getPublicUrl(path);const {error:rowErr}=await db.from('post_media').insert({post_id:postId,user_id:currentUser.id,url:data.publicUrl,media_type:f.type.startsWith('video/')?'video':'image',storage_path:path});if(rowErr)throw rowErr}}
+$('post-form').addEventListener('submit',async e=>{e.preventDefault();if(!db)return notice('Add your Supabase URL and public key first.',true);if(!currentUser){openAuthModal('login');return notice('Please sign in before publishing.',true)}if(!$('human-check').checked)return notice('Please check the human verification box.',true);
+const photos=Array.from($('post-photos').files||[]),video=$('post-video').files?.[0];if(photos.length>10)return notice('You can upload up to 10 photos.',true);if(video&&video.size>100*1024*1024)return notice('The video must be 100 MB or smaller.',true);
+const allFiles=[...photos,...(video?[video]:[])];const btn=e.submitter;btn.disabled=true;btn.textContent='Publishing…';
+try{const title=$('post-title').value.trim(),body=$('post-description').value.trim(),type=$('post-category').value;const {data:post,error}=await db.from('posts').insert({user_id:currentUser.id,author_name:nameFor(currentUser),title,body,type,likes:0}).select().single();if(error)throw error;await uploadMedia(post.id,allFiles);$('post-form').reset();activeCategory='All';$('feed-title').textContent='Neighborhood feed';notice('Your free ad has been published!');await loadPosts()}catch(err){notice('Could not publish: '+(err.message||'Unknown error')+'. Check the included SQL/storage setup.',true)}finally{btn.disabled=false;btn.textContent='Publish free ad'}});
+async function viewDetail(id){if(!db)return;const {data:p,error}=await db.from('posts').select('*').eq('id',id).single();if(error)return notice(error.message,true);currentDetail=p;const [{data:files},{data:comments}]=await Promise.all([db.from('post_media').select('*').eq('post_id',id).order('created_at'),db.from('comments').select('*').eq('post_id',id).order('created_at')]);
+switchView('detail');$('view-detail').innerHTML=`<div class="gold-border-card p-5 sm:p-6 space-y-4"><button onclick="switchView('home')" class="btn-outline-gold px-3 py-2 text-xs"><i class="fa-solid fa-arrow-left mr-1"></i>Back to feed</button><span class="pill">${esc(p.type||'Community')}</span><h2 class="text-xl font-extrabold text-white">${esc(p.title)}</h2><p class="small-muted">Posted by ${esc(p.author_name||'Neighbor')} · ${niceDate(p.created_at)}</p><p class="text-sm text-gray-200 whitespace-pre-wrap break-words">${esc(p.body||'')}</p><div class="grid sm:grid-cols-2 gap-3">${(files||[]).map(f=>`<div class="rounded-xl overflow-hidden border border-brandBorder">${f.media_type==='video'?mediaHtml(f.url,'video'):mediaHtml(f.url,'image')}</div>`).join('')}</div><div class="border-t border-brandBorder pt-4 space-y-3"><h3 class="text-sm font-bold text-white"><i class="fa-solid fa-comments text-brandGold mr-2"></i>Comments (${(comments||[]).length})</h3><div class="space-y-2">${(comments||[]).length?(comments||[]).map(c=>`<div class="bg-brandDark p-3 rounded-xl text-sm border border-brandBorder"><b class="text-brandGold">${esc(c.author_name||'Neighbor')}</b><p class="mt-1 whitespace-pre-wrap">${esc(c.body||c.text||'')}</p><span class="small-muted">${niceDate(c.created_at)}</span></div>`).join(''):'<p class="small-muted italic">No comments yet. Be the first to reply.</p>'}</div><form onsubmit="addComment(event,'${esc(p.id)}')" class="space-y-2"><textarea id="comment-box" required maxlength="2000" class="field" rows="2" placeholder="Write a helpful comment…"></textarea><button class="btn-gold px-4 py-2 text-xs">Post comment</button></form></div><div class="border-t border-brandBorder pt-3"><button onclick="startMessage('${esc(p.user_id||'')}','${esc(p.author_name||'Neighbor')}')" class="btn-outline-gold px-4 py-2 text-xs" ${!currentUser||p.user_id===currentUser.id?'disabled':''}><i class="fa-regular fa-envelope mr-2"></i>Private message author</button></div></div>`}
+async function addComment(e,id){e.preventDefault();if(!currentUser){openAuthModal('login');return notice('Please sign in to comment.',true)}const body=$('comment-box').value.trim();if(!body)return;const {error}=await db.from('comments').insert({post_id:id,user_id:currentUser.id,author_name:nameFor(currentUser),body});if(error)return notice('Could not add comment: '+error.message,true);notice('Comment posted.');await viewDetail(id)}
+function startMessage(userId,author){if(!currentUser){openAuthModal('login');return notice('Please sign in to send private messages.',true)}if(!userId||userId===currentUser.id)return notice('You can message another signed-in neighbor from their post.',true);switchView('messages');$('message-to').dataset.receiverId=userId;$('message-to').value='';$('message-to').placeholder='Messaging '+author;$('message-text').focus()}
+async function sendPrivateMessage(){if(!db||!currentUser){openAuthModal('login');return}const receiverId=$('message-to').dataset.receiverId;const email=$('message-to').value.trim();const body=$('message-text').value.trim();if(!receiverId&&!email)return notice('Open Message neighbor from a post to choose a recipient.',true);if(!body)return notice('Write a message first.',true);
+let target=receiverId;if(!target){return notice('For privacy, open the recipient from one of their posts to message them. Email lookup is not exposed publicly.',true)}
+const {error}=await db.from('messages').insert({sender_id:currentUser.id,receiver_id:target,body});if(error)return notice('Could not send message: '+error.message,true);$('message-text').value='';notice('Private message sent.');loadMessages()}
+async function loadMessages(){if(!db||!currentUser){$('message-list').innerHTML='<p class="small-muted">Sign in to view your private messages.</p>';return}const {data,error}=await db.from('messages').select('*').or(`sender_id.eq.${currentUser.id},receiver_id.eq.${currentUser.id}`).order('created_at',{ascending:false}).limit(100);if(error){$('message-list').innerHTML=`<p class="text-red-200 text-xs">${esc(error.message)}</p>`;return}const rows=data||[];if(!rows.length){$('message-list').innerHTML='<p class="small-muted">No private messages yet.</p>';return}
+$('message-list').innerHTML=rows.map(m=>`<div class="bg-brandDark border border-brandBorder rounded-xl p-3 text-sm"><p class="text-brandGold text-xs font-bold">${m.sender_id===currentUser.id?'You sent':'Received'} · ${niceDate(m.created_at)}</p><p class="mt-1 whitespace-pre-wrap">${esc(m.body||m.content||'')}</p></div>`).join('')}
+function renderAccount(){if(!currentUser){openAuthModal('login');return}const meta=currentUser.user_metadata||{};$('account-info').innerHTML=`<p><b>Name:</b> ${esc(nameFor(currentUser))}</p><p><b>Email:</b> ${esc(currentUser.email||'')}</p><p><b>Account:</b> Signed in</p><p class="text-brandGold pt-2">Welcome to NextFreeDoor!</p>`}
+window.addEventListener('load',async()=>{if(db){const {data:{subscription}}=db.auth.onAuthStateChange((_event,session)=>{currentUser=session?.user||null;updateNavState();if(currentUser)loadProfile();loadPosts()});await refreshUser()}else{renderListingsPlaceholder()}});
+function renderListingsPlaceholder(){ $('listings-container').innerHTML='<div class="gold-border-card p-6 text-center text-sm text-gray-300">Welcome to NextFreeDoor! Connect Supabase in the CONFIG section to enable real accounts and live community posts.</div>'}
+</script>
 </body>
 </html>
