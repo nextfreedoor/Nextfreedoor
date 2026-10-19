@@ -76,236 +76,732 @@
 <div class="notice" id="notice" role="status" aria-live="polite"></div>
 <div class="modal" id="auth-modal" role="dialog" aria-modal="true" aria-labelledby="auth-title"><div class="modal-card"><div class="modal-head"><h2 id="auth-title">Join your neighborhood</h2><button class="xbtn" id="auth-close" aria-label="Close">×</button></div><form id="auth-form" class="form-grid"><div class="span-2"><label class="form-label" for="auth-name">Display name (for new accounts)</label><input class="field" id="auth-name" maxlength="80" placeholder="Your name or neighbor nickname"></div><div class="span-2"><label class="form-label" for="auth-email">Email</label><input class="field" id="auth-email" type="email" required autocomplete="email" placeholder="you@example.com"></div><div class="span-2"><label class="form-label" for="auth-password">Password</label><input class="field" id="auth-password" type="password" minlength="6" required autocomplete="current-password" placeholder="At least 6 characters"></div><div class="span-2"><button class="btn btn-gold" type="submit" id="auth-submit" style="width:100%">Create account</button></div></form><button class="btn" id="google-login" type="button" style="width:100%;margin-top:10px"><i class="fa-brands fa-google"></i> Continue with Google</button><p class="small" style="line-height:1.6;margin-top:14px">By joining, please be respectful and do not post scams, illegal items, or private information about others.</p><button id="auth-toggle" class="btn btn-outline" type="button" style="width:100%">Already have an account? Log in</button></div></div>
 <div class="modal" id="comments-modal" role="dialog" aria-modal="true" aria-labelledby="comments-title"><div class="modal-card"><div class="modal-head"><h2 id="comments-title">Listing comments</h2><button class="xbtn" id="comments-close" aria-label="Close">×</button></div><div id="comments-content"></div><form id="comment-form" style="margin-top:14px"><label class="form-label" for="comment-text">Add a comment</label><textarea id="comment-text" class="field" maxlength="2000" required placeholder="Write a helpful comment…"></textarea><button class="btn btn-gold" style="margin-top:10px" type="submit">Post comment</button></form></div></div>
+
 <script>
 (() => {
   'use strict';
-  // This is a browser-safe publishable key. Never put a Supabase secret/service-role key here.
+
+  // Supabase publishable key. Never put a secret/service-role key in browser code.
   const SUPABASE_URL = 'https://bpzuqzpgwdkjjmrvbhhn.supabase.co';
   const SUPABASE_ANON_KEY = 'sb_publishable_ZiyoCanqiioUYfcil90UiA_aT4wfdrj';
+
   const $ = id => document.getElementById(id);
   const CATEGORIES = ['All','For Sale','For Free','Jobs & Gigs','Looking for Work','Business Ads','Community News / Advice','Neighbors Helping Neighbors','Trade / Barter'];
-  let db = null, currentUser = null, authMode = 'signup', activeCategory = 'All', activeCommentPost = null, noticeTimer = null;
+
+  let db = null;
+  let currentUser = null;
+  let authMode = 'signup';
+  let activeCategory = 'All';
+  let activeCommentPost = null;
+  let noticeTimer = null;
 
   function esc(value) {
-    return String(value ?? '').replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
+    return String(value ?? '').replace(/[&<>"']/g, ch => ({
+      '&':'&amp;',
+      '<':'&lt;',
+      '>':'&gt;',
+      '"':'&quot;',
+      "'":'&#39;'
+    }[ch]));
   }
+
   function showNotice(message, error = false) {
-    const el = $('notice'); el.textContent = message; el.classList.toggle('error', !!error); el.classList.add('show');
-    clearTimeout(noticeTimer); noticeTimer = setTimeout(() => el.classList.remove('show'), 6000);
+    const el = $('notice');
+    el.textContent = message;
+    el.classList.toggle('error', !!error);
+    el.classList.add('show');
+    clearTimeout(noticeTimer);
+    noticeTimer = setTimeout(() => el.classList.remove('show'), 6000);
   }
+
   function friendlyError(err) {
     const message = err?.message || String(err || 'Unknown error');
-    if (/row-level security|permission denied|not allowed/i.test(message)) return message + ' — this usually means a Supabase table policy is blocking the action.';
-    if (/bucket|storage/i.test(message)) return message + ' — check that the post-media storage bucket exists and its policies allow this action.';
+
+    if (/row-level security|permission denied|not allowed/i.test(message)) {
+      return message + ' — this usually means a Supabase table policy is blocking the action.';
+    }
+
+    if (/bucket|storage/i.test(message)) {
+      return message + ' — check that the post-media storage bucket exists and its policies allow this action.';
+    }
+
     return message;
   }
+
   function nameFor(user) {
-    return user?.user_metadata?.full_name || user?.user_metadata?.name || user?.user_metadata?.display_name || user?.email?.split('@')[0] || 'Neighbor';
+    return user?.user_metadata?.full_name ||
+      user?.user_metadata?.name ||
+      user?.user_metadata?.display_name ||
+      user?.email?.split('@')[0] ||
+      'Neighbor';
   }
+
   function niceDate(value) {
     if (!value) return 'Just now';
-    const date = new Date(value); return Number.isNaN(date.getTime()) ? '' : date.toLocaleString([], {dateStyle:'medium',timeStyle:'short'});
+    const date = new Date(value);
+
+    return Number.isNaN(date.getTime())
+      ? ''
+      : date.toLocaleString([], {dateStyle:'medium',timeStyle:'short'});
   }
+
   function openAuth(mode = 'signup') {
-    authMode = mode; updateAuthMode(); $('auth-modal').classList.add('open');
+    authMode = mode;
+    updateAuthMode();
+    $('auth-modal').classList.add('open');
   }
-  function closeAuth() { $('auth-modal').classList.remove('open'); }
+
+  function closeAuth() {
+    $('auth-modal').classList.remove('open');
+  }
+
   function updateAuthMode() {
-    $('auth-title').textContent = authMode === 'signup' ? 'Join your neighborhood' : 'Welcome back, neighbor';
-    $('auth-submit').textContent = authMode === 'signup' ? 'Create account' : 'Log in';
-    $('auth-toggle').textContent = authMode === 'signup' ? 'Already have an account? Log in' : 'Need an account? Sign up';
+    $('auth-title').textContent = authMode === 'signup'
+      ? 'Join your neighborhood'
+      : 'Welcome back, neighbor';
+
+    $('auth-submit').textContent = authMode === 'signup'
+      ? 'Create account'
+      : 'Log in';
+
+    $('auth-toggle').textContent = authMode === 'signup'
+      ? 'Already have an account? Log in'
+      : 'Need an account? Sign up';
+
     $('auth-name').classList.toggle('hidden', authMode !== 'signup');
-    $('auth-password').autocomplete = authMode === 'signup' ? 'new-password' : 'current-password';
+
+    $('auth-password').autocomplete = authMode === 'signup'
+      ? 'new-password'
+      : 'current-password';
   }
+
   function updateNav() {
     const signedIn = !!currentUser;
+
     $('login-nav').classList.toggle('hidden', signedIn);
     $('signup-nav').classList.toggle('hidden', signedIn);
     $('account-nav').classList.toggle('hidden', !signedIn);
     $('logout-nav').classList.toggle('hidden', !signedIn);
   }
+
   function renderCategories() {
-    $('category-filters').innerHTML = CATEGORIES.map(c => `<button type="button" class="chip ${c === activeCategory ? 'active' : ''}" data-category="${esc(c)}">${esc(c)}</button>`).join('');
-    $('category-filters').querySelectorAll('[data-category]').forEach(btn => btn.addEventListener('click', () => {
-      activeCategory = btn.dataset.category; $('feed-heading').textContent = activeCategory === 'All' ? 'Neighborhood feed' : activeCategory; renderCategories(); loadPosts();
-    }));
+    $('category-filters').innerHTML = CATEGORIES.map(category =>
+      `<button type="button" class="chip ${category === activeCategory ? 'active' : ''}" data-category="${esc(category)}">${esc(category)}</button>`
+    ).join('');
+
+    $('category-filters').querySelectorAll('[data-category]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        activeCategory = btn.dataset.category;
+        $('feed-heading').textContent = activeCategory === 'All'
+          ? 'Neighborhood feed'
+          : activeCategory;
+
+        renderCategories();
+        loadPosts();
+      });
+    });
   }
+
+  // Listing search: filters the listings currently shown in the feed.
+  function installListingSearch() {
+    const feed = $('feed');
+    const filters = $('category-filters');
+
+    if (!feed || !filters || $('listing-search')) return;
+
+    const searchWrap = document.createElement('div');
+    searchWrap.style.margin = '12px 0';
+
+    searchWrap.innerHTML = `
+      <label class="form-label" for="listing-search">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        Search neighborhood listings
+      </label>
+      <input
+        class="field"
+        id="listing-search"
+        type="search"
+        maxlength="120"
+        placeholder="Search items, services, jobs, neighbors..."
+        autocomplete="off"
+      >
+      <p class="small" id="listing-search-status" aria-live="polite"></p>
+    `;
+
+    filters.parentNode.insertBefore(searchWrap, filters);
+
+    const searchInput = $('listing-search');
+    const status = $('listing-search-status');
+
+    function applySearch() {
+      const term = searchInput.value.trim().toLowerCase();
+      const cards = Array.from(feed.querySelectorAll('.post-card'));
+      let visible = 0;
+
+      cards.forEach(card => {
+        const matches = !term || card.textContent.toLowerCase().includes(term);
+        card.style.display = matches ? '' : 'none';
+
+        if (matches) visible++;
+      });
+
+      status.textContent = term
+        ? `${visible} matching listing${visible === 1 ? '' : 's'}`
+        : '';
+    }
+
+    searchInput.addEventListener('input', applySearch);
+
+    // Reapply the search after listings load or the feed refreshes.
+    const observer = new MutationObserver(applySearch);
+    observer.observe(feed, {childList:true, subtree:true});
+  }
+
   function mediaMarkup(item) {
-    const url = esc(item.url || ''); if (!url) return '';
-    if ((item.media_type || '').toLowerCase() === 'video') return `<video class="post-media" src="${url}" controls playsinline preload="metadata"></video>`;
+    const url = esc(item.url || '');
+    if (!url) return '';
+
+    if ((item.media_type || '').toLowerCase() === 'video') {
+      return `<video class="post-media" src="${url}" controls playsinline preload="metadata"></video>`;
+    }
+
     return `<a href="${url}" target="_blank" rel="noopener noreferrer"><img class="post-media" src="${url}" alt="Listing photo" loading="lazy"></a>`;
   }
+
   async function loadPosts() {
-    if (!db) { $('feed').innerHTML = '<div class="empty">Could not connect to Supabase. Check the project URL and publishable key.</div>'; return; }
+    if (!db) {
+      $('feed').innerHTML = '<div class="empty">Could not connect to Supabase. Check the project URL and publishable key.</div>';
+      return;
+    }
+
     $('feed').innerHTML = '<div class="empty"><i class="fa-solid fa-spinner fa-spin"></i> Loading listings…</div>';
+
     try {
-      let query = db.from('posts').select('*').order('created_at', {ascending:false}).limit(100);
-      if (activeCategory !== 'All') query = query.eq('type', activeCategory);
-      const {data: posts, error} = await query;
+      let query = db.from('posts')
+        .select('*')
+        .order('created_at', {ascending:false})
+        .limit(100);
+
+      if (activeCategory !== 'All') {
+        query = query.eq('type', activeCategory);
+      }
+
+      const {data:posts, error} = await query;
       if (error) throw error;
+
       const list = posts || [];
       let mediaMap = {};
+
       if (list.length) {
-        const {data: media, error: mediaError} = await db.from('post_media').select('*').in('post_id', list.map(p => p.id));
-        if (!mediaError) (media || []).forEach(m => { (mediaMap[m.post_id] ||= []).push(m); });
+        const {data:media, error:mediaError} = await db
+          .from('post_media')
+          .select('*')
+          .in('post_id', list.map(post => post.id));
+
+        if (!mediaError) {
+          (media || []).forEach(item => {
+            (mediaMap[item.post_id] ||= []).push(item);
+          });
+        }
       }
-      if (!list.length) { $('feed').innerHTML = '<div class="empty"><i class="fa-regular fa-face-smile"></i><p>No listings here yet.</p><span class="small">Be the first neighbor to post something!</span></div>'; return; }
-      $('feed').innerHTML = list.map(p => {
-        const media = mediaMap[p.id] || [];
-        return `<article class="post-card"><div class="post-top"><span class="pill">${esc(p.type || 'Community')}</span><span class="small">${esc(niceDate(p.created_at))}</span></div><h3>${esc(p.title || 'Untitled listing')}</h3><div class="small">Posted by <strong>${esc(p.author_name || 'Neighbor')}</strong></div><p class="post-body">${esc(p.body || '')}</p>${media.length ? `<div class="post-media-grid">${media.map(mediaMarkup).join('')}</div>` : ''}<div class="post-actions"><button class="btn" type="button" data-comments="${esc(p.id)}"><i class="fa-regular fa-comments"></i> Comments</button>${currentUser && p.user_id && p.user_id !== currentUser.id ? `<button class="btn btn-outline" type="button" data-message="${esc(p.user_id)}" data-author="${esc(p.author_name || 'Neighbor')}"><i class="fa-regular fa-envelope"></i> Message neighbor</button>` : ''}</div></article>`;
+
+      if (!list.length) {
+        $('feed').innerHTML = '<div class="empty"><i class="fa-regular fa-face-smile"></i><p>No listings here yet.</p><span class="small">Be the first neighbor to post something!</span></div>';
+        return;
+      }
+
+      $('feed').innerHTML = list.map(post => {
+        const media = mediaMap[post.id] || [];
+
+        return `
+          <article class="post-card">
+            <div class="post-top">
+              <span class="pill">${esc(post.type || 'Community')}</span>
+              <span class="small">${esc(niceDate(post.created_at))}</span>
+            </div>
+            <h3>${esc(post.title || 'Untitled listing')}</h3>
+            <div class="small">Posted by <strong>${esc(post.author_name || 'Neighbor')}</strong></div>
+            <p class="post-body">${esc(post.body || '')}</p>
+            ${media.length ? `<div class="post-media-grid">${media.map(mediaMarkup).join('')}</div>` : ''}
+            <div class="post-actions">
+              <button class="btn" type="button" data-comments="${esc(post.id)}">
+                <i class="fa-regular fa-comments"></i> Comments
+              </button>
+              ${currentUser && post.user_id && post.user_id !== currentUser.id
+                ? `<button class="btn btn-outline" type="button" data-message="${esc(post.user_id)}" data-author="${esc(post.author_name || 'Neighbor')}"><i class="fa-regular fa-envelope"></i> Message neighbor</button>`
+                : ''}
+            </div>
+          </article>
+        `;
       }).join('');
-      $('feed').querySelectorAll('[data-comments]').forEach(b => b.addEventListener('click', () => openComments(b.dataset.comments)));
-      $('feed').querySelectorAll('[data-message]').forEach(b => b.addEventListener('click', () => startMessage(b.dataset.message, b.dataset.author)));
+
+      $('feed').querySelectorAll('[data-comments]').forEach(button => {
+        button.addEventListener('click', () => openComments(button.dataset.comments));
+      });
+
+      $('feed').querySelectorAll('[data-message]').forEach(button => {
+        button.addEventListener('click', () => startMessage(button.dataset.message, button.dataset.author));
+      });
     } catch (err) {
-      $('feed').innerHTML = `<div class="empty" style="color:var(--danger)"><strong>Could not load listings.</strong><p>${esc(friendlyError(err))}</p><span class="small">Confirm the posts table has SELECT permission/policy for visitors.</span></div>`;
+      $('feed').innerHTML = `
+        <div class="empty" style="color:var(--danger)">
+          <strong>Could not load listings.</strong>
+          <p>${esc(friendlyError(err))}</p>
+          <span class="small">Confirm the posts table has SELECT permission/policy for visitors.</span>
+        </div>
+      `;
     }
   }
+
   async function refreshUser() {
     if (!db) return;
+
     const {data, error} = await db.auth.getUser();
-    currentUser = error ? null : (data.user || null); updateNav();
+    currentUser = error ? null : (data.user || null);
+
+    updateNav();
+
     if (currentUser) await loadMessages();
+
     await loadPosts();
   }
+
   async function uploadMedia(postId, file) {
     const safeName = file.name.replace(/[^a-zA-Z0-9._-]/g, '_');
     const path = `${currentUser.id}/${postId}/${Date.now()}-${safeName}`;
-    const {error: uploadError} = await db.storage.from('post-media').upload(path, file, {upsert:false, contentType:file.type || 'application/octet-stream'});
+
+    const {error:uploadError} = await db.storage
+      .from('post-media')
+      .upload(path, file, {
+        upsert:false,
+        contentType:file.type || 'application/octet-stream'
+      });
+
     if (uploadError) throw uploadError;
-    const {data: publicData} = db.storage.from('post-media').getPublicUrl(path);
-    const {error: rowError} = await db.from('post_media').insert({post_id:postId,user_id:currentUser.id,url:publicData.publicUrl,media_type:file.type.startsWith('video/') ? 'video' : 'image',storage_path:path});
+
+    const {data:publicData} = db.storage.from('post-media').getPublicUrl(path);
+
+    const {error:rowError} = await db.from('post_media').insert({
+      post_id:postId,
+      user_id:currentUser.id,
+      url:publicData.publicUrl,
+      media_type:file.type.startsWith('video/') ? 'video' : 'image',
+      storage_path:path
+    });
+
     if (rowError) throw rowError;
   }
+
   async function publishPost(event) {
     event.preventDefault();
+
     if (!db) return showNotice('Supabase is not configured.', true);
-    if (!currentUser) { openAuth('login'); return showNotice('Log in or create a free account before publishing.'); }
-    const title = $('post-title').value.trim(), body = $('post-description').value.trim(), type = $('post-category').value;
-    const photos = Array.from($('post-photos').files || []), video = $('post-video').files?.[0];
-    if (!title || !body) return showNotice('Please add a title and description.', true);
-    if (photos.length > 5) return showNotice('Please choose no more than 5 photos.', true);
+
+    if (!currentUser) {
+      openAuth('login');
+      return showNotice('Log in or create a free account before publishing.');
+    }
+
+    const title = $('post-title').value.trim();
+    const body = $('post-description').value.trim();
+    const type = $('post-category').value;
+    const photos = Array.from($('post-photos').files || []);
+    const video = $('post-video').files?.[0];
+
+    if (!title || !body) {
+      return showNotice('Please add a title and description.', true);
+    }
+
+    if (photos.length > 5) {
+      return showNotice('Please choose no more than 5 photos.', true);
+    }
+
     const files = [...photos, ...(video ? [video] : [])];
-    if (files.some(f => f.size > 50 * 1024 * 1024)) return showNotice('Each photo/video must be smaller than 50 MB.', true);
-    const btn = $('publish-btn'); btn.disabled = true; btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Publishing…'; $('post-status').textContent = '';
+
+    if (files.some(file => file.size > 50 * 1024 * 1024)) {
+      return showNotice('Each photo/video must be smaller than 50 MB.', true);
+    }
+
+    const btn = $('publish-btn');
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Publishing…';
+    $('post-status').textContent = '';
+
     try {
-      // Do not claim success unless Supabase confirms the INSERT.
-      const {data: post, error} = await db.from('posts').insert({user_id:currentUser.id,author_name:nameFor(currentUser),title,body,type,likes:0}).select().single();
+      // Report success only when Supabase confirms the listing was inserted.
+      const {data:post, error} = await db.from('posts').insert({
+        user_id:currentUser.id,
+        author_name:nameFor(currentUser),
+        title,
+        body,
+        type,
+        likes:0
+      }).select().single();
+
       if (error) throw error;
+
       let mediaProblem = '';
+
       for (const file of files) {
-        try { await uploadMedia(post.id, file); }
-        catch (err) { mediaProblem = friendlyError(err); break; }
+        try {
+          await uploadMedia(post.id, file);
+        } catch (err) {
+          mediaProblem = friendlyError(err);
+          break;
+        }
       }
-      $('post-form').reset(); activeCategory = 'All'; $('feed-heading').textContent = 'Neighborhood feed'; renderCategories(); await loadPosts();
-      if (mediaProblem) showNotice('Listing saved, but a media upload failed: ' + mediaProblem, true);
-      else showNotice('Your listing was saved successfully!');
+
+      $('post-form').reset();
+      activeCategory = 'All';
+      $('feed-heading').textContent = 'Neighborhood feed';
+      renderCategories();
+      await loadPosts();
+
+      if (mediaProblem) {
+        showNotice('Listing saved, but a media upload failed: ' + mediaProblem, true);
+      } else {
+        showNotice('Your listing was saved successfully!');
+      }
     } catch (err) {
-      const msg = friendlyError(err); $('post-status').textContent = 'Not saved.'; showNotice('Could not save listing: ' + msg, true);
-    } finally { btn.disabled = false; btn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Publish free listing'; }
+      const msg = friendlyError(err);
+      $('post-status').textContent = 'Not saved.';
+      showNotice('Could not save listing: ' + msg, true);
+    } finally {
+      btn.disabled = false;
+      btn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Publish free listing';
+    }
   }
+
   async function openComments(postId) {
     if (!db) return;
-    activeCommentPost = postId; $('comments-content').innerHTML = '<div class="empty">Loading comments…</div>'; $('comments-modal').classList.add('open');
+
+    activeCommentPost = postId;
+    $('comments-content').innerHTML = '<div class="empty">Loading comments…</div>';
+    $('comments-modal').classList.add('open');
+
     try {
-      const {data, error} = await db.from('comments').select('*').eq('post_id', postId).order('created_at', {ascending:true});
+      const {data, error} = await db.from('comments')
+        .select('*')
+        .eq('post_id', postId)
+        .order('created_at', {ascending:true});
+
       if (error) throw error;
+
       const comments = data || [];
-      $('comments-content').innerHTML = comments.length ? comments.map(c => `<div class="comment"><strong>${esc(c.author_name || 'Neighbor')}</strong><span class="small"> · ${esc(niceDate(c.created_at))}</span><p style="white-space:pre-wrap;overflow-wrap:anywhere">${esc(c.body || '')}</p></div>`).join('') : '<div class="empty">No comments yet. Start the conversation!</div>';
-    } catch (err) { $('comments-content').innerHTML = `<div class="empty">Could not load comments: ${esc(friendlyError(err))}</div>`; }
+
+      $('comments-content').innerHTML = comments.length
+        ? comments.map(comment => `
+            <div class="comment">
+              <strong>${esc(comment.author_name || 'Neighbor')}</strong>
+              <span class="small"> · ${esc(niceDate(comment.created_at))}</span>
+              <p style="white-space:pre-wrap;overflow-wrap:anywhere">${esc(comment.body || '')}</p>
+            </div>
+          `).join('')
+        : '<div class="empty">No comments yet. Start the conversation!</div>';
+    } catch (err) {
+      $('comments-content').innerHTML = `<div class="empty">Could not load comments: ${esc(friendlyError(err))}</div>`;
+    }
   }
+
   async function addComment(event) {
     event.preventDefault();
-    if (!currentUser) { $('comments-modal').classList.remove('open'); openAuth('login'); return showNotice('Log in to comment.'); }
-    const body = $('comment-text').value.trim(); if (!body || !activeCommentPost) return;
-    const {error} = await db.from('comments').insert({post_id:activeCommentPost,user_id:currentUser.id,author_name:nameFor(currentUser),body});
-    if (error) return showNotice('Could not post comment: ' + friendlyError(error), true);
-    $('comment-text').value = ''; showNotice('Comment posted.'); await openComments(activeCommentPost);
+
+    if (!currentUser) {
+      $('comments-modal').classList.remove('open');
+      openAuth('login');
+      return showNotice('Log in to comment.');
+    }
+
+    const body = $('comment-text').value.trim();
+    if (!body || !activeCommentPost) return;
+
+    const {error} = await db.from('comments').insert({
+      post_id:activeCommentPost,
+      user_id:currentUser.id,
+      author_name:nameFor(currentUser),
+      body
+    });
+
+    if (error) {
+      return showNotice('Could not post comment: ' + friendlyError(error), true);
+    }
+
+    $('comment-text').value = '';
+    showNotice('Comment posted.');
+    await openComments(activeCommentPost);
   }
+
   function openMessages() {
-    if (!currentUser) { openAuth('login'); return showNotice('Log in to use private messages.'); }
-    $('messages-panel').classList.remove('hidden'); $('account-panel').classList.add('hidden'); $('messages-panel').scrollIntoView({behavior:'smooth',block:'start'}); loadMessages();
+    if (!currentUser) {
+      openAuth('login');
+      return showNotice('Log in to use private messages.');
+    }
+
+    $('messages-panel').classList.remove('hidden');
+    $('account-panel').classList.add('hidden');
+    $('messages-panel').scrollIntoView({behavior:'smooth',block:'start'});
+    loadMessages();
   }
+
   function startMessage(userId, author) {
-    if (!currentUser) { openAuth('login'); return; }
-    if (!userId || userId === currentUser.id) return showNotice('You cannot message yourself.', true);
-    $('message-to').value = userId; $('message-text').focus(); openMessages(); showNotice('Write your message to ' + author + '.');
+    if (!currentUser) {
+      openAuth('login');
+      return;
+    }
+
+    if (!userId || userId === currentUser.id) {
+      return showNotice('You cannot message yourself.', true);
+    }
+
+    $('message-to').value = userId;
+    $('message-text').focus();
+    openMessages();
+    showNotice('Write your message to ' + author + '.');
   }
+
   async function sendMessage(event) {
     event.preventDefault();
-    if (!currentUser) { openAuth('login'); return; }
-    const receiverId = $('message-to').value.trim(), body = $('message-text').value.trim();
-    if (!receiverId || !body) return showNotice('Choose a recipient and write a message.', true);
-    if (receiverId === currentUser.id) return showNotice('You cannot message yourself.', true);
-    const {error} = await db.from('messages').insert({sender_id:currentUser.id,receiver_id:receiverId,body});
-    if (error) return showNotice('Could not send message: ' + friendlyError(error), true);
-    $('message-text').value = ''; showNotice('Message sent.'); await loadMessages();
+
+    if (!currentUser) {
+      openAuth('login');
+      return;
+    }
+
+    const receiverId = $('message-to').value.trim();
+    const body = $('message-text').value.trim();
+
+    if (!receiverId || !body) {
+      return showNotice('Choose a recipient and write a message.', true);
+    }
+
+    if (receiverId === currentUser.id) {
+      return showNotice('You cannot message yourself.', true);
+    }
+
+    const {error} = await db.from('messages').insert({
+      sender_id:currentUser.id,
+      receiver_id:receiverId,
+      body
+    });
+
+    if (error) {
+      return showNotice('Could not send message: ' + friendlyError(error), true);
+    }
+
+    $('message-text').value = '';
+    showNotice('Message sent.');
+    await loadMessages();
   }
+
   async function loadMessages() {
-    if (!db || !currentUser) { $('message-list').innerHTML = '<div class="empty">Log in to see your messages.</div>'; return; }
+    if (!db || !currentUser) {
+      $('message-list').innerHTML = '<div class="empty">Log in to see your messages.</div>';
+      return;
+    }
+
     try {
       const id = currentUser.id;
-      const {data,error} = await db.from('messages').select('*').or(`sender_id.eq.${id},receiver_id.eq.${id}`).order('created_at',{ascending:false}).limit(100);
+
+      const {data, error} = await db.from('messages')
+        .select('*')
+        .or(`sender_id.eq.${id},receiver_id.eq.${id}`)
+        .order('created_at', {ascending:false})
+        .limit(100);
+
       if (error) throw error;
+
       const rows = data || [];
-      $('message-list').innerHTML = rows.length ? rows.map(m => `<div class="post-card"><div class="small">${m.sender_id === id ? 'Sent' : 'Received'} · ${esc(niceDate(m.created_at))}</div><p class="post-body">${esc(m.body || '')}</p><div class="small">${m.sender_id === id ? 'To' : 'From'} account: <code>${esc(m.sender_id === id ? m.receiver_id : m.sender_id)}</code></div></div>`).join('') : '<div class="empty">No messages yet. Open a listing and choose “Message neighbor” to start a conversation.</div>';
-    } catch (err) { $('message-list').innerHTML = `<div class="empty">Could not load messages: ${esc(friendlyError(err))}</div>`; }
+
+      $('message-list').innerHTML = rows.length
+        ? rows.map(message => `
+            <div class="post-card">
+              <div class="small">${message.sender_id === id ? 'Sent' : 'Received'} · ${esc(niceDate(message.created_at))}</div>
+              <p class="post-body">${esc(message.body || '')}</p>
+              <div class="small">${message.sender_id === id ? 'To' : 'From'} account: <code>${esc(message.sender_id === id ? message.receiver_id : message.sender_id)}</code></div>
+            </div>
+          `).join('')
+        : '<div class="empty">No messages yet. Open a listing and choose “Message neighbor” to start a conversation.</div>';
+    } catch (err) {
+      $('message-list').innerHTML = `<div class="empty">Could not load messages: ${esc(friendlyError(err))}</div>`;
+    }
   }
+
   async function submitAuth(event) {
-    event.preventDefault(); if (!db) return showNotice('Supabase is not connected.', true);
-    const email = $('auth-email').value.trim(), password = $('auth-password').value;
-    const submit = $('auth-submit'); submit.disabled = true;
+    event.preventDefault();
+
+    if (!db) return showNotice('Supabase is not connected.', true);
+
+    const email = $('auth-email').value.trim();
+    const password = $('auth-password').value;
+    const submit = $('auth-submit');
+
+    submit.disabled = true;
+
     try {
       let result;
+
       if (authMode === 'signup') {
         const displayName = $('auth-name').value.trim() || email.split('@')[0];
-        result = await db.auth.signUp({email,password,options:{data:{full_name:displayName,name:displayName},emailRedirectTo:location.origin}});
-      } else result = await db.auth.signInWithPassword({email,password});
+
+        result = await db.auth.signUp({
+          email,
+          password,
+          options:{
+            data:{full_name:displayName,name:displayName},
+            emailRedirectTo:location.origin
+          }
+        });
+      } else {
+        result = await db.auth.signInWithPassword({email,password});
+      }
+
       if (result.error) throw result.error;
+
       if (authMode === 'signup' && !result.data.session) {
-        closeAuth(); showNotice('Account created. Check your email for the confirmation link, then log in.');
-      } else { closeAuth(); showNotice(authMode === 'signup' ? 'Welcome to NextFreeDoor!' : 'You are logged in.'); await refreshUser(); }
+        closeAuth();
+        showNotice('Account created. Check your email for the confirmation link, then log in.');
+      } else {
+        closeAuth();
+        showNotice(authMode === 'signup' ? 'Welcome to NextFreeDoor!' : 'You are logged in.');
+        await refreshUser();
+      }
+
       $('auth-form').reset();
-    } catch (err) { showNotice('Account action failed: ' + friendlyError(err), true); }
-    finally { submit.disabled = false; }
+    } catch (err) {
+      showNotice('Account action failed: ' + friendlyError(err), true);
+    } finally {
+      submit.disabled = false;
+    }
   }
+
   async function googleLogin() {
     if (!db) return showNotice('Supabase is not connected.', true);
-    const {error} = await db.auth.signInWithOAuth({provider:'google',options:{redirectTo:location.origin}});
-    if (error) showNotice('Google login failed: ' + friendlyError(error), true);
+
+    const {error} = await db.auth.signInWithOAuth({
+      provider:'google',
+      options:{redirectTo:location.origin}
+    });
+
+    if (error) {
+      showNotice('Google login failed: ' + friendlyError(error), true);
+    }
   }
+
   async function logout() {
     const {error} = await db.auth.signOut();
-    if (error) return showNotice('Sign out failed: ' + friendlyError(error), true);
-    currentUser = null; updateNav(); $('account-panel').classList.add('hidden'); $('messages-panel').classList.add('hidden'); showNotice('You have signed out.'); await loadPosts();
+
+    if (error) {
+      return showNotice('Sign out failed: ' + friendlyError(error), true);
+    }
+
+    currentUser = null;
+    updateNav();
+    $('account-panel').classList.add('hidden');
+    $('messages-panel').classList.add('hidden');
+    showNotice('You have signed out.');
+    await loadPosts();
   }
+
   function showAccount() {
     if (!currentUser) return openAuth('login');
-    $('account-info').innerHTML = `<div class="account-row"><span class="muted">Display name</span><strong>${esc(nameFor(currentUser))}</strong></div><div class="account-row"><span class="muted">Email</span><strong>${esc(currentUser.email || '')}</strong></div><div class="account-row"><span class="muted">Account ID</span><code>${esc(currentUser.id)}</code></div><p class="small" style="margin-top:12px">Your listing history is shown in the neighborhood feed.</p>`;
-    $('account-panel').classList.remove('hidden'); $('messages-panel').classList.add('hidden'); $('account-panel').scrollIntoView({behavior:'smooth',block:'start'});
+
+    $('account-info').innerHTML = `
+      <div class="account-row"><span class="muted">Display name</span><strong>${esc(nameFor(currentUser))}</strong></div>
+      <div class="account-row"><span class="muted">Email</span><strong>${esc(currentUser.email || '')}</strong></div>
+      <div class="account-row"><span class="muted">Account ID</span><code>${esc(currentUser.id)}</code></div>
+      <p class="small" style="margin-top:12px">Your listing history is shown in the neighborhood feed.</p>
+    `;
+
+    $('account-panel').classList.remove('hidden');
+    $('messages-panel').classList.add('hidden');
+    $('account-panel').scrollIntoView({behavior:'smooth',block:'start'});
   }
+
   function init() {
-    $('year').textContent = new Date().getFullYear(); renderCategories();
-    $('login-nav').addEventListener('click', () => openAuth('login')); $('signup-nav').addEventListener('click', () => openAuth('signup'));
-    $('hero-post').addEventListener('click', () => { if (!currentUser) openAuth('signup'); else $('create-panel').scrollIntoView({behavior:'smooth'}); });
-    $('auth-close').addEventListener('click', closeAuth); $('auth-toggle').addEventListener('click', () => { authMode = authMode === 'signup' ? 'login' : 'signup'; updateAuthMode(); });
-    $('auth-form').addEventListener('submit', submitAuth); $('google-login').addEventListener('click', googleLogin); $('logout-nav').addEventListener('click', logout);
-    $('account-nav').addEventListener('click', showAccount); $('account-close').addEventListener('click', () => $('account-panel').classList.add('hidden'));
-    $('messages-nav').addEventListener('click', openMessages); $('messages-close').addEventListener('click', () => $('messages-panel').classList.add('hidden'));
-    $('comments-close').addEventListener('click', () => $('comments-modal').classList.remove('open')); $('comment-form').addEventListener('submit', addComment);
-    $('post-form').addEventListener('submit', publishPost); $('message-form').addEventListener('submit', sendMessage); $('refresh-btn').addEventListener('click', loadPosts);
-    ['auth-modal','comments-modal'].forEach(id => $(id).addEventListener('click', e => { if (e.target.id === id) $(id).classList.remove('open'); }));
-    if (!window.supabase || !window.supabase.createClient) {
-      $('config-warning').classList.remove('hidden'); $('config-warning-text').textContent = 'The Supabase JavaScript library did not load. Check your connection and refresh.'; loadPosts(); return;
-    }
-    try { db = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY); }
-    catch (err) { $('config-warning').classList.remove('hidden'); $('config-warning-text').textContent = 'Could not initialize Supabase: ' + err.message; return; }
-    db.auth.onAuthStateChange((_event, session) => {
-      currentUser = session?.user || null; updateNav();
-      // Defer data fetching outside the auth callback to avoid locking auth operations.
-      setTimeout(() => { loadPosts(); if (currentUser) loadMessages(); }, 0);
+    $('year').textContent = new Date().getFullYear();
+
+    renderCategories();
+    installListingSearch();
+
+    $('login-nav').addEventListener('click', () => openAuth('login'));
+    $('signup-nav').addEventListener('click', () => openAuth('signup'));
+
+    $('hero-post').addEventListener('click', () => {
+      if (!currentUser) {
+        openAuth('signup');
+      } else {
+        $('create-panel').scrollIntoView({behavior:'smooth'});
+      }
     });
+
+    $('auth-close').addEventListener('click', closeAuth);
+
+    $('auth-toggle').addEventListener('click', () => {
+      authMode = authMode === 'signup' ? 'login' : 'signup';
+      updateAuthMode();
+    });
+
+    $('auth-form').addEventListener('submit', submitAuth);
+    $('google-login').addEventListener('click', googleLogin);
+    $('logout-nav').addEventListener('click', logout);
+    $('account-nav').addEventListener('click', showAccount);
+
+    $('account-close').addEventListener('click', () => {
+      $('account-panel').classList.add('hidden');
+    });
+
+    $('messages-nav').addEventListener('click', openMessages);
+
+    $('messages-close').addEventListener('click', () => {
+      $('messages-panel').classList.add('hidden');
+    });
+
+    $('comments-close').addEventListener('click', () => {
+      $('comments-modal').classList.remove('open');
+    });
+
+    $('comment-form').addEventListener('submit', addComment);
+    $('post-form').addEventListener('submit', publishPost);
+    $('message-form').addEventListener('submit', sendMessage);
+    $('refresh-btn').addEventListener('click', loadPosts);
+
+    ['auth-modal','comments-modal'].forEach(id => {
+      $(id).addEventListener('click', event => {
+        if (event.target.id === id) {
+          $(id).classList.remove('open');
+        }
+      });
+    });
+
+    if (!window.supabase || !window.supabase.createClient) {
+      $('config-warning').classList.remove('hidden');
+      $('config-warning-text').textContent = 'The Supabase JavaScript library did not load. Check your connection and refresh.';
+      loadPosts();
+      return;
+    }
+
+    try {
+      db = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    } catch (err) {
+      $('config-warning').classList.remove('hidden');
+      $('config-warning-text').textContent = 'Could not initialize Supabase: ' + err.message;
+      return;
+    }
+
+    db.auth.onAuthStateChange((_event, session) => {
+      currentUser = session?.user || null;
+      updateNav();
+
+      // Fetch data outside the auth callback to avoid locking auth operations.
+      setTimeout(() => {
+        loadPosts();
+        if (currentUser) loadMessages();
+      }, 0);
+    });
+
     refreshUser();
   }
+
   document.addEventListener('DOMContentLoaded', init);
 })();
 </script>
