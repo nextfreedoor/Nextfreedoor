@@ -7,194 +7,645 @@
   <title>NextFreeDoor.com | Your Treasure Valley Community</title>
   <meta name="description" content="Connect with your Treasure Valley community. Share local posts, find listings, and support NextFreeDoor.">
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6940277987635940" crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <style>
-    :root{--bg:#101015;--panel:#191a20;--panel2:#22232b;--gold:#f6c928;--gold2:#ffdf67;--text:#f7f5ed;--muted:#b9b8c2;--line:#373741;--pink:#ff75b5}
-    *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:radial-gradient(ellipse at 50% -15%,#4a3510 0,transparent 42%),var(--bg);color:var(--text);font:16px/1.5 system-ui,-apple-system,Segoe UI,sans-serif}
-    a{color:var(--gold2)}button,input,textarea,select{font:inherit}button{cursor:pointer}.wrap{max-width:1120px;margin:auto;padding:0 16px}
-    header{position:sticky;top:0;z-index:10;background:#101015ed;backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}.top{display:flex;align-items:center;gap:14px;padding:12px 0}.logo{width:76px;height:66px;object-fit:contain;border-radius:8px;background:#080808}.brand{flex:1}.brand strong{display:block;font-size:clamp(19px,4vw,28px);letter-spacing:.3px;color:var(--gold2)}.brand small{color:var(--muted)}.nav{display:flex;gap:8px;flex-wrap:wrap;padding:0 0 12px}.nav button{background:transparent;border:1px solid var(--line);color:var(--text);padding:8px 12px;border-radius:999px}.nav button:hover,.nav button.active{border-color:var(--gold);color:var(--gold2)}
-    .hero{padding:30px 0 18px;text-align:center}.hero h1{font-size:clamp(30px,6vw,52px);line-height:1.08;margin:12px 0;color:var(--gold2)}.hero p{max-width:690px;margin:0 auto 20px;color:var(--muted)}.actions{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
-    .btn{display:inline-flex;align-items:center;justify-content:center;border:0;border-radius:12px;padding:11px 16px;font-weight:750;text-decoration:none;background:linear-gradient(135deg,var(--gold2),var(--gold));color:#17130a}.btn.secondary{background:var(--panel2);color:var(--text);border:1px solid var(--line)}.btn.pink{background:var(--pink);color:#20101a}.btn.small{padding:7px 10px;font-size:14px}
-    .notice{padding:12px 14px;margin:14px 0;background:#242016;border:1px solid #6b551b;border-radius:12px;color:#ffeaa1}.grid{display:grid;grid-template-columns:minmax(0,1.65fr) minmax(250px,1fr);gap:18px;padding:12px 0 40px}.panel{background:linear-gradient(180deg,#1b1c23,#15161b);border:1px solid var(--line);border-radius:18px;padding:18px;box-shadow:0 12px 32px #0002}.panel h2,.panel h3{margin-top:0}.muted{color:var(--muted)}.field{display:grid;gap:6px;margin:10px 0}.field label{font-size:14px;color:var(--muted)}input,textarea,select{width:100%;padding:11px 12px;border-radius:10px;border:1px solid var(--line);background:#101116;color:var(--text)}textarea{min-height:100px;resize:vertical}.row{display:flex;gap:9px;flex-wrap:wrap}.row>*{flex:1}.hidden{display:none!important}.status{min-height:24px;color:var(--gold2);font-size:14px}.post{padding:15px 0;border-bottom:1px solid var(--line)}.post:last-child{border-bottom:0}.post h3{margin:0 0 5px}.meta{font-size:13px;color:var(--muted);margin-bottom:8px}.post p{white-space:pre-wrap;overflow-wrap:anywhere}.comments{margin-top:12px;padding-left:12px;border-left:2px solid #55451b}.comment{font-size:14px;padding:5px 0}.adslot{min-height:90px;display:flex;align-items:center;justify-content:center;border:1px dashed #4b4638;border-radius:12px;color:#85838c;margin:16px 0;padding:10px;text-align:center;font-size:13px}.adslot ins{display:block;width:100%}.side-links{display:grid;gap:10px}.side-links a{display:block;text-align:center}.msg-list{display:grid;gap:8px}.msg-item{background:var(--panel2);padding:10px;border-radius:10px;border:1px solid var(--line)}footer{border-top:1px solid var(--line);padding:24px 0 36px;color:var(--muted);text-align:center}footer a{margin:0 7px}.tag{display:inline-block;color:var(--gold2);border:1px solid #62501b;padding:2px 8px;border-radius:999px;font-size:12px}
-    @media(max-width:760px){.grid{grid-template-columns:1fr}.top{gap:10px}.logo{width:58px;height:58px}.brand small{font-size:12px}.panel{padding:15px}.nav{overflow-x:auto;flex-wrap:nowrap}.nav button{white-space:nowrap}.hero{padding-top:22px}}
+    :root {
+      --bg: #101015;
+      --panel: #191a20;
+      --panel2: #22232b;
+      --gold: #f6c928;
+      --gold2: #ffdf67;
+      --text: #f7f5ed;
+      --muted: #b9b8c2;
+      --line: #373741;
+      --pink: #ff75b5;
+      --warning: #ffeaa1;
+      --danger: #fca5a5;
+      --shadow: rgba(0,0,0,.28);
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      background: radial-gradient(ellipse at 50% -15%, #4a3510 0, transparent 42%), var(--bg);
+      color: var(--text);
+      font: 16px/1.5 system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+    img { max-width: 100%; display: block; }
+    a { color: var(--gold2); }
+    button, input, textarea, select { font: inherit; }
+    button { cursor: pointer; }
+    .wrap { max-width: 1120px; margin: auto; padding: 0 16px; }
+    header {
+      position: sticky; top: 0; z-index: 10;
+      background: rgba(16,16,21,.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--line);
+    }
+    .top { display: flex; align-items: center; gap: 14px; padding: 12px 0; }
+    .logo { width: 54px; height: 54px; border-radius: 14px; }
+    .brand {
+      display: flex; flex-direction: column; line-height: 1.1; margin-right: auto; min-width: 0;
+    }
+    .brand strong { font-size: 1.05rem; }
+    .brand small { color: var(--muted); }
+    .nav { display: flex; gap: 10px; padding: 0 0 12px; overflow-x: auto; }
+    .nav button {
+      border: 1px solid var(--line); background: transparent; color: var(--text);
+      border-radius: 999px; padding: 8px 12px; font-weight: 600; white-space: nowrap;
+    }
+    .nav button.active {
+      background: linear-gradient(135deg, var(--gold), var(--gold2)); color: #1a1a1a; border-color: transparent;
+    }
+    .hero { padding: 30px 0 18px; text-align: center; }
+    .tag {
+      display: inline-block; background: rgba(246,201,40,.12); border: 1px solid rgba(246,201,40,.35);
+      color: var(--gold2); letter-spacing: .14em; text-transform: uppercase; border-radius: 999px; font-size: 11px; padding: 7px 12px;
+    }
+    .hero h1 {
+      font-size: clamp(30px, 6vw, 52px); line-height: 1.08; margin: 12px 0; color: var(--gold2);
+    }
+    .hero p { max-width: 690px; margin: 0 auto 20px; color: var(--muted); }
+    .actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; border: 0; border-radius: 12px;
+      padding: 11px 16px; font-weight: 750; text-decoration: none; background: linear-gradient(135deg, var(--gold), var(--gold2));
+      color: #1a1a1a; box-shadow: 0 8px 20px rgba(246,201,40,.2);
+    }
+    .btn.secondary {
+      background: var(--panel2); border: 1px solid var(--line); color: var(--text); box-shadow: none;
+    }
+    .btn.pink {
+      background: linear-gradient(135deg, var(--pink), #ff92c3); color: #1e0d17; box-shadow: 0 8px 20px rgba(255,117,181,.18);
+    }
+    .btn.small { padding: 9px 12px; }
+    .notice {
+      background: rgba(36,32,22,.9); border: 1px solid #6b551b; border-radius: 12px; padding: 12px 14px; margin: 14px 0;
+      color: var(--warning);
+    }
+    .grid { display: grid; grid-template-columns: minmax(0,1.65fr) minmax(250px,1fr); gap: 18px; }
+    .panel {
+      background: linear-gradient(180deg, rgba(25,26,32,.96), rgba(20,21,25,.96));
+      border: 1px solid var(--line); border-radius: 18px; padding: 18px; box-shadow: 0 20px 60px var(--shadow);
+    }
+    .muted { color: var(--muted); }
+    .row { display: flex; gap: 10px; align-items: center; }
+    .field { display: flex; flex-direction: column; gap: 7px; margin-top: 12px; }
+    .field label { color: var(--muted); font-weight: 600; }
+    input, textarea, select {
+      width: 100%; border-radius: 10px; border: 1px solid var(--line); background: rgba(13,13,18,.75); color: var(--text);
+      padding: 10px 12px; resize: vertical;
+    }
+    input:focus, textarea:focus, select:focus { outline: 2px solid rgba(246,201,40,.35); border-color: var(--gold); }
+    .status {
+      min-height: 20px; margin-top: 12px; color: var(--muted); font-size: .95rem;
+    }
+    .post, .msg-item, .comment {
+      border: 1px solid var(--line); background: rgba(255,255,255,.02); border-radius: 12px; padding: 12px; margin-top: 12px;
+    }
+    .post h3 { margin: 0 0 6px; }
+    .meta { color: var(--muted); font-size: .82rem; }
+    .commentForm { margin-top: 10px; }
+    .commentForm textarea { min-height: 72px; }
+    .comment { padding: 10px; }
+    .comment + .comment { margin-top: 8px; }
+    .msg-list { display: flex; flex-direction: column; gap: 10px; margin-top: 10px; }
+    .msg-item { display: flex; flex-direction: column; gap: 4px; }
+    .hidden { display: none !important; }
+    footer {
+      padding: 26px 0 42px; color: var(--muted); border-top: 1px solid var(--line); margin-top: 22px;
+    }
+    @media (max-width: 760px) {
+      .grid { grid-template-columns: 1fr; }
+      .top { gap: 10px; }
+      .brand small { font-size: 12px; }
+      .panel { padding: 15px; }
+      .nav { flex-wrap: nowrap; }
+      .btn { width: 100%; }
+      .actions { flex-direction: column; }
+    }
   </style>
 </head>
 <body>
-<header>
-  <div class="wrap">
-    <div class="top">
-      <!-- Upload your supplied logo to the GitHub repository as assets/logo.png -->
-      <img class="logo" src="assets/logo.png" alt="NextFreeDoor golden door logo" onerror="this.style.display='none'">
-      <div class="brand"><strong>NextFreeDoor.com</strong><small>Your Treasure Valley Community Marketplace</small></div>
-      <button class="btn small" id="headerSignIn" type="button" onclick="document.getElementById('account').scrollIntoView({behavior:'smooth'})">Sign in</button>
+  <header>
+    <div class="wrap">
+      <div class="top">
+        <img class="logo" src="logo.png" alt="NextFreeDoor golden door logo" onerror="this.style.display='none'">
+        <div class="brand"><strong>NextFreeDoor.com</strong><small>Your Treasure Valley Community Marketplace</small></div>
+        <button class="btn small" id="headerSignIn" type="button" onclick="document.getElementById('account').scrollIntoView({behavior:'smooth'})">Sign in</button>
+      </div>
+      <nav class="nav" aria-label="Main navigation">
+        <button class="active" data-view="home">Home</button>
+        <button data-view="feed">Community Posts</button>
+        <button data-view="newpost">Post Free</button>
+        <button data-view="messages">Messages</button>
+        <button data-view="account">Account</button>
+      </nav>
     </div>
-    <nav class="nav" aria-label="Main navigation">
-      <button class="active" data-view="home">Home</button><button data-view="feed">Community Posts</button><button data-view="newpost">Post Free</button><button data-view="messages">Messages</button><button data-view="account">My Account</button>
-    </nav>
-  </div>
-</header>
-<main class="wrap">
-  <section class="hero" id="home">
-    <span class="tag">LOCAL • COMMUNITY • CONNECTION</span>
-    <h1>Your neighborhood.<br>One welcoming door.</h1>
-    <p>Discover local listings, share what’s happening, ask questions, and connect with people across the Treasure Valley.</p>
-    <div class="actions"><button class="btn" data-goto="newpost">＋ Post a Free Listing</button><button class="btn secondary" data-goto="feed">Explore Community</button><a class="btn pink" href="https://ko-fi.com/nextfreedoor" target="_blank" rel="noopener noreferrer">☕ Support NextFreeDoor</a></div>
-  </section>
+  </header>
 
-  <div class="notice" id="setupNotice">Setup needed: add your Supabase project URL and publishable key in this file, then run the database setup SQL. Until then, account and community features won't connect.</div>
-  <div class="adslot" aria-label="Advertisement">Advertisement space</div>
-
-  <div class="grid">
-    <section class="panel" id="feed">
-      <div class="row" style="align-items:center"><div><h2 style="margin-bottom:3px">Community Board</h2><div class="muted">Local posts, offers, questions and listings</div></div><button class="btn small" data-goto="newpost">Create post</button></div>
-      <div class="field"><label for="searchPosts">Search posts</label><input id="searchPosts" placeholder="Search titles, details or categories…"></div>
-      <div id="posts"><p class="muted">Connect Supabase to load community posts.</p></div>
+  <main class="wrap">
+    <section class="hero" id="home">
+      <span class="tag">LOCAL • COMMUNITY • CONNECTION</span>
+      <h1>Your neighborhood.<br>One welcoming door.</h1>
+      <p>Discover local listings, share what’s happening, ask questions, and connect with people across the Treasure Valley.</p>
+      <div class="actions">
+        <button class="btn" data-goto="newpost">＋ Post a Free Listing</button>
+        <button class="btn secondary" data-goto="feed">Explore Community</button>
+        <a class="btn pink" href="https://ko-fi.com/nextfreedoor" target="_blank" rel="noopener noreferrer">Support the community</a>
+      </div>
     </section>
 
-    <aside>
-      <section class="panel" id="account">
-        <h2>Your account</h2>
-        <p class="muted" id="authIntro">Sign in or create an account to post, comment and message members.</p>
-        <div id="authForms">
-          <form id="authForm">
-            <div class="field"><label for="email">Email address</label><input id="email" type="email" autocomplete="email" required></div>
-            <div class="field"><label for="password">Password (at least 6 characters)</label><input id="password" type="password" autocomplete="current-password" minlength="6" required></div>
-            <div class="row"><button class="btn" type="submit" id="loginBtn">Sign in</button><button class="btn secondary" type="button" id="signupBtn">Create account</button></div>
-          </form>
-          <button class="btn secondary" style="width:100%;margin-top:9px" id="googleBtn" type="button">Continue with Google</button>
-          <button class="btn secondary" style="width:100%;margin-top:9px" id="resetBtn" type="button">Reset password</button>
-        </div>
-        <div id="signedIn" class="hidden"><p id="userLabel"></p><button class="btn secondary" id="logoutBtn" type="button">Sign out</button></div>
-        <div class="status" id="authStatus" role="status"></div>
-      </section>
-      <section class="panel" id="newpost" style="margin-top:16px">
-        <h2>Create a post</h2><p class="muted">Sign in first. Please don't post private information.</p>
-        <form id="postForm">
-          <div class="field"><label for="postTitle">Title</label><input id="postTitle" maxlength="120" required placeholder="What would you like to share?"></div>
-          <div class="field"><label for="category">Category</label><select id="category"><option>Community</option><option>Free Items</option><option>For Sale</option><option>Services</option><option>Events</option><option>Help Wanted</option><option>Questions</option><option>Lost & Found</option></select></div>
-          <div class="field"><label for="postBody">Details</label><textarea id="postBody" maxlength="5000" required placeholder="Add helpful details…"></textarea></div>
-          <button class="btn" type="submit">Publish post</button><div class="status" id="postStatus" role="status"></div>
-        </form>
-      </section>
-      <section class="panel" id="messages" style="margin-top:16px">
-        <h2>Private messages</h2><p class="muted">Messages are only visible to the participants. Enter the recipient’s account UUID to start a conversation.</p>
-        <form id="messageForm">
-          <div class="field"><label for="recipient">Recipient user ID (UUID)</label><input id="recipient" placeholder="User UUID" required></div>
-          <div class="field"><label for="messageText">Message</label><textarea id="messageText" maxlength="3000" required placeholder="Write a private message…"></textarea></div>
-          <button class="btn" type="submit">Send private message</button><div class="status" id="messageStatus" role="status"></div>
-        </form>
-        <h3 style="margin-top:18px">Your recent messages</h3><div id="messageHistory" class="msg-list"><p class="muted">Sign in to view messages.</p></div>
-      </section>
-    </aside>
-  </div>
-</main>
-<footer><div class="wrap">
-  <p><strong style="color:var(--gold2)">NextFreeDoor.com</strong> — neighbors helping neighbors.</p>
-  <p><a href="https://ko-fi.com/nextfreedoor" target="_blank" rel="noopener noreferrer">Support us on Ko-fi</a> · <a href="mailto:nextfreedoor@gmail.com">Contact</a> · <a href="#privacy">Privacy</a></p>
-  <small id="footerStatus">Community features require account sign-in.</small>
-</div></footer>
-<script>
-(() => {
-  // REQUIRED: Replace both placeholders with your own Supabase project values.
-  // Use the Project URL and publishable key (or legacy anon key), never a service_role/secret key.
-  const SUPABASE_URL = "PASTE_YOUR_SUPABASE_PROJECT_URL_HERE";
-  const SUPABASE_KEY = "PASTE_YOUR_SUPABASE_PUBLISHABLE_OR_ANON_KEY_HERE";
-  const ready = window.supabase && SUPABASE_URL.startsWith("https://") &&
-    !SUPABASE_URL.includes("PASTE_") && !SUPABASE_KEY.includes("PASTE_");
-  const client = ready ? window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY) : null;
-  let currentUser = null;
-  const $ = id => document.getElementById(id);
-  const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
-  const say = (id, msg) => { $(id).textContent = msg; };
-  const go = id => { const el=$(id); if(el) el.scrollIntoView({behavior:"smooth",block:"start"}); };
-  document.querySelectorAll("[data-view]").forEach(b=>b.addEventListener("click",()=>{document.querySelectorAll("[data-view]").forEach(x=>x.classList.toggle("active",x===b));go(b.dataset.view)}));
-  document.querySelectorAll("[data-goto]").forEach(b=>b.addEventListener("click",()=>go(b.dataset.goto)));
-  if (!ready) {
-    $("setupNotice").classList.remove("hidden");
-    ["authForm","signupBtn","googleBtn","resetBtn","postForm","messageForm"].forEach(id=>{const e=$(id); if(e)e.addEventListener("submit",ev=>{ev.preventDefault();});});
-    $("authStatus").textContent = "Add your Supabase URL and publishable key to enable accounts.";
-    $("posts").innerHTML = '<p class="muted">Supabase is not configured yet. After setup, public posts will appear here.</p>';
-    return;
-  }
-  $("setupNotice").classList.add("hidden");
+    <div class="notice">This version stores user data locally in the browser so sign-up, sign-in, sign-out, comments, and private messages work without a backend.</div>
 
-  async function refreshAuth() {
-    const {data:{user}} = await client.auth.getUser();
-    currentUser = user || null;
-    $("authForms").classList.toggle("hidden",!!currentUser);
-    $("signedIn").classList.toggle("hidden",!currentUser);
-    $("authIntro").textContent = currentUser ? "You're signed in." : "Sign in or create an account to join in.";
-    $("userLabel").textContent = currentUser ? (currentUser.email || currentUser.id) : "";
-    $("headerSignIn").textContent = currentUser ? "My account" : "Sign in";
-    $("footerStatus").textContent = currentUser ? "Signed in as " + currentUser.email : "Community features require account sign-in.";
-    if(currentUser) loadMessages();
-  }
-  client.auth.onAuthStateChange(()=>{setTimeout(()=>{refreshAuth();loadPosts();},0)});
-  $("authForm").addEventListener("submit",async e=>{
-    e.preventDefault();say("authStatus","Signing in…");
-    const {error}=await client.auth.signInWithPassword({email:$("email").value.trim(),password:$("password").value});
-    say("authStatus",error?error.message:"Signed in."); if(!error){await refreshAuth();loadPosts();}
-  });
-  $("signupBtn").addEventListener("click",async()=>{
-    say("authStatus","Creating account…");
-    const {data,error}=await client.auth.signUp({email:$("email").value.trim(),password:$("password").value,options:{emailRedirectTo:location.origin}});
-    say("authStatus",error?error.message:(data.session?"Account created and signed in.":"Check your email to confirm your account."));
-  });
-  $("googleBtn").addEventListener("click",async()=>{
-    const {error}=await client.auth.signInWithOAuth({provider:"google",options:{redirectTo:location.origin}});
-    if(error)say("authStatus",error.message);
-  });
-  $("resetBtn").addEventListener("click",async()=>{
-    const email=$("email").value.trim();if(!email){say("authStatus","Enter your email address first.");return;}
-    const {error}=await client.auth.resetPasswordForEmail(email,{redirectTo:location.origin});
-    say("authStatus",error?error.message:"If the account exists, a password-reset email will arrive shortly.");
-  });
-  $("logoutBtn").addEventListener("click",async()=>{const {error}=await client.auth.signOut();say("authStatus",error?error.message:"Signed out.");await refreshAuth();});
-  $("postForm").addEventListener("submit",async e=>{
-    e.preventDefault();if(!currentUser){say("postStatus","Please sign in before posting.");go("account");return;}
-    say("postStatus","Publishing…");
-    const {error}=await client.from("posts").insert({user_id:currentUser.id,title:$("postTitle").value.trim(),category:$("category").value,body:$("postBody").value.trim()});
-    say("postStatus",error?error.message:"Your post was published.");
-    if(!error){$("postForm").reset();await loadPosts();go("feed");}
-  });
-  $("searchPosts").addEventListener("input",loadPosts);
-  async function loadPosts(){
-    const {data,error}=await client.from("posts").select("id,user_id,title,category,body,created_at").order("created_at",{ascending:false}).limit(100);
-    if(error){$("posts").innerHTML='<p class="muted">Could not load posts. Check that the database setup SQL has been run. '+esc(error.message)+'</p>';return;}
-    const q=$("searchPosts").value.trim().toLowerCase();
-    const items=(data||[]).filter(p=>(p.title+" "+p.body+" "+p.category).toLowerCase().includes(q));
-    if(!items.length){$("posts").innerHTML='<p class="muted">No posts yet. Be the first to share something with the community!</p>';return;}
-    $("posts").innerHTML=items.map(p=>`<article class="post" data-post="${esc(p.id)}"><h3>${esc(p.title)}</h3><div class="meta">${esc(p.category)} · ${new Date(p.created_at).toLocaleString()} · member ${esc(p.user_id.slice(0,8))}</div><p>${esc(p.body)}</p>${currentUser?`<form class="commentForm" data-id="${esc(p.id)}"><div class="field"><label>Leave a comment</label><textarea name="body" maxlength="2000" required placeholder="Write a helpful comment…"></textarea></div><button class="btn small" type="submit">Comment</button><div class="status"></div></form>`:'<p class="muted">Sign in to comment.</p>'}<div class="comments" id="comments-${esc(p.id)}">Loading comments…</div></article>`).join("");
-    for(const p of items) await loadComments(p.id);
-    document.querySelectorAll(".commentForm").forEach(form=>form.addEventListener("submit",async e=>{
-      e.preventDefault();if(!currentUser)return;
-      const body=form.elements.body.value.trim();const status=form.querySelector(".status");
-      const {error}=await client.from("comments").insert({post_id:form.dataset.id,user_id:currentUser.id,body});
-      status.textContent=error?error.message:"Comment added.";if(!error){form.reset();await loadComments(form.dataset.id);}
-    }));
-  }
-  async function loadComments(postId){
-    const box=$("comments-"+postId);if(!box)return;
-    const {data,error}=await client.from("comments").select("id,user_id,body,created_at").eq("post_id",postId).order("created_at",{ascending:true}).limit(100);
-    if(error){box.textContent="Comments unavailable.";return;}
-    box.innerHTML=(data||[]).length?(data||[]).map(c=>`<div class="comment"><strong>Member ${esc(c.user_id.slice(0,8))}</strong> <span class="meta">${new Date(c.created_at).toLocaleString()}</span><br>${esc(c.body)}</div>`).join(""):'<div class="comment muted">No comments yet.</div>';
-  }
-  $("messageForm").addEventListener("submit",async e=>{
-    e.preventDefault();if(!currentUser){say("messageStatus","Please sign in first.");go("account");return;}
-    const recipient=$("recipient").value.trim(),body=$("messageText").value.trim();
-    if(recipient===currentUser.id){say("messageStatus","You cannot message yourself.");return;}
-    say("messageStatus","Sending…");
-    const {error}=await client.from("messages").insert({sender_id:currentUser.id,recipient_id:recipient,body});
-    say("messageStatus",error?error.message:"Message sent.");if(!error){$("messageText").value="";loadMessages();}
-  });
-  async function loadMessages(){
-    if(!currentUser)return;
-    const {data,error}=await client.from("messages").select("id,sender_id,recipient_id,body,created_at").or(`sender_id.eq.${currentUser.id},recipient_id.eq.${currentUser.id}`).order("created_at",{ascending:false}).limit(30);
-    if(error){$("messageHistory").innerHTML='<p class="muted">Could not load messages. '+esc(error.message)+'</p>';return;}
-    $("messageHistory").innerHTML=(data||[]).length?data.map(m=>`<div class="msg-item"><div class="meta">${m.sender_id===currentUser.id?"You sent":"From"} ${esc((m.sender_id===currentUser.id?m.recipient_id:m.sender_id).slice(0,8))} · ${new Date(m.created_at).toLocaleString()}</div><div>${esc(m.body)}</div></div>`).join(""):'<p class="muted">No messages yet.</p>';
-  }
-  refreshAuth().then(loadPosts);
-})();
-</script>
+    <div class="grid">
+      <section class="panel" id="feed">
+        <div class="row" style="align-items:center; justify-content:space-between; gap:10px;">
+          <div>
+            <h2 style="margin-bottom:3px">Community Board</h2>
+            <div class="muted">Local posts, offers, questions and listings</div>
+          </div>
+          <button class="btn secondary small" data-goto="newpost" type="button">New post</button>
+        </div>
+        <div class="field">
+          <label for="searchPosts">Search posts</label>
+          <input id="searchPosts" placeholder="Search titles, details or categories…">
+        </div>
+        <div id="posts"><p class="muted">Loading posts…</p></div>
+      </section>
+
+      <aside>
+        <section class="panel" id="account">
+          <h2>Your account</h2>
+          <p class="muted" id="authIntro">Sign in or create an account to post, comment and message members.</p>
+
+          <div id="authForms">
+            <form id="authForm">
+              <div class="field">
+                <label for="email">Email address</label>
+                <input id="email" type="email" autocomplete="email" required>
+              </div>
+              <div class="field">
+                <label for="password">Password (at least 6 characters)</label>
+                <input id="password" type="password" autocomplete="current-password" minlength="6" required>
+              </div>
+              <div class="row" style="margin-top:12px;">
+                <button class="btn" type="submit" id="loginBtn">Sign in</button>
+                <button class="btn secondary" type="button" id="signupBtn">Create account</button>
+              </div>
+            </form>
+            <button class="btn secondary" style="width:100%;margin-top:9px" id="googleBtn" type="button">Continue with Google</button>
+            <button class="btn secondary" style="width:100%;margin-top:9px" id="resetBtn" type="button">Reset password</button>
+          </div>
+
+          <div id="signedIn" class="hidden">
+            <p id="userLabel"></p>
+            <button class="btn secondary" id="logoutBtn" type="button">Sign out</button>
+          </div>
+          <div class="status" id="authStatus" role="status"></div>
+        </section>
+
+        <section class="panel" id="newpost" style="margin-top:16px">
+          <h2>Create a post</h2>
+          <p class="muted">Sign in first. Please don't post private information.</p>
+          <form id="postForm">
+            <div class="field">
+              <label for="postTitle">Title</label>
+              <input id="postTitle" maxlength="120" required placeholder="What would you like to share?">
+            </div>
+            <div class="field">
+              <label for="category">Category</label>
+              <select id="category">
+                <option>Community</option>
+                <option>Free Items</option>
+                <option>For Sale</option>
+                <option>Services</option>
+                <option>Events</option>
+                <option>Announcements</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="postBody">Details</label>
+              <textarea id="postBody" maxlength="5000" required placeholder="Add helpful details…"></textarea>
+            </div>
+            <button class="btn" type="submit">Publish post</button>
+            <div class="status" id="postStatus" role="status"></div>
+          </form>
+        </section>
+
+        <section class="panel" id="messages" style="margin-top:16px">
+          <h2>Private messages</h2>
+          <p class="muted">Send messages to another member by email address.</p>
+          <form id="messageForm">
+            <div class="field">
+              <label for="recipient">Recipient email</label>
+              <input id="recipient" placeholder="friend@example.com" required>
+            </div>
+            <div class="field">
+              <label for="messageText">Message</label>
+              <textarea id="messageText" maxlength="3000" required placeholder="Write a private message…"></textarea>
+            </div>
+            <button class="btn" type="submit">Send private message</button>
+            <div class="status" id="messageStatus" role="status"></div>
+          </form>
+
+          <h3 style="margin-top:18px">Your recent messages</h3>
+          <div id="messageHistory" class="msg-list"><p class="muted">Sign in to view messages.</p></div>
+        </section>
+      </aside>
+    </div>
+  </main>
+
+  <footer>
+    <div class="wrap">
+      <p><strong style="color:var(--gold2)">NextFreeDoor.com</strong> — neighbors helping neighbors.</p>
+      <p><a href="https://ko-fi.com/nextfreedoor" target="_blank" rel="noopener noreferrer">Support us on Ko-fi</a> · <a href="mailto:nextfreedoor@gmail.com">Contact</a> · <a href="#account">Account</a></p>
+      <small id="footerStatus">Community features require account sign-in.</small>
+    </div>
+  </footer>
+
+  <script>
+    (() => {
+      const STORAGE_KEYS = {
+        users: 'nextfreedoor_users',
+        posts: 'nextfreedoor_posts',
+        comments: 'nextfreedoor_comments',
+        messages: 'nextfreedoor_messages',
+        currentUser: 'nextfreedoor_current_user'
+      };
+
+      const $ = (id) => document.getElementById(id);
+      let currentUser = null;
+
+      const esc = (value) => String(value ?? '').replace(/[&<>"']/g, (char) => ({
+        '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+      }[char]));
+
+      const readStorage = (key, fallback) => {
+        try {
+          const raw = localStorage.getItem(key);
+          return raw ? JSON.parse(raw) : fallback;
+        } catch (error) {
+          return fallback;
+        }
+      };
+
+      const writeStorage = (key, value) => {
+        try {
+          localStorage.setItem(key, JSON.stringify(value));
+        } catch (error) {
+          console.warn('Storage write failed:', error);
+        }
+      };
+
+      const getUsers = () => readStorage(STORAGE_KEYS.users, []);
+      const saveUsers = (users) => writeStorage(STORAGE_KEYS.users, users);
+      const getPosts = () => readStorage(STORAGE_KEYS.posts, []);
+      const savePosts = (posts) => writeStorage(STORAGE_KEYS.posts, posts);
+      const getComments = () => readStorage(STORAGE_KEYS.comments, []);
+      const saveComments = (comments) => writeStorage(STORAGE_KEYS.comments, comments);
+      const getMessages = () => readStorage(STORAGE_KEYS.messages, []);
+      const saveMessages = (messages) => writeStorage(STORAGE_KEYS.messages, messages);
+
+      const seedDemoData = () => {
+        if (getUsers().length) return;
+        const demoUser = {
+          id: 'demo-user-1',
+          email: 'demo@nextfreedoor.com',
+          password: 'demo123',
+          name: 'Demo Neighbor',
+          createdAt: new Date().toISOString()
+        };
+        saveUsers([demoUser]);
+        savePosts([{ id: 'post-demo-1', user_id: demoUser.id, title: 'Welcome to NextFreeDoor!', category: 'Community', body: 'This is a sample community post. Sign up with your email to create your own posts and start chatting with neighbors.', created_at: new Date().toISOString(), author: demoUser.name }]);
+        saveComments([]);
+        saveMessages([]);
+      };
+
+      const hydrateCurrentUser = () => {
+        const stored = readStorage(STORAGE_KEYS.currentUser, null);
+        currentUser = stored ? getUsers().find((user) => user.id === stored.id) || null : null;
+        if (currentUser) {
+          writeStorage(STORAGE_KEYS.currentUser, { id: currentUser.id, email: currentUser.email });
+        } else {
+          localStorage.removeItem(STORAGE_KEYS.currentUser);
+        }
+      };
+
+      function setStatus(id, message, isError = false) {
+        const node = $(id);
+        if (!node) return;
+        node.textContent = message;
+        node.style.color = isError ? 'var(--danger)' : 'var(--muted)';
+      }
+
+      function updateAuthView() {
+        const authForms = $('authForms');
+        const signedIn = $('signedIn');
+        const authIntro = $('authIntro');
+        const userLabel = $('userLabel');
+        const headerSignIn = $('headerSignIn');
+        const footerStatus = $('footerStatus');
+        const isSignedIn = !!currentUser;
+
+        authForms.classList.toggle('hidden', isSignedIn);
+        signedIn.classList.toggle('hidden', !isSignedIn);
+        authIntro.textContent = isSignedIn ? "You're signed in." : 'Sign in or create an account to post, comment and message members.';
+        userLabel.textContent = isSignedIn ? `${currentUser.name || currentUser.email}` : '';
+        headerSignIn.textContent = isSignedIn ? 'My account' : 'Sign in';
+        footerStatus.textContent = isSignedIn ? `Signed in as ${currentUser.email}` : 'Community features require account sign-in.';
+      }
+
+      function renderPosts() {
+        const posts = getPosts();
+        const q = $('searchPosts')?.value.trim().toLowerCase() || '';
+        const filtered = posts.filter((post) => {
+          const haystack = `${post.title} ${post.body} ${post.category} ${post.author || ''}`.toLowerCase();
+          return haystack.includes(q);
+        });
+
+        if (!filtered.length) {
+          $('posts').innerHTML = '<p class="muted">No posts yet. Be the first to share something with the community!</p>';
+          return;
+        }
+
+        $('posts').innerHTML = filtered.map((post) => {
+          const comments = getComments().filter((comment) => comment.post_id === post.id);
+          const commentMarkup = comments.length ? comments.map((comment) => `
+            <div class="comment">
+              <strong>${esc(comment.author || 'Member')}</strong>
+              <div class="meta">${new Date(comment.created_at).toLocaleString()}</div>
+              <div>${esc(comment.body)}</div>
+            </div>
+          `).join('') : '<div class="muted">No comments yet.</div>';
+
+          return `
+            <article class="post" data-post="${esc(post.id)}">
+              <h3>${esc(post.title)}</h3>
+              <div class="meta">${esc(post.category)} · ${new Date(post.created_at).toLocaleString()} · by ${esc(post.author || 'Neighbor')}</div>
+              <p>${esc(post.body)}</p>
+              <div class="comments" id="comments-${esc(post.id)}">${commentMarkup}</div>
+              <form class="commentForm" data-id="${esc(post.id)}">
+                <div class="field">
+                  <textarea name="body" maxlength="1000" placeholder="Write a comment…" required></textarea>
+                </div>
+                <button class="btn secondary small" type="submit">Comment</button>
+                <div class="status commentStatus" aria-live="polite"></div>
+              </form>
+            </article>
+          `;
+        }).join('');
+
+        document.querySelectorAll('.commentForm').forEach((form) => {
+          form.addEventListener('submit', (event) => {
+            event.preventDefault();
+            const body = form.querySelector('[name="body"]').value.trim();
+            const status = form.querySelector('.commentStatus');
+            const postId = form.dataset.id;
+
+            if (!currentUser) {
+              status.textContent = 'Please sign in before commenting.';
+              return;
+            }
+            if (!body) {
+              status.textContent = 'Write a comment first.';
+              return;
+            }
+
+            const comments = getComments();
+            comments.push({
+              id: `comment-${Date.now()}`,
+              post_id: postId,
+              user_id: currentUser.id,
+              author: currentUser.name || currentUser.email,
+              body,
+              created_at: new Date().toISOString()
+            });
+            saveComments(comments);
+            form.reset();
+            renderPosts();
+          });
+        });
+      }
+
+      function renderMessages() {
+        const messagesNode = $('messageHistory');
+        if (!currentUser) {
+          messagesNode.innerHTML = '<p class="muted">Sign in to view messages.</p>';
+          return;
+        }
+
+        const messages = getMessages().filter((message) => message.sender_id === currentUser.id || message.recipient_id === currentUser.id).sort((a, b) => new Date(a.created_at) - new Date(b.created_at));
+
+        if (!messages.length) {
+          messagesNode.innerHTML = '<p class="muted">No private messages yet.</p>';
+          return;
+        }
+
+        const users = getUsers();
+        const partnerName = (id) => {
+          const user = users.find((u) => u.id === id);
+          return user ? (user.name || user.email) : 'Unknown member';
+        };
+
+        messagesNode.innerHTML = messages.map((message) => {
+          const isSent = message.sender_id === currentUser.id;
+          const otherUser = isSent ? message.recipient_id : message.sender_id;
+          return `
+            <div class="msg-item">
+              <div class="meta">${isSent ? 'You sent' : 'From'} ${esc(partnerName(otherUser))} · ${new Date(message.created_at).toLocaleString()}</div>
+              <div>${esc(message.body)}</div>
+            </div>
+          `;
+        }).join('');
+      }
+
+      function openAccountSection() {
+        document.getElementById('account').scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+
+      document.querySelectorAll('[data-view]').forEach((button) => {
+        button.addEventListener('click', () => {
+          document.querySelectorAll('[data-view]').forEach((item) => item.classList.toggle('active', item === button));
+          const target = document.getElementById(button.dataset.view);
+          if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        });
+      });
+
+      document.querySelectorAll('[data-goto]').forEach((button) => {
+        button.addEventListener('click', () => {
+          const target = document.getElementById(button.dataset.goto);
+          if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        });
+      });
+
+      $('authForm').addEventListener('submit', (event) => {
+        event.preventDefault();
+        const email = $('email').value.trim();
+        const password = $('password').value;
+
+        if (!email || !password) {
+          setStatus('authStatus', 'Enter your email and password.', true);
+          return;
+        }
+
+        const users = getUsers();
+        const user = users.find((item) => item.email.toLowerCase() === email.toLowerCase() && item.password === password);
+
+        if (!user) {
+          setStatus('authStatus', 'That email and password do not match an account.', true);
+          return;
+        }
+
+        currentUser = user;
+        writeStorage(STORAGE_KEYS.currentUser, { id: user.id, email: user.email });
+        updateAuthView();
+        setStatus('authStatus', 'Signed in successfully.');
+        renderMessages();
+      });
+
+      $('signupBtn').addEventListener('click', () => {
+        const email = $('email').value.trim();
+        const password = $('password').value;
+
+        if (!email || !password) {
+          setStatus('authStatus', 'Enter an email and password to create an account.', true);
+          return;
+        }
+        if (password.length < 6) {
+          setStatus('authStatus', 'Password must be at least 6 characters long.', true);
+          return;
+        }
+
+        const users = getUsers();
+        if (users.some((user) => user.email.toLowerCase() === email.toLowerCase())) {
+          setStatus('authStatus', 'An account with that email already exists.', true);
+          return;
+        }
+
+        const newUser = {
+          id: `user-${Date.now()}`,
+          email,
+          password,
+          name: email.split('@')[0],
+          createdAt: new Date().toISOString()
+        };
+
+        users.push(newUser);
+        saveUsers(users);
+        currentUser = newUser;
+        writeStorage(STORAGE_KEYS.currentUser, { id: newUser.id, email: newUser.email });
+        updateAuthView();
+        setStatus('authStatus', 'Account created and signed in.');
+        renderMessages();
+      });
+
+      $('logoutBtn').addEventListener('click', () => {
+        currentUser = null;
+        localStorage.removeItem(STORAGE_KEYS.currentUser);
+        updateAuthView();
+        setStatus('authStatus', 'Signed out.');
+        renderMessages();
+      });
+
+      $('googleBtn').addEventListener('click', () => {
+        setStatus('authStatus', 'Google sign-in is not enabled in this local demo version. Use email sign-up instead.', true);
+      });
+
+      $('resetBtn').addEventListener('click', () => {
+        const email = $('email').value.trim();
+        if (!email) {
+          setStatus('authStatus', 'Type your email first, then reset your password.', true);
+          return;
+        }
+        const existing = getUsers().some((user) => user.email.toLowerCase() === email.toLowerCase());
+        if (!existing) {
+          setStatus('authStatus', 'No account found with that email.', true);
+          return;
+        }
+        setStatus('authStatus', `A password reset message would be sent to ${email} in a live app.`);
+      });
+
+      $('postForm').addEventListener('submit', (event) => {
+        event.preventDefault();
+        if (!currentUser) {
+          setStatus('postStatus', 'Please sign in before posting.', true);
+          openAccountSection();
+          return;
+        }
+
+        const title = $('postTitle').value.trim();
+        const category = $('category').value;
+        const body = $('postBody').value.trim();
+
+        if (!title || !body) {
+          setStatus('postStatus', 'Title and details are required.', true);
+          return;
+        }
+
+        const posts = getPosts();
+        posts.unshift({
+          id: `post-${Date.now()}`,
+          user_id: currentUser.id,
+          title,
+          category,
+          body,
+          created_at: new Date().toISOString(),
+          author: currentUser.name || currentUser.email
+        });
+        savePosts(posts);
+        $('postForm').reset();
+        setStatus('postStatus', 'Your post was published.');
+        renderPosts();
+      });
+
+      $('messageForm').addEventListener('submit', (event) => {
+        event.preventDefault();
+        if (!currentUser) {
+          setStatus('messageStatus', 'Please sign in first.', true);
+          openAccountSection();
+          return;
+        }
+
+        const recipientEmail = $('recipient').value.trim().toLowerCase();
+        const messageText = $('messageText').value.trim();
+
+        if (!recipientEmail || !messageText) {
+          setStatus('messageStatus', 'Choose a recipient and enter a message.', true);
+          return;
+        }
+
+        const recipient = getUsers().find((user) => user.email.toLowerCase() === recipientEmail);
+        if (!recipient) {
+          setStatus('messageStatus', 'No user was found with that email address.', true);
+          return;
+        }
+        if (recipient.id === currentUser.id) {
+          setStatus('messageStatus', 'You cannot send a private message to yourself.', true);
+          return;
+        }
+
+        const messages = getMessages();
+        messages.push({
+          id: `msg-${Date.now()}`,
+          sender_id: currentUser.id,
+          recipient_id: recipient.id,
+          body: messageText,
+          created_at: new Date().toISOString()
+        });
+        saveMessages(messages);
+        $('messageForm').reset();
+        setStatus('messageStatus', 'Private message sent.');
+        renderMessages();
+      });
+
+      $('searchPosts').addEventListener('input', renderPosts);
+
+      seedDemoData();
+      hydrateCurrentUser();
+      updateAuthView();
+      renderPosts();
+      renderMessages();
+    })();
+  </script>
 </body>
 </html>
